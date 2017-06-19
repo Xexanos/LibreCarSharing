@@ -3,7 +3,7 @@ package de.librecarsharing;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.*;
+
 
 import de.librecarsharing.entities.DBEntity;
 import javax.persistence.EntityManager;
@@ -12,21 +12,19 @@ import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
+
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-/**
- * Created by Admin on 16.06.2017.
- */
+
 public class Database {
 
     public static void main(String[] args) {
-        final Database example04 = new Database();
+        final Database database = new Database();
 
-        example04.init();
-        example04.createData();
-        example04.queryData();
-        example04.shutdown();
+        database.init();
+        database.createData();
+        database.queryData();
+        database.shutdown();
     }
 
 
@@ -60,7 +58,7 @@ public class Database {
         final Root<DBEntity> from = query.from(DBEntity.class);
 
 
-        final Predicate predicate = builder.equal(from.get("name"), "entity 2");
+        final Predicate predicate = builder.equal(from.get("name"), "entity 1");
         final Order order = builder.asc(from.get("name"));
 
         query.select(from).where(predicate).orderBy(order);
