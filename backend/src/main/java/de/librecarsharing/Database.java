@@ -5,16 +5,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 
+import de.librecarsharing.entities.DBCar;
 import de.librecarsharing.entities.DBEntity;
+import de.librecarsharing.entities.DBRide;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
-
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 public class Database {
 
@@ -41,27 +39,34 @@ public class Database {
 
     private void createData() {
 
-        final DBEntity e1 = new DBEntity();
-        e1.setName("entity 1");
-        this.entityManager.persist(e1);
+        final DBCar car1 = new DBCar();
+        car1.setName("car1");
+        final DBRide ride1= new DBRide();
+        ride1.setName("ride1");
+        final DBRide ride2= new DBRide();
+        ride2.setName("ride2");
+        car1.addRide(ride1);
+        car1.addRide(ride1);
 
-        final DBEntity e2 = new DBEntity();
-        e2.setName("entity 2");
-        this.entityManager.persist(e2);
+
+        this.entityManager.persist(ride1);
+        this.entityManager.persist(ride1);
+        this.entityManager.persist(car1);
+
 
     }
 
     private void queryData() {
 
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-        final CriteriaQuery<DBEntity> query = builder.createQuery(DBEntity.class);
-        final Root<DBEntity> from = query.from(DBEntity.class);
+        final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
+        final Root<DBCar> from = query.from(DBCar.class);
+        Path<Integer> joined = from.join("IDCar").get("name");
 
 
-        final Predicate predicate = builder.equal(from.get("name"), "entity 1");
-        final Order order = builder.asc(from.get("name"));
+        //final Predicate predicate = builder.equal(from.get("rides"), "");
+        //final Order order = builder.asc(from.get(""));
 
-        query.select(from).where(predicate).orderBy(order);
 
         System.out.println("OUTPUT: " + this.entityManager.createQuery(query).getResultList());
     }

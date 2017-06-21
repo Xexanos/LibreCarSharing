@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
  */
 
 
-@Entity
+
 public class DBEntity extends DBIdentified {
 
     private String name;
