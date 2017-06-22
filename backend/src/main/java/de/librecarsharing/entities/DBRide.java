@@ -25,8 +25,7 @@ public class DBRide {
         return this.getName();
     }
 
-    @ManyToOne
-    @JoinColumn(name="IDcar")
+    @ManyToOne //@JoinColumn(name="IDCar")
     private DBCar car;
 
     public DBCar getCar() {

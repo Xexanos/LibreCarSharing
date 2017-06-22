@@ -15,7 +15,7 @@ public class DBCar {
 
 
     public DBCar() {
-        this.rides = new ArrayList<>();
+        this.rides = new HashSet<DBRide>();
     }
 
     public long getIDCar() {
@@ -27,12 +27,12 @@ public class DBCar {
     }
 
 
-    @OneToMany(targetEntity=DBRide.class, mappedBy="car")
-    private List<DBRide> rides;
-    public List<DBRide> getRides(){
+    @OneToMany//(targetEntity=DBRide.class, mappedBy="car")
+    private Set<DBRide> rides;
+    public Set<DBRide> getRides(){
         return rides;
     }
-    public void setRides(List<DBRide> rides) {
+    public void setRides(Set<DBRide> rides) {
         this.rides = rides;
     }
     public void addRide(DBRide ride) {
