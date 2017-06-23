@@ -6,29 +6,21 @@ import java.util.*;
 import static javax.persistence.CascadeType.ALL;
 
 @Entity
-public class DBCar {
+public class DBCar extends DBIdentified{
 
 
     private String name;
-    @Id
-    private long IDCar;
-
+    private Set<DBRide> rides;
+    private DBCommunity community;
 
     public DBCar() {
         this.rides = new HashSet<DBRide>();
     }
 
-    public long getIDCar() {
-        return IDCar;
-    }
-
-    public void setIDCar(long IDCar) {
-        this.IDCar = IDCar;
-    }
 
 
-    @OneToMany//(targetEntity=DBRide.class, mappedBy="car")
-    private Set<DBRide> rides;
+
+    @OneToMany(mappedBy="car")
     public Set<DBRide> getRides(){
         return rides;
     }
@@ -42,8 +34,14 @@ public class DBCar {
         }
     }
 
+    @ManyToOne
+    public DBCommunity getCommunity() {
+        return community;
+    }
 
-
+    public void setCommunity(DBCommunity community) {
+        this.community = community;
+    }
 
     @Basic
     public String getName() {

@@ -4,17 +4,16 @@ import javax.persistence.*;
 
 
 @Entity
-public class DBRide {
+public class DBRide extends DBIdentified{
 
     private String name;
-
+    private DBCar car;
 
 
     @Basic
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -25,27 +24,12 @@ public class DBRide {
         return this.getName();
     }
 
-    @ManyToOne //@JoinColumn(name="IDCar")
-    private DBCar car;
-
+    @ManyToOne
     public DBCar getCar() {
         return car;
     }
-
     public void setCar(DBCar car) {
         this.car = car;
-    }
-
-
-    @Id
-    private long id;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
 }

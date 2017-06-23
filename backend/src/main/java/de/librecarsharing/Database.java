@@ -19,7 +19,7 @@ public class Database {
         final Database database = new Database();
 
         database.init();
-        //database.createData();
+        database.createData();
         database.queryData();
         database.shutdown();
     }
@@ -43,8 +43,6 @@ public class Database {
         final DBRide ride1= new DBRide();
         ride1.setName("ride1");
         final DBRide ride2= new DBRide();
-        ride1.setId(0);
-        ride2.setId(1);
         ride2.setName("ride2");
         car1.addRide(ride1);
         car1.addRide(ride2);
@@ -60,15 +58,16 @@ public class Database {
     private void queryData() {
 
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-        final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
-        final Root<DBCar> from = query.from(DBCar.class);
-        final Join<DBCar,DBRide> ridejoin = from.join(DBCar_.rides);
-        final Predicate predicate = builder.equal(ridejoin.get(DBRide_.name),"ride1");
-        final Order order = builder.asc(from.get(DBCar_.name));
-        query.select(from);//.where(predicate);
+        final CriteriaQuery<DBRide> query = builder.createQuery(DBRide.class);
+        final Root<DBRide> from = query.from(DBRide.class);
+        final Join<DBRide,DBCar> ridejoin = from.join(DBRide_.car);
+        final Predicate predicate = builder.equal(ridejoin.get(DBCar_.name),"car1");
+        final Order order = builder.asc(from.get(DBRide_.name));
+        query.select(from).where(predicate).orderBy(order);
 
-        final List<DBCar> result = this.entityManager.createQuery(query).getResultList();
-        System.out.println("result "+ result.get(0).getRides().toArray()[1]);
+        final List<DBRide> result = this.entityManager.createQuery(query).getResultList();
+
+        System.out.println("result "+ result);
         //System.out.println("OUTPUT: " + this.entityManager.createQuery(query).getResultList().get(0).getRides().get(1));
     }
 

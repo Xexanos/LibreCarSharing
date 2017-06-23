@@ -33,7 +33,7 @@ public class StartupBean {
 
 
         init();
-        createData();
+        //createData();
         shutdown();
     }
     private void init() {
