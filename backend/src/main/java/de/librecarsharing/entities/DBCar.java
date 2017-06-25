@@ -12,15 +12,26 @@ public class DBCar extends DBIdentified{
     private String name;
     private Set<DBRide> rides;
     private DBCommunity community;
+    private DBUser owner;
+    private String location;
+
+
 
     public DBCar() {
         this.rides = new HashSet<DBRide>();
     }
+    @Basic
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
 
 
-
-    @OneToMany(mappedBy="car")
+    @OneToMany
     public Set<DBRide> getRides(){
         return rides;
     }
@@ -32,6 +43,14 @@ public class DBCar extends DBIdentified{
         if (ride.getCar()!=this) {
             ride.setCar(this);
         }
+    }
+    @OneToOne
+    public DBUser getOwner() {
+        return owner;
+    }
+
+    public void setOwner(DBUser owner) {
+        this.owner = owner;
     }
 
     @ManyToOne

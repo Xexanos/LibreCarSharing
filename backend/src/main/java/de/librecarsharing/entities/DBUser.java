@@ -31,6 +31,13 @@ public class DBUser extends DBIdentified{
         this.communities = communities;
     }
 
+    public void addCommunity(DBCommunity community) {
+
+        this.communities.add(community);
+        if (!community.getUsers().contains(this)) {
+            community.addUser(this);
+        }
+    }
     public String toString() {
         return this.getName();
     }

@@ -1,6 +1,7 @@
 package de.librecarsharing.entities;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 
 @Entity
@@ -8,7 +9,26 @@ public class DBRide extends DBIdentified{
 
     private String name;
     private DBCar car;
+    private Date start;
+    private Date end;
 
+
+    @Basic
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
+    }
+    @Basic
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
+    }
 
     @Basic
     public String getName() {
@@ -20,9 +40,7 @@ public class DBRide extends DBIdentified{
 
 
 
-    public String toString() {
-        return this.getName();
-    }
+
 
     @ManyToOne
     public DBCar getCar() {
@@ -32,4 +50,7 @@ public class DBRide extends DBIdentified{
         this.car = car;
     }
 
+    public String toString() {
+        return this.getName();
+    }
 }

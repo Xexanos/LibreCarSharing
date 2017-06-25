@@ -12,7 +12,7 @@ public class DBCommunity extends DBIdentified{
     private String name;
     private Set<DBCar> cars;
     private Set<DBUser> users;
-    private DBUser owner;
+
 
 
     public DBCommunity() {
@@ -21,7 +21,7 @@ public class DBCommunity extends DBIdentified{
     }
 
 
-    @OneToMany
+    @ManyToMany(mappedBy = "communities")
     public Set<DBUser> getUsers() {
         return users;
     }
@@ -29,8 +29,13 @@ public class DBCommunity extends DBIdentified{
     public void setUsers(Set<DBUser> users) {
         this.users = users;
     }
-
-    @OneToMany(mappedBy="community")
+    public void addUser(DBUser user) {
+        this.users.add(user);
+        if (!user.getCommunities().contains(this)) {
+            user.addCommunity(this);
+        }
+    }
+    @OneToMany(mappedBy ="community")
     public Set<DBCar> getCars() {
         return cars;
     }
@@ -41,20 +46,10 @@ public class DBCommunity extends DBIdentified{
 
     public void addCar(DBCar car) {
         this.cars.add(car);
-        //if (cars.getCar()!=this) {
-         //   ride.setCar(this);
-        //}
+        if (car.getCommunity()!=this) {
+            car.setCommunity(this);
+        }
     }
-
-    @OneToOne
-    public DBUser getOwner() {
-        return owner;
-    }
-
-    public void setOwner(DBUser owner) {
-        this.owner = owner;
-    }
-
 
 
 
