@@ -12,7 +12,10 @@ public class DBUser extends DBIdentified{
     private Set<DBCommunity> communities;
 
 
-    public void DBUser() {communities= new HashSet<DBCommunity>();}
+    public DBUser() {
+        communities= new HashSet<DBCommunity>();
+
+    }
 
     @Basic
     public String getName() {
@@ -32,7 +35,6 @@ public class DBUser extends DBIdentified{
     }
 
     public void addCommunity(DBCommunity community) {
-
         this.communities.add(community);
         if (!community.getUsers().contains(this)) {
             community.addUser(this);

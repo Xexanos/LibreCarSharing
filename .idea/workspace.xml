@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4f3ec6cd-63a2-456a-913c-e993e21f1ce9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
+    <list default="true" id="4f3ec6cd-63a2-456a-913c-e993e21f1ce9" name="Default" comment="reverted beeing retarded in class DBUser">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/Database.java" afterPath="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/Database.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCar.java" afterPath="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCar.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCommunity.java" afterPath="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCommunity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBRide.java" afterPath="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBRide.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBUser.java" afterPath="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBUser.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -48,6 +46,24 @@
       </PATH_ELEMENT>
       <PATH_ELEMENT>
         <option name="myItemId" value="webtech" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+    </PATH>
+    <PATH>
+      <PATH_ELEMENT>
+        <option name="myItemId" />
+        <option name="myItemType" value="com.intellij.database.view.DatabaseStructure$Root" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="webtech@localhost" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="webtech" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="dbuser_dbcommunity" />
         <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
       </PATH_ELEMENT>
     </PATH>
@@ -127,38 +143,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Database.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/Database.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="68" column="33" lean-forward="false" selection-start-line="68" selection-start-column="33" selection-end-line="68" selection-end-column="33" />
-              <folding>
-                <marker date="1498425128268" expanded="true" signature="3410:3541" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="webtech.dbuser_dbcommunity" pinned="false" current-in-tab="false">
-        <entry file="dbDummy://dbtable:/ac57a09b/42afcf94-f3df-4e0d-a419-680211e269ae/webtech.dbuser_dbcommunity">
-          <provider editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-            <state>
-              <filtering enabled="true" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="DBUser.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBUser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="24" column="15" lean-forward="false" selection-start-line="24" selection-start-column="15" selection-end-line="24" selection-end-column="15" />
+            <state relative-caret-position="323">
+              <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -204,11 +193,51 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="DBCar.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCar.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="544">
+              <caret line="45" column="5" lean-forward="true" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="webtech.dbuser_dbcommunity" pinned="false" current-in-tab="false">
+        <entry file="dbDummy://dbtable:/ac57a09b/42afcf94-f3df-4e0d-a419-680211e269ae/webtech.dbuser_dbcommunity">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state>
+              <filtering enabled="true" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="webtech.dbuser" pinned="false" current-in-tab="false">
+        <entry file="dbDummy://dbtable:/ac57a09b/42afcf94-f3df-4e0d-a419-680211e269ae/webtech.dbuser">
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state>
+              <filtering enabled="true" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="DBCommunity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCommunity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="31" column="38" lean-forward="false" selection-start-line="31" selection-start-column="38" selection-end-line="31" selection-end-column="38" />
+            <state relative-caret-position="510">
+              <caret line="34" column="36" lean-forward="true" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -216,16 +245,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DBCar.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCar.java">
+      <file leaf-file-name="Database.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/Database.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="33" column="14" lean-forward="false" selection-start-line="33" selection-start-column="14" selection-end-line="33" selection-end-column="14" />
+            <state relative-caret-position="-255">
+              <caret line="69" column="0" lean-forward="true" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
               <folding>
-                <element signature="e#451#452#0" expanded="true" />
-                <element signature="e#482#483#0" expanded="true" />
-                <element signature="e#530#531#0" expanded="true" />
-                <element signature="e#570#571#0" expanded="true" />
+                <marker date="1498511359166" expanded="true" signature="3449:3580" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -248,6 +274,10 @@
       <find>int</find>
       <find>ent</find>
       <find>Child</find>
+      <find>hara</find>
+      <find>Dead</find>
+      <find>memes</find>
+      <find>MEMES</find>
     </findStrings>
     <replaceStrings>
       <replace>long</replace>
@@ -287,10 +317,10 @@
         <option value="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/StartupBean.java" />
         <option value="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBRide.java" />
         <option value="$PROJECT_DIR$/backend/src/main/resources/META-INF/persistence.xml" />
-        <option value="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCommunity.java" />
-        <option value="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/Database.java" />
-        <option value="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBUser.java" />
         <option value="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCar.java" />
+        <option value="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/Database.java" />
+        <option value="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCommunity.java" />
+        <option value="$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBUser.java" />
       </list>
     </option>
   </component>
@@ -400,9 +430,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -651,6 +679,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1175,7 +1205,9 @@
       <workItem from="1498041102307" duration="693000" />
       <workItem from="1498044102538" duration="9807000" />
       <workItem from="1498135776075" duration="11297000" />
-      <workItem from="1498415433753" duration="8545000" />
+      <workItem from="1498415433753" duration="8824000" />
+      <workItem from="1498482549639" duration="2943000" />
+      <workItem from="1498508190618" duration="5466000" />
     </task>
     <task id="LOCAL-00001" summary="*added Backend">
       <created>1497630349313</created>
@@ -1198,11 +1230,18 @@
       <option name="project" value="LOCAL" />
       <updated>1498045268640</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="new entities fix">
+      <created>1498426979198</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1498426979198</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56418000" />
+    <option name="totallyTimeSpent" value="65106000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -1211,12 +1250,12 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1515625" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1515625" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17708333" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17708333" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="JSF" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1232,8 +1271,9 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32826748" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928064" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15364583" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15364583" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Bean Validation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27329844" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1241,7 +1281,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27329844" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1291,7 +1330,8 @@
     <MESSAGE value="added gitignore" />
     <MESSAGE value="Merge remote-tracking branch 'origin/master' into Feature_backend&#10;&#10;# Conflicts:&#10;#&#9;.gitignore" />
     <MESSAGE value="Join example + new entitys" />
-    <option name="LAST_COMMIT_MESSAGE" value="Join example + new entitys" />
+    <MESSAGE value="new entities fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="new entities fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1360,7 +1400,7 @@
         <state relative-caret-position="1054">
           <caret line="62" column="77" lean-forward="false" selection-start-line="62" selection-start-column="77" selection-end-line="62" selection-end-column="77" />
           <folding>
-            <marker date="1498425128268" expanded="true" signature="3410:3541" ph="{...}" />
+            <marker date="1498511359166" expanded="true" signature="3449:3580" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1468,17 +1508,17 @@
         <state relative-caret-position="374">
           <caret line="44" column="14" lean-forward="false" selection-start-line="44" selection-start-column="14" selection-end-line="44" selection-end-column="14" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#275#276#0" expanded="true" />
-            <element signature="e#303#304#0" expanded="true" />
-            <element signature="e#343#344#0" expanded="true" />
-            <element signature="e#377#378#0" expanded="true" />
-            <element signature="e#415#416#0" expanded="true" />
-            <element signature="e#441#442#0" expanded="true" />
-            <element signature="e#477#478#0" expanded="true" />
-            <element signature="e#507#508#0" expanded="true" />
-            <element signature="e#695#696#0" expanded="true" />
-            <element signature="e#721#722#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#275#276#0" expanded="false" />
+            <element signature="e#303#304#0" expanded="false" />
+            <element signature="e#343#344#0" expanded="false" />
+            <element signature="e#377#378#0" expanded="false" />
+            <element signature="e#415#416#0" expanded="false" />
+            <element signature="e#441#442#0" expanded="false" />
+            <element signature="e#477#478#0" expanded="false" />
+            <element signature="e#507#508#0" expanded="false" />
+            <element signature="e#695#696#0" expanded="false" />
+            <element signature="e#721#722#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1487,20 +1527,6 @@
       <provider editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/ac57a09b/42afcf94-f3df-4e0d-a419-680211e269ae/webtech.dbcar">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
@@ -1513,7 +1539,6 @@
       <provider editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
@@ -1530,7 +1555,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="dbDummy://dbtable:/ac57a09b/42afcf94-f3df-4e0d-a419-680211e269ae/webtech.dbuser_dbcommunity">
+    <entry file="dbDummy://dbtable:/ac57a09b/42afcf94-f3df-4e0d-a419-680211e269ae/webtech.dbride">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/ac57a09b/42afcf94-f3df-4e0d-a419-680211e269ae/webtech.dbcommunity">
       <provider editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1556,7 +1593,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="dbDummy://dbtable:/ac57a09b/42afcf94-f3df-4e0d-a419-680211e269ae/webtech.dbride">
+    <entry file="dbDummy://dbtable:/ac57a09b/42afcf94-f3df-4e0d-a419-680211e269ae/webtech.dbuser_dbcommunity">
       <provider editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1566,59 +1603,54 @@
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="dbDummy://dbtable:/ac57a09b/42afcf94-f3df-4e0d-a419-680211e269ae/webtech.dbcommunity">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/Database.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="68" column="33" lean-forward="false" selection-start-line="68" selection-start-column="33" selection-end-line="68" selection-end-column="33" />
-          <folding>
-            <marker date="1498425128268" expanded="true" signature="3410:3541" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCommunity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="31" column="38" lean-forward="false" selection-start-line="31" selection-start-column="38" selection-end-line="31" selection-end-column="38" />
+        <state relative-caret-position="510">
+          <caret line="34" column="36" lean-forward="true" selection-start-line="34" selection-start-column="36" selection-end-line="34" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBUser.java">
+    <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="24" column="15" lean-forward="false" selection-start-line="24" selection-start-column="15" selection-end-line="24" selection-end-column="15" />
+        <state relative-caret-position="544">
+          <caret line="45" column="5" lean-forward="true" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="5" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBCar.java">
+    <entry file="dbDummy://dbtable:/ac57a09b/42afcf94-f3df-4e0d-a419-680211e269ae/webtech.dbcar">
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/entities/DBUser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="33" column="14" lean-forward="false" selection-start-line="33" selection-start-column="14" selection-end-line="33" selection-end-column="14" />
+        <state relative-caret-position="323">
+          <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/src/main/java/de/librecarsharing/Database.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-255">
+          <caret line="69" column="0" lean-forward="true" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
           <folding>
-            <element signature="e#451#452#0" expanded="true" />
-            <element signature="e#482#483#0" expanded="true" />
-            <element signature="e#530#531#0" expanded="true" />
-            <element signature="e#570#571#0" expanded="true" />
+            <marker date="1498511359166" expanded="true" signature="3449:3580" ph="{...}" />
           </folding>
         </state>
       </provider>

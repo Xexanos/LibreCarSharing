@@ -31,7 +31,7 @@ public class DBCar extends DBIdentified{
 
 
 
-    @OneToMany
+    @OneToMany(mappedBy = "car")
     public Set<DBRide> getRides(){
         return rides;
     }

@@ -65,8 +65,9 @@ public class Database {
         car1.addRide(ride2);
         car2.addRide(ride3);
         car2.addRide(ride4);
+        mark.addCommunity(community1);
+        community2.addUser(lisa);
 
-        community1.addUser(mark);
 
         community1.addCar(car1);
         community2.addCar(car2);

@@ -14,10 +14,9 @@ public class DBCommunity extends DBIdentified{
     private Set<DBUser> users;
 
 
-
     public DBCommunity() {
-        this.cars = new HashSet<DBCar>();
-        this.users= new HashSet<DBUser>();
+        users= new HashSet<DBUser>();
+        cars = new HashSet<DBCar>();
     }
 
 
@@ -30,6 +29,7 @@ public class DBCommunity extends DBIdentified{
         this.users = users;
     }
     public void addUser(DBUser user) {
+
         this.users.add(user);
         if (!user.getCommunities().contains(this)) {
             user.addCommunity(this);
