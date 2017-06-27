@@ -92,19 +92,30 @@ public class Database {
     }
 
     private void queryData() {
-
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-        final CriteriaQuery<DBRide> query = builder.createQuery(DBRide.class);
-        final Root<DBRide> from = query.from(DBRide.class);
-        final Join<DBRide,DBCar> ridejoin = from.join(DBRide_.car);
-        final Predicate predicate = builder.equal(ridejoin.get(DBCar_.name),"car1");
-        final Order order = builder.asc(from.get(DBRide_.name));
-        query.select(from).where(predicate).orderBy(order);
 
-        final List<DBRide> result = this.entityManager.createQuery(query).getResultList();
-
+        // SELECT r.name FROM DBCar AS c, DBRide AS r where c.id= r.car_id AND c.name = 'car1' ORDERBY r.name;
+        final CriteriaQuery<DBRide> rideQuery = builder.createQuery(DBRide.class);
+        final Root<DBRide> fromRide = rideQuery.from(DBRide.class);
+        final Join<DBRide,DBCar> ridejoin = fromRide.join(DBRide_.car);
+        Predicate predicate = builder.equal(ridejoin.get(DBCar_.name),"car1");
+        Order order = builder.asc(fromRide.get(DBRide_.name));
+        rideQuery.select(fromRide).where(predicate).orderBy(order);
+        final List<DBRide> result = this.entityManager.createQuery(rideQuery).getResultList();
         System.out.println("result "+ result);
-        //System.out.println("OUTPUT: " + this.entityManager.createQuery(query).getResultList().get(0).getRides().get(1));
+
+
+
+        final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
+        final Root<DBUser> fromUser = query.from(DBUser.class);
+        final Join<DBUser,DBCommunity> communityJoin = fromUser.join(DBUser_.communities);
+        predicate = builder.equal(communityJoin.get(DBCommunity_.name),"community1");
+        order = builder.asc(fromUser.get(DBUser_.name));
+        query.select(fromUser).where(predicate).orderBy(order);
+        final List<DBUser> users = this.entityManager.createQuery(query).getResultList();
+        System.out.println("result "+ users);
+
+
     }
 
     private void shutdown() {
