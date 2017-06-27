@@ -49,10 +49,10 @@ public class Database {
         lisa.setName("Lisa");
         final DBCar car1 = new DBCar();
         car1.setName("car1");
-        car1.setOwner(tim);
+        tim.addCar(car1);
         final DBCar car2 = new DBCar();
         car2.setName("car2");
-        car2.setOwner(lisa);
+        lisa.addCar(car2);
         final DBRide ride1= new DBRide();
         ride1.setName("ride1");
         final DBRide ride2= new DBRide();
@@ -114,6 +114,22 @@ public class Database {
         query.select(fromUser).where(predicate).orderBy(order);
         final List<DBUser> users = this.entityManager.createQuery(query).getResultList();
         System.out.println("result "+ users);
+
+
+        DBCommunity com =entityManager.find(DBCommunity.class, new Long(1));//get first entry from hashset
+        System.out.println("community1's users :"+ com.getUsers());
+        DBUser use = (DBUser) com.getUsers().toArray()[0];
+        System.out.println("cars from community1's user lisa "+use.getCars());
+
+        final DBCar car3 = new DBCar();
+        car3.setName("car3");
+        entityManager.persist(car3);
+        entityManager.find(DBCommunity.class,(long)1).addCar(car3);
+        System.out.println(use);
+        use.addCar(car3);
+        use = (DBUser) com.getUsers().toArray()[0];
+        System.out.println(use);
+        System.out.println("cars from community1's user lisa "+use.getCars());
 
 
     }

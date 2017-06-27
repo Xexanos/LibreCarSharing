@@ -44,7 +44,7 @@ public class DBCar extends DBIdentified{
             ride.setCar(this);
         }
     }
-    @OneToOne
+    @ManyToOne
     public DBUser getOwner() {
         return owner;
     }

@@ -9,12 +9,13 @@ import java.util.Set;
 public class DBUser extends DBIdentified{
 
     private String name;
+    private Set<DBCar> cars;
     private Set<DBCommunity> communities;
 
 
     public DBUser() {
         communities= new HashSet<DBCommunity>();
-
+        cars= new HashSet<DBCar>();
     }
 
     @Basic
@@ -40,6 +41,23 @@ public class DBUser extends DBIdentified{
             community.addUser(this);
         }
     }
+    @OneToMany(mappedBy = "owner")
+    public Set<DBCar> getCars() {
+        return cars;
+    }
+
+    public void setCars(Set<DBCar> cars) {
+
+        this.cars = cars;
+
+    }
+    public void addCar(DBCar car)
+    {
+        this.cars.add(car);
+        if(car.getOwner()!=this)
+        car.setOwner(this);
+    }
+
     public String toString() {
         return this.getName();
     }
