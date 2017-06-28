@@ -1,12 +1,13 @@
 package de.librecarsharing;
 
+import de.librecarsharing.entities.*;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
@@ -16,19 +17,109 @@ import java.util.List;
 
 
 
-@Path("/news")
+@Path("/rest")
 @Transactional
 public class RestApi {
 
 
+    @PersistenceContext
+    private EntityManager entityManager;
 
-
-    @Path("/{Cars}")
+    @Path("/{communityid}/cars")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public DBNews readAsJSON(@PathParam("id") final long id) {
-        return this.entityManager.find(DBNews.class, id);
+    public List<DBCar> getAllCarsFromCommunity(@PathParam("communityid") final String communityid) {
+        long comId;
+        try {
+            comId = Long.parseLong(communityid);
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+
+        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+        final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
+        final Root<DBCar> from = query.from(DBCar.class);
+        final Join<DBCar,DBCommunity> join = from.join(DBCar_.community);
+        Predicate predicate = builder.equal(join.get(DBCommunity_.id),comId);
+        Order order = builder.asc(from.get(DBCar_.name));
+        query.select(from).where(predicate).orderBy(order);
+        final List<DBCar> cars = this.entityManager.createQuery(query).getResultList();
+        System.out.println("result "+ cars);
+        return cars;
+
+    }
+    @Path("/{communityid}/users")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<DBUser> getAllUsersFromCommunity(@PathParam("communityid") final String communityid) {
+        long comId;
+        try {
+            comId = Long.parseLong(communityid);
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+
+        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+        final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
+        final Root<DBUser> from = query.from(DBUser.class);
+        final Join<DBUser,DBCommunity> join = from.join(DBUser_.communities);
+        Predicate predicate = builder.equal(join.get(DBCommunity_.id),comId);
+        Order order = builder.asc(from.get(DBUser_.name));
+        query.select(from).where(predicate).orderBy(order);
+        final List<DBUser> users = this.entityManager.createQuery(query).getResultList();
+        System.out.println("result "+ users);
+        return users;
+
+    }
+
+    @Path("/{carid}/rides")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<DBRide> getAllRidesFromCar(@PathParam("carid") final String communityid) {
+        long carId;
+        try {
+            carId = Long.parseLong(communityid);
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+
+        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+        final CriteriaQuery<DBRide> query = builder.createQuery(DBRide.class);
+        final Root<DBRide> from = query.from(DBRide.class);
+        final Join<DBRide,DBCar> join = from.join(DBRide_.car);
+        Predicate predicate = builder.equal(join.get(DBCommunity_.id),carId);
+        Order order = builder.asc(from.get(DBRide_.id));
+        query.select(from).where(predicate).orderBy(order);
+        final List<DBRide> rides = this.entityManager.createQuery(query).getResultList();
+        System.out.println("result "+ rides);
+        return rides ;
+
+    }
+
+
+
+    @Path("/ride/{id}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public DBRide getRideById(@PathParam("id") final long id) {
+        return this.entityManager.find(DBRide.class, id);
+    }
+    @Path("/car/{id}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public DBRide getCarById    (@PathParam("id") final long id) {
+        return this.entityManager.find(DBRide.class, id);
     }
 
 
@@ -42,7 +133,13 @@ public class RestApi {
 
 
 
+
+
+
+
+
     // beispiel
+    /*
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -109,4 +206,5 @@ public class RestApi {
 
         return Response.ok(news).build();
     }
+    */
 }
