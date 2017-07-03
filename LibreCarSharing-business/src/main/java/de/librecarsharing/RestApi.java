@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,57 +19,6 @@ public class RestApi {
 
     @PersistenceContext
     private EntityManager entityManager;
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public void create() {
-        final DBCommunity community1= new DBCommunity();
-        final DBCommunity community2= new DBCommunity();
-        community1.setName("community1");
-        community2.setName("community2");
-        final DBUser tim = new DBUser();
-        final DBUser mark = new DBUser();
-        final DBUser lisa = new DBUser();
-        tim.setName("Tim");
-        mark.setName("Mark");
-        lisa.setName("Lisa");
-        final DBCar car1 = new DBCar();
-        car1.setName("car1");
-        tim.addCar(car1);
-        final DBCar car2 = new DBCar();
-        car2.setName("car2");
-        lisa.addCar(car2);
-        final DBRide ride1= new DBRide();
-        ride1.setName("ride1");
-        final DBRide ride2= new DBRide();
-        ride2.setName("ride2");
-        final DBRide ride3= new DBRide();
-        ride3.setName("ride3");
-        final DBRide ride4= new DBRide();
-        ride4.setName("ride4");
-        car1.addRide(ride1);
-        car1.addRide(ride2);
-        car2.addRide(ride3);
-        car2.addRide(ride4);
-        mark.addCommunity(community1);
-        community2.addUser(lisa);
-        community1.addCar(car1);
-        community2.addCar(car2);
-        car1.setLocation("A");
-        car2.setLocation("c");
-        this.entityManager.persist(community2);
-        this.entityManager.persist(community1);
-        this.entityManager.persist(tim);
-        this.entityManager.persist(mark);
-        this.entityManager.persist(lisa);
-        this.entityManager.persist(ride3);
-        this.entityManager.persist(ride4);
-        this.entityManager.persist(car2);
-        this.entityManager.persist(ride1);
-        this.entityManager.persist(ride2);
-        this.entityManager.persist(car1);
-
-
-    }
 
     @Path("cars/{communityid}")
     @GET
@@ -171,6 +121,35 @@ public class RestApi {
         return this.entityManager.find(DBCommunity.class, id);
     }
 
+
+    @Path("newuser/{name}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(@PathParam("name") final String name) {
+        final DBUser user = new DBUser();
+        user.setName(name);
+        this.entityManager.persist(user);
+        return Response.ok(user).build();
+    }
+
+    @Path("adduser/{userId}/to/{comId}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response create(@PathParam("userId") final long userId, @PathParam("comId") final long comId) {
+        DBCommunity community;
+        DBUser user;
+        if((community=this.entityManager.find(DBCommunity.class,comId ))!=null);
+        {
+            if((user= this.entityManager.find(DBUser.class,userId))!=null)
+            {
+                community.addUser(user);
+            }
+        }
+
+
+        return Response.ok().build();
+    }
 
 
 

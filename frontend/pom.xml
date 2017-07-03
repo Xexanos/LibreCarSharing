@@ -15,7 +15,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 <artifactId>frontend</artifactId>
 <packaging>war</packaging>
 
-<name>WT2 :: ${project.artifactId}</name>
+<name>${project.artifactId}</name>
 
 <build>
     <resources>
@@ -51,6 +51,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                     <configuration>
                         <artifactItems>
                             <artifactItem>
+                                <overWrite>true</overWrite>
                                 <groupId>${project.groupId}</groupId>
                                 <artifactId>${project.artifactId}</artifactId>
                                 <version>${project.version}</version>
