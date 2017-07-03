@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/LibreCarSharing.iml" filepath="$PROJECT_DIR$/LibreCarSharing.iml" />
-      <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LibreCarSharing-business/LibreCarSharing-business.iml" filepath="$PROJECT_DIR$/LibreCarSharing-business/LibreCarSharing-business.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LibreCarSharing-persistence/LibreCarSharing-persistence.iml" filepath="$PROJECT_DIR$/LibreCarSharing-persistence/LibreCarSharing-persistence.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend/frontend.iml" filepath="$PROJECT_DIR$/frontend/frontend.iml" />
     </modules>
   </component>
 </project>

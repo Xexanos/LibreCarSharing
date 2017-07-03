@@ -6,11 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="backend" />
+        <module name="frontend" />
+        <module name="LibreCarSharing-business" />
+        <module name="LibreCarSharing-persistence" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="backend" target="1.8" />
+      <module name="frontend" target="1.8" />
+      <module name="LibreCarSharing" target="1.8" />
+      <module name="LibreCarSharing-business" target="1.8" />
+      <module name="LibreCarSharing-persistence" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
