@@ -1,4 +1,7 @@
 <h1>{{title}}</h1>
 
-<input type="checkbox" [(ngModel)]="login" title="login">
+<label><input type="checkbox" [(ngModel)]="login">display login component</label>
 <login *ngIf="login"></login>
+<div *ngIf="!login">
+    <carDisplay [car]="car"></carDisplay>
+</div>
