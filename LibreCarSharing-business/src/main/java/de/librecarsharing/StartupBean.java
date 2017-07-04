@@ -53,14 +53,16 @@ public class StartupBean {
         final DBUser tim = new DBUser();
         final DBUser mark = new DBUser();
         final DBUser lisa = new DBUser();
-        tim.setName("Tim");
-        mark.setName("Mark");
-        lisa.setName("Lisa");
+        tim.setDispname("Tim");
+        mark.setDispname("Mark");
+        lisa.setDispname("Lisa");
         final DBCar car1 = new DBCar();
         car1.setName("car1");
+        car1.setSeats(5);
         tim.addCar(car1);
         final DBCar car2 = new DBCar();
         car2.setName("car2");
+        car2.setSeats(6);
         lisa.addCar(car2);
         final DBRide ride1= new DBRide();
         ride1.setName("ride1");
@@ -120,7 +122,7 @@ public class StartupBean {
         final Root<DBUser> fromUser = query.from(DBUser.class);
         final Join<DBUser,DBCommunity> communityJoin = fromUser.join(DBUser_.communities);
         predicate = builder.equal(communityJoin.get(DBCommunity_.name),"community1");
-        order = builder.asc(fromUser.get(DBUser_.name));
+        order = builder.asc(fromUser.get(DBUser_.dispname));
         query.select(fromUser).where(predicate).orderBy(order);
         final List<DBUser> users = this.entityManager.createQuery(query).getResultList();
         System.out.println("result "+ users);

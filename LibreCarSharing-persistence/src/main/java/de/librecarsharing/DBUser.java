@@ -8,7 +8,9 @@ import java.util.Set;
 @Entity
 public class DBUser extends DBIdentified{
 
-    private String name;
+    private String dispname;
+    private String username;
+    private String password;
     private Set<DBCar> cars;
     private Set<DBCommunity> communities;
 
@@ -17,13 +19,30 @@ public class DBUser extends DBIdentified{
         communities= new HashSet<DBCommunity>();
         cars= new HashSet<DBCar>();
     }
+    @Basic
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     @Basic
-    public String getName() {
-        return name;
+    public String getPassword() {
+        return password;
     }
-    public void setName(String name) {
-        this.name = name;
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Basic
+    public String getDispname() {
+        return dispname;
+    }
+    public void setDispname(String dispname) {
+        this.dispname = dispname;
     }
 
     @ManyToMany
@@ -59,7 +78,7 @@ public class DBUser extends DBIdentified{
     }
 
     public String toString() {
-        return this.getName();
+        return this.getDispname();
     }
 
 

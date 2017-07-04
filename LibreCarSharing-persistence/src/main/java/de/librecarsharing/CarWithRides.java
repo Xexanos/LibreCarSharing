@@ -1,6 +1,8 @@
 package de.librecarsharing;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by fred on 30.06.17.
@@ -22,9 +24,13 @@ public class CarWithRides {
     {
         return this.dbCar.getName();
     }
-    public Set<DBRide> getRides()
+    public String getInfo(){return this.dbCar.getInfo();}
+    public Set<RideNoRef> getRides()
     {
-        return this.dbCar.getRides();
-    }
+        return this.dbCar.getRides().stream().map(RideNoRef::new).collect(Collectors.toSet());
 
+    }
+    public int getSeats(){return this.dbCar.getSeats();}
+    public int getColor(){return this.dbCar.getColor();}
+    public String getStatus(){return this.dbCar.getStatus();}
 }

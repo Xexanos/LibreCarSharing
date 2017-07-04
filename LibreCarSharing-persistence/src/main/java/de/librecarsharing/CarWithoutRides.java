@@ -7,23 +7,21 @@ import java.util.Set;
  */
 public class CarWithoutRides {
 
-        private DBCar dbCar;
-        public CarWithoutRides(DBCar dbCar)
-        {
-
-            this.dbCar=dbCar;
-
-        }
-        public long getId()
-        {
-            return this.dbCar.getId();
-
-        }
-        public String getName()
+    private DBCar dbCar;
+    public CarWithoutRides(DBCar dbCar)
+    {
+        this.dbCar=dbCar;
+    }
+    public long getId()
+    {
+        return this.dbCar.getId();
+    }
+    public int getColor(){return this.dbCar.getColor();}
+    public String getName()
         {
             return this.dbCar.getName();
         }
-
-
-
+    public int getSeats(){return this.dbCar.getSeats();}
+    public String getStatus(){return this.dbCar.getStatus();}
+    public String getInfo(){return this.dbCar.getInfo();}
 }

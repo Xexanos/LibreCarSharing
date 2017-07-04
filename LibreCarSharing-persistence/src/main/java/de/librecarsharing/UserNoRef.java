@@ -10,16 +10,10 @@ public class UserNoRef {
     {
         this.dbUser=dbUser;
     }
-    public String getName()
+    public String getDisplayname()
     {
-        return dbUser.getName();
+        return dbUser.getDispname();
     }
-
-    public long getId()
-    {
-
-        return dbUser.getId();
-
-    }
+    public long getId() {return dbUser.getId();}
 }
 

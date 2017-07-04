@@ -12,6 +12,11 @@ public class DBCar extends DBIdentified{
     private DBCommunity community;
     private DBUser owner;
     private String location;
+    private int seats;
+    private int color;
+    private String status;
+    private String info;
+
 
 
 
@@ -26,8 +31,40 @@ public class DBCar extends DBIdentified{
     public void setLocation(String location) {
         this.location = location;
     }
+    @Basic
+    public int getColor() {
+        return color;
+    }
 
+    public void setColor(int color) {
+        this.color = color;
+    }
 
+    @Basic
+    public int getSeats() {
+        return seats;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
+    }
+    @Basic
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    @Basic
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @OneToMany(mappedBy = "car")
     public Set<DBRide> getRides(){

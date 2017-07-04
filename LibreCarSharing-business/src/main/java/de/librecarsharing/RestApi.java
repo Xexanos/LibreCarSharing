@@ -51,12 +51,30 @@ public class RestApi {
         final Root<DBUser> from = query.from(DBUser.class);
         final Join<DBUser,DBCommunity> join = from.join(DBUser_.communities);
         Predicate predicate = builder.equal(join.get(DBCommunity_.id),comId);
-        Order order = builder.asc(from.get(DBUser_.name));
+        Order order = builder.asc(from.get(DBUser_.dispname));
         query.select(from).where(predicate).orderBy(order);
         final List<DBUser> users = this.entityManager.createQuery(query).getResultList();
         System.out.println("result "+ users);
         return users.stream().map(UserNoRef::new).collect(Collectors.toList());
 
+    }
+    @Path("communitys/{userid}/")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CommunityNoRef> getAllCommunitysFromUser(@PathParam("userid") final long userId) {
+
+
+        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+        final CriteriaQuery<DBCommunity> query = builder.createQuery(DBCommunity.class);
+        final Root<DBCommunity> from = query.from(DBCommunity.class);
+        final Join<DBCommunity,DBUser> join = from.join(DBCommunity_.users);
+        Predicate predicate = builder.equal(join.get(DBCommunity_.id),userId);
+        Order order = builder.asc(from.get(DBCommunity_.name));
+        query.select(from).where(predicate).orderBy(order);
+        final List<DBCommunity> communitys = this.entityManager.createQuery(query).getResultList();
+        System.out.println("result "+ communitys);
+        return communitys.stream().map(CommunityNoRef::new).collect(Collectors.toList());
     }
 
     @Path("rides/{carid}")
@@ -83,7 +101,7 @@ public class RestApi {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public DBUser getOwnerOfCar(@PathParam("carid") final long carId) {
+    public UserNoRef getOwnerOfCar(@PathParam("carid") final long carId) {
 
 
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
@@ -94,10 +112,17 @@ public class RestApi {
         query.select(from).where(predicate);
         final DBUser owner = this.entityManager.createQuery(query).getResultList().get(0);
         System.out.println("result "+ owner);
-        return owner ;
+        return new UserNoRef(owner);
 
     }
-
+    @Path("carwrides/{id}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response carsWithRides(@PathParam("id") final long id) {
+        CarWithRides car=new CarWithRides(this.entityManager.find(DBCar.class, id));
+        return Response.ok(car).build();
+    }
 
     @Path("ride/{id}")
     @GET
@@ -106,6 +131,7 @@ public class RestApi {
     public DBRide getRideById(@PathParam("id") final long id) {
         return this.entityManager.find(DBRide.class, id);
     }
+
     @Path("car/{id}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
@@ -113,6 +139,7 @@ public class RestApi {
     public DBRide getCarById    (@PathParam("id") final long id) {
         return this.entityManager.find(DBRide.class, id);
     }
+
     @Path("community/{id}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
@@ -122,13 +149,14 @@ public class RestApi {
     }
 
 
+
     @Path("newuser/{name}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@PathParam("name") final String name) {
         final DBUser user = new DBUser();
-        user.setName(name);
+        user.setDispname(name);
         this.entityManager.persist(user);
         return Response.ok(user).build();
     }
@@ -152,87 +180,4 @@ public class RestApi {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // beispiel
-    /*
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<DBNews> readAllAsJSON() {
-        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-        final CriteriaQuery<DBNews> query = builder.createQuery(DBNews.class);
-
-        final Root<DBNews> from = query.from(DBNews.class);
-
-        query.select(from);
-
-        return this.entityManager.createQuery(query).getResultList();
-    }
-
-    @Path("/{id}")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_JSON)
-    public DBNews readAsJSON(@PathParam("id") final long id) {
-        return this.entityManager.find(DBNews.class, id);
-    }
-
-    @Path("/{id}")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_XML)
-    public DBNews readAsXML(@PathParam("id") final long id) {
-        return this.entityManager.find(DBNews.class, id);
-    }
-
-    // An example of how to misuse the API and do something unRESTful
-    @Path("/new/{headline}/{content}")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response create(@PathParam("headline") final String headline, @PathParam("content") final String content) {
-
-        final DBNews news = new DBNews();
-
-        news.setHeadline(headline);
-        news.setContent(content);
-        news.setPublishedOn(new Date());
-
-        this.entityManager.persist(news);
-
-        return Response.ok(news).build();
-    }
-
-    // More idiomatic way of creating items
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response create(final DBNews param) {
-
-        final DBNews news = new DBNews();
-
-        news.setHeadline(param.getHeadline());
-        news.setContent(param.getContent());
-        news.setPublishedOn(new Date());
-
-        this.entityManager.persist(news);
-
-        return Response.ok(news).build();
-    }
-    */
 }
