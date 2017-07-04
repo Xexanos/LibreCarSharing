@@ -7,4 +7,5 @@ pubspec.lock
 
 # Directory created by dartdoc
 doc/api/
-/frontend.iml
+
+frontend.iml
