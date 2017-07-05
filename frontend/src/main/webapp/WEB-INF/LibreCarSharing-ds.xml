@@ -1,0 +1,18 @@
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.jboss.org/ironjacamar/schema http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
+	<datasource jndi-name="java:jboss/datasources/LibreCarSharing"
+				pool-name="LibreCarSharing-web" enabled="true"
+				use-java-context="true">
+		<connection-url>jdbc:mysql://localhost:3306/webtech?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC</connection-url>
+
+		<!-- Resource filtering might not work, when using wildfly-swarm:run -->
+		<!--<connection-url>jdbc:h2:file:${h2.path}</connection-url>-->
+		<!--<connection-url>jdbc:h2:file:/home/frohme/LibreCarSharing</connection-url>-->
+		<driver>mysql-connector-java-6.0.6.jar</driver>
+		<security>
+			<user-name>root</user-name>
+			<password></password>
+		</security>
+	</datasource>
+</datasources>
