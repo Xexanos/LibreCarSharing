@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:frontend/model/car.dart';
+import '../../model/car.dart';
 
 import 'package:angular2/angular2.dart';
 

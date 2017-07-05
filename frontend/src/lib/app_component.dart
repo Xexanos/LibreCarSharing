@@ -1,9 +1,9 @@
 import 'package:angular2/angular2.dart';
 
-import 'package:frontend/model/car.dart';
+import 'model/car.dart';
 
-import 'package:frontend/components/login/login_component.dart';
-import 'package:frontend/components/car_display/car_display_component.dart';
+import 'components/login/login_component.dart';
+import 'components/car_display/car_display_component.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
 // Components info: https://webdev.dartlang.org/components

@@ -11,5 +11,27 @@
 
     <artifactId>frontend</artifactId>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.dzwicker.dart</groupId>
+                <artifactId>dart-maven-plugin</artifactId>
+                <version>3.0.9</version>
+                <configuration>
+                    <checkedMode>true</checkedMode>
+                    <dartSdk>${dart.sdk}</dartSdk>
+                    <testFailureIgnore>false</testFailureIgnore>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>dart2js</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

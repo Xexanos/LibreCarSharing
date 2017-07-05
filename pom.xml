@@ -12,5 +12,13 @@
         <module>frontend</module>
     </modules>
 
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.github.dzwicker.dart/dart-maven-plugin -->
+        <dependency>
+            <groupId>com.github.dzwicker.dart</groupId>
+            <artifactId>dart-maven-plugin</artifactId>
+            <version>3.0.9</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:angular2/angular2.dart';
 
-import 'package:frontend/model/user.dart';
+import '../../model/user.dart';
 
 @Component(
   selector: 'login',
@@ -11,13 +12,17 @@ import 'package:frontend/model/user.dart';
 )
 class LoginComponent implements OnInit {
   User user = new User();
+  //bool isLoggedIn() => loggedIn;
 
   @override
   Future<Null> ngOnInit() async {
     // TODO: implement ngOnInit
   }
 
-  login() {
-    print("TODO: login\nUsername ist " + this.user.username + "\nPasswort ist " + this.user.password);
+  void login(dynamic e){
+    e.preventDefault();
+    HttpRequest.postFormData("../login.jsp", { "username" : this.user.username, "password" : this.user.password })
+      //U.then((request) {loggedIn = true;})
+      .catchError((n)=>print(n));
   }
 }
