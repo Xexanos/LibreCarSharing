@@ -20,7 +20,26 @@ public class RestApi {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Path("cars/{communityid}")
+    @Path("carsfromuser/{userId}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CarWithoutRides> getAllCarsFromUser(@PathParam("userId") final long userId) {
+
+        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+        final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
+        final Root<DBCar> from = query.from(DBCar.class);
+        final Join<DBCar,DBUser> join = from.join(DBCar_.owner);
+        Predicate predicate = builder.equal(join.get(DBCommunity_.id),userId);
+        Order order = builder.asc(from.get(DBCar_.name));
+        query.select(from).where(predicate).orderBy(order);
+        final List<DBCar> cars = this.entityManager.createQuery(query).getResultList();
+
+        System.out.println("result "+ cars);
+        return cars.stream().map(CarWithoutRides::new).collect(Collectors.toList());
+
+    }
+    @Path("carsfromcommunity/{communityid}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -58,7 +77,7 @@ public class RestApi {
         return users.stream().map(UserNoRef::new).collect(Collectors.toList());
 
     }
-    @Path("communitys/{userid}/")
+    @Path("communitysformuser/{userid}/")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -72,6 +91,20 @@ public class RestApi {
         Predicate predicate = builder.equal(join.get(DBCommunity_.id),userId);
         Order order = builder.asc(from.get(DBCommunity_.name));
         query.select(from).where(predicate).orderBy(order);
+        final List<DBCommunity> communitys = this.entityManager.createQuery(query).getResultList();
+        System.out.println("result "+ communitys);
+        return communitys.stream().map(CommunityNoRef::new).collect(Collectors.toList());
+    }
+    @Path("allcommunities/")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CommunityNoRef> getAllCommunitys() {
+        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+        final CriteriaQuery<DBCommunity> query = builder.createQuery(DBCommunity.class);
+        final Root<DBCommunity> from = query.from(DBCommunity.class);
+        Order order = builder.asc(from.get(DBCommunity_.name));
+        query.select(from).orderBy(order);
         final List<DBCommunity> communitys = this.entityManager.createQuery(query).getResultList();
         System.out.println("result "+ communitys);
         return communitys.stream().map(CommunityNoRef::new).collect(Collectors.toList());

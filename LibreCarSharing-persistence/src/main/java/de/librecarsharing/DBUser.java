@@ -11,7 +11,7 @@ public class DBUser extends DBIdentified{
     private String dispname;
     private String username;
     private String password;
-    private Set<DBCar> cars;
+    private Set<DBCar> cars;        //cars owned by user
     private Set<DBCommunity> communities;
 
 

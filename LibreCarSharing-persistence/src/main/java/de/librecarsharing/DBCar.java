@@ -106,13 +106,6 @@ public class DBCar extends DBIdentified{
         this.name = name;
     }
 
-
-
-    public String toString() {
-        return this.getName();
-    }
-
-
-
+    public String toString() {return this.getName();}
 
 }
