@@ -21,7 +21,6 @@
     <modules>
         <module>LibreCarSharing-persistence</module>
         <module>LibreCarSharing-business</module>
-
         <module>frontend</module>
     </modules>
 
@@ -45,12 +44,10 @@
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.dzwicker.dart</groupId>
+            <artifactId>dart-maven-plugin</artifactId>
+            <version>3.0.9</version>
+        </dependency>
     </dependencies>
-
-    <dependency>
-        <groupId>com.github.dzwicker.dart</groupId>
-        <artifactId>dart-maven-plugin</artifactId>
-        <version>3.0.9</version>
-    </dependency>
-
 </project>

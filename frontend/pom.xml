@@ -9,7 +9,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <groupId>de.librecarsharing</groupId>
     <artifactId>frontend</artifactId>
     <packaging>war</packaging>
 
@@ -18,7 +18,7 @@
     <build>
         <resources>
             <resource>
-                <directory>src/main/dart</directory>
+                <directory>src</directory>
                 <targetPath>${project.build.directory}/${project.build.finalName}</targetPath>
             </resource>
         </resources>
@@ -70,6 +70,9 @@
                                 <directory>src/main/webapp</directory>
                                 <filtering>true</filtering>
                             </resource>
+                            <resource>
+                                <directory>${project.build.directory}/src</directory>
+                            </resource>
 
                         </webResources>
                     </configuration>
@@ -82,7 +85,7 @@
                     <configuration>
                         <checkedMode>true</checkedMode>
                         <sourceDirectory>src</sourceDirectory>
-                        <dartSdk>${dart.sdk}</dartSdk>
+                        <dartSdk>${dart-sdk.path}</dartSdk>
                         <testFailureIgnore>false</testFailureIgnore>
                     </configuration>
                     <executions>
@@ -115,9 +118,7 @@
                                 <directory>webapp</directory>
                                 <filtering>true</filtering>
                             </resource>
-                            <resource>
-                                <directory>${project.build.directory}/dart</directory>
-                            </resource>
+
                         </webResources>
                     </configuration>
                 </plugin>
