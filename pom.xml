@@ -8,17 +8,49 @@
     <artifactId>LibreCarSharing</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1</version>
+
+    <name>${project.artifactId}</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <wildfly-swarm.version>2017.5.0</wildfly-swarm.version>
+        <h2.path>${env.HOME}/LibreCarSharing</h2.path>
+        <dart-sdk.path>/usr/lib/dart</dart-sdk.path>
+    </properties>
+
     <modules>
+        <module>LibreCarSharing-persistence</module>
+        <module>LibreCarSharing-business</module>
+
         <module>frontend</module>
     </modules>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/com.github.dzwicker.dart/dart-maven-plugin -->
         <dependency>
-            <groupId>com.github.dzwicker.dart</groupId>
-            <artifactId>dart-maven-plugin</artifactId>
-            <version>3.0.9</version>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
         </dependency>
     </dependencies>
+
+    <dependency>
+        <groupId>com.github.dzwicker.dart</groupId>
+        <artifactId>dart-maven-plugin</artifactId>
+        <version>3.0.9</version>
+    </dependency>
 
 </project>
