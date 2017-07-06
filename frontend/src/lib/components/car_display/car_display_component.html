@@ -1,0 +1,5 @@
+<div *ngIf="car != null">
+    <h2>{{car.name}}</h2>
+    <img *ngIf="car.imageFile != ''" src="{{car.imageFile}}" alt="Image of {{car.name}}">
+</div>
+<div *ngIf="car == null"><span>no car selected</span></div>
