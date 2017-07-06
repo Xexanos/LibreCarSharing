@@ -1,9 +1,9 @@
 # Files and directories created by pub
 .packages
-.pub/
-build/
+src/.pub/
+src/build/
 # Remove the following pattern if you wish to check in your lock file
-pubspec.lock
+src/pubspec.lock
 
 # Directory created by dartdoc
 doc/api/

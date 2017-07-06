@@ -19,17 +19,45 @@
                 <version>3.0.9</version>
                 <configuration>
                     <checkedMode>true</checkedMode>
+                    <sourceDirectory>src</sourceDirectory>
                     <dartSdk>${dart.sdk}</dartSdk>
                     <testFailureIgnore>false</testFailureIgnore>
                 </configuration>
                 <executions>
                     <execution>
+                        <id>pub-get</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>pub</goal>
+                        </goals>
+                        <configuration>
+                            <pubCommand>get</pubCommand>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>compile</id>
                         <goals>
-                            <goal>dart2js</goal>
+                                <goal>dart2js</goal>
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>webapp</directory>
+                            <filtering>true</filtering>
+                        </resource>
+                        <resource>
+                            <directory>${project.build.directory}/dart</directory>
+                        </resource>
+                    </webResources>
+                </configuration>
             </plugin>
         </plugins>
     </build>
