@@ -8,7 +8,9 @@
 		<version>0.0.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-
+	<properties>
+		<shiro.version>1.4.0</shiro.version>
+	</properties>
 	<artifactId>LibreCarSharing-business</artifactId>
 	<packaging>jar</packaging>
 
@@ -34,6 +36,22 @@
 			<groupId>de.librecarsharing</groupId>
 			<artifactId>LibreCarSharing-persistence</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>${shiro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-aspectj</artifactId>
+			<version>${shiro.version}</version>
 		</dependency>
 	</dependencies>
 

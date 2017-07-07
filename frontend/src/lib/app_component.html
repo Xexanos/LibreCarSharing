@@ -3,5 +3,6 @@
 <label><input type="checkbox" [(ngModel)]="login">display login component</label>
 <login *ngIf="login"></login>
 <div *ngIf="!login">
-    <carDisplay [car]="car"></carDisplay>
+    <carDisplay></carDisplay>
+    <!--[car]="car"-->
 </div>

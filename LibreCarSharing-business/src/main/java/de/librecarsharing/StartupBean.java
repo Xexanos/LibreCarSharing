@@ -79,8 +79,12 @@ public class StartupBean {
         mark.addCommunity(community1);
         community2.addUser(lisa);
         community1.addUser(tim);
-
-
+        mark.setUsername("mark");
+        mark.setPassword("mark");
+        tim.setUsername("tim");
+        tim.setPassword("tim");
+        lisa.setUsername("lisa");
+        lisa.setPassword("lisa");
         community1.addCar(car1);
         community2.addCar(car2);
         car1.setLocation("A");
