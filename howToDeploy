@@ -1,0 +1,12 @@
+download latest stable wildfly server
+extract into /home or elsewhere (change <outputDirectory> in frontend pom.xml to that path )
+download mysql connector from https://mvnrepository.com/artifact/mysql/mysql-connector-java/6.0.6 and put into wildflypath/standalone/deployment/
+download and install xampp and start mysql server+apache server for phpmyadmin(xmapp installation path ./xmapp start
+go to http://localhost/phpmyadmin
+create new db called webtech
+perform mvn goal librecarsharing(root) install( accessable via view->toolwindow->maven
+look if frontend-0.0.1 is located in wildlfypath/standalone/deployment
+if yes execute wildflypath/bin/standalone.sh  as root
+
+
+-> ask me why it doesn't work
