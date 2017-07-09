@@ -14,7 +14,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <wildfly-swarm.version>2017.5.0</wildfly-swarm.version>
-        <h2.path>${env.HOME}/LibreCarSharing</h2.path>
+
         <dart-sdk.path>/usr/lib/dart</dart-sdk.path>
     </properties>
 

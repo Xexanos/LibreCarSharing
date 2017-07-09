@@ -36,15 +36,11 @@ public class StartupBean {
 
 
         //init();
-        createData();
+        //createData(); //uncomment to generate sample data
         //  queryData();
         shutdown();
     }
-    private void init() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-        this.entityManager = this.entityManagerFactory.createEntityManager();
-        this.entityManager.getTransaction().begin();
-    }
+
     private void createData() {
         final DBCommunity community1= new DBCommunity();
         final DBCommunity community2= new DBCommunity();
@@ -89,6 +85,8 @@ public class StartupBean {
         community2.addCar(car2);
         car1.setLocation("A");
         car2.setLocation("B");
+        //community1.setAdmin(tim);
+        //community2.setAdmin(lisa);
 
 
 

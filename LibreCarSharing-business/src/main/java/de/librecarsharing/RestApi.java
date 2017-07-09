@@ -1,5 +1,9 @@
 package de.librecarsharing;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.Permission;
+import org.apache.shiro.subject.Subject;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
@@ -8,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,8 +67,7 @@ public class RestApi {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserNoRef> getAllUsersFromCommunity(@PathParam("communityid") final long comId) {
-
+    public Response getAllUsersFromCommunity(@PathParam("communityid") final long comId) {
 
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
@@ -74,26 +78,38 @@ public class RestApi {
         query.select(from).where(predicate).orderBy(order);
         final List<DBUser> users = this.entityManager.createQuery(query).getResultList();
         System.out.println("result "+ users);
-        return users.stream().map(UserNoRef::new).collect(Collectors.toList());
+        final Subject subject = SecurityUtils.getSubject();
+
+
+        List<String> usernames=users.stream().map(DBUser::getUsername).collect(Collectors.toList());
+
+        if (usernames.contains(subject.getPrincipal()))
+            return Response.ok(users.stream().map(UserNoRef::new).collect(Collectors.toList())).build();
+        else
+            return Response.status(Response.Status.UNAUTHORIZED).build();
 
     }
     @Path("communitysformuser/{userid}/")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<CommunityNoRef> getAllCommunitysFromUser(@PathParam("userid") final long userId) {
-
-
-        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-        final CriteriaQuery<DBCommunity> query = builder.createQuery(DBCommunity.class);
-        final Root<DBCommunity> from = query.from(DBCommunity.class);
-        final Join<DBCommunity,DBUser> join = from.join(DBCommunity_.users);
-        Predicate predicate = builder.equal(join.get(DBCommunity_.id),userId);
-        Order order = builder.asc(from.get(DBCommunity_.name));
-        query.select(from).where(predicate).orderBy(order);
-        final List<DBCommunity> communitys = this.entityManager.createQuery(query).getResultList();
-        System.out.println("result "+ communitys);
-        return communitys.stream().map(CommunityNoRef::new).collect(Collectors.toList());
+    public Response getAllCommunitysFromUser(@PathParam("userid") final long userId) {
+        final Subject subject = SecurityUtils.getSubject();
+        DBUser user =this.entityManager.find(DBUser.class, userId);
+        if((user!=null&&subject.getPrincipal().equals(user.getUsername()))||subject.hasRole("admin")){
+            final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+            final CriteriaQuery<DBCommunity> query = builder.createQuery(DBCommunity.class);
+            final Root<DBCommunity> from = query.from(DBCommunity.class);
+            final Join<DBCommunity, DBUser> join = from.join(DBCommunity_.users);
+            Predicate predicate = builder.equal(join.get(DBCommunity_.id), userId);
+            Order order = builder.asc(from.get(DBCommunity_.name));
+            query.select(from).where(predicate).orderBy(order);
+            final List<DBCommunity> communitys = this.entityManager.createQuery(query).getResultList();
+            System.out.println("result " + communitys);
+            return Response.ok(communitys.stream().map(CommunityNoRef::new).collect(Collectors.toList())).build();
+        }
+        else
+            return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     @Path("allcommunities/")
     @GET
@@ -114,19 +130,36 @@ public class RestApi {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<DBRide> getAllRidesFromCar(@PathParam("carid") final long carId) {
+    public Response getAllRidesFromCar(@PathParam("carid") final long carId) {
 
+        final Subject subject = SecurityUtils.getSubject();
+        DBCar car;
+        if((car = this.entityManager.find(DBCar.class, carId)) != null)
+        {
+        DBCommunity community;
+        if((community= car.getCommunity())!=null)
+        {
 
-        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-        final CriteriaQuery<DBRide> query = builder.createQuery(DBRide.class);
-        final Root<DBRide> from = query.from(DBRide.class);
-        final Join<DBRide,DBCar> join = from.join(DBRide_.car);
-        Predicate predicate = builder.equal(join.get(DBCar_.id),carId);
-        Order order = builder.asc(from.get(DBRide_.id));
-        query.select(from).where(predicate).orderBy(order);
-        final List<DBRide> rides = this.entityManager.createQuery(query).getResultList();
-        System.out.println("result "+ rides);
-        return rides ;
+            if(community.getUsers().stream().map(DBUser::getUsername)
+                .collect(Collectors.toList()).contains(subject.getPrincipal())||subject.hasRole("admin"))
+                {
+                final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+                final CriteriaQuery<DBRide> query = builder.createQuery(DBRide.class);
+                final Root<DBRide> from = query.from(DBRide.class);
+                final Join<DBRide,DBCar> join = from.join(DBRide_.car);
+                Predicate predicate = builder.equal(join.get(DBCar_.id),carId);
+                Order order = builder.asc(from.get(DBRide_.id));
+                query.select(from).where(predicate).orderBy(order);
+                final List<DBRide> rides = this.entityManager.createQuery(query).getResultList();
+                System.out.println("result "+ rides);
+                return Response.ok(rides.stream().map(RideNoRef::new).collect(Collectors.toList())).build();
+                }
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
+
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
+
 
     }
 
@@ -161,37 +194,64 @@ public class RestApi {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public DBRide getRideById(@PathParam("id") final long id) {
-        return this.entityManager.find(DBRide.class, id);
+    public Response getRideById(@PathParam("id") final long id) {
+        final Subject subject = SecurityUtils.getSubject();
+        if(subject.hasRole("admin"))
+            return Response.ok(this.entityManager.find(DBRide.class, id)).build();
+        else
+            return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     @Path("car/{id}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public DBRide getCarById    (@PathParam("id") final long id) {
-        return this.entityManager.find(DBRide.class, id);
+    public Response getCarById(@PathParam("id") final long id) {
+        final Subject subject = SecurityUtils.getSubject();
+        if(subject.hasRole("admin"))
+            return Response.ok(this.entityManager.find(DBRide.class, id)).build();
+        else
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+
     }
 
     @Path("community/{id}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public DBCommunity getCommunityById(@PathParam("id") final long id) {
-        return this.entityManager.find(DBCommunity.class, id);
+    public Response getCommunityById(@PathParam("id") final long id) {
+        final Subject subject = SecurityUtils.getSubject();
+        if(subject.hasRole("admin"))
+            return Response.ok(this.entityManager.find(DBCommunity.class, id)).build();
+        else
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+
     }
 
 
 
-    @Path("newuser/{name}")
+    @Path("register/{username}/{password}/")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(@PathParam("name") final String name) {
-        final DBUser user = new DBUser();
-        user.setDispname(name);
-        this.entityManager.persist(user);
-        return Response.ok(user).build();
+    public Response create(@PathParam("username") final String username,@PathParam("username") final String password) {
+        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+        final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
+        final Root<DBUser> from = query.from(DBUser.class);
+        Predicate predicate = builder.equal(from.get(DBUser_.username),username);
+        query.select(from).where(predicate);
+        if(this.entityManager.createQuery(query).getResultList().size()==0) {
+            final DBUser user = new DBUser();
+            user.setDispname(username);
+            user.setUsername(username);
+            user.setPassword(password);
+            this.entityManager.persist(user);
+            return Response.ok(user).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @Path("adduser/{userId}/to/{comId}")

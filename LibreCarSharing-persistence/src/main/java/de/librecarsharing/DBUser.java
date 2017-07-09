@@ -20,6 +20,7 @@ public class DBUser extends DBIdentified{
         cars= new HashSet<DBCar>();
     }
     @Basic
+    @Column(unique=true)
     public String getUsername() {
         return username;
     }

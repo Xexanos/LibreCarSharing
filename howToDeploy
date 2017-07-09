@@ -1,5 +1,5 @@
 download latest stable wildfly server
-extract into /home or elsewhere (change <outputDirectory> in frontend pom.xml to that path )
+extract into /home or elsewhere (change <outputDirectory> in frontend pom.xml to that path ) note: you should have write permission in that folder so that intellij can copy files to there
 download mysql connector from https://mvnrepository.com/artifact/mysql/mysql-connector-java/6.0.6 and put into wildflypath/standalone/deployment/
 download and install xampp and start mysql server+apache server for phpmyadmin(xmapp installation path ./xmapp start
 go to http://localhost/phpmyadmin

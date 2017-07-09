@@ -24,7 +24,7 @@ public class DatabaseAuthenticator {
 		final Root<DBUser> from = query.from(DBUser.class);
 		Predicate predicate = builder.equal(from.get(DBUser_.username),loginname);
 		query.select(from).where(predicate);
-		final DBUser user = this.entityManager.createQuery(query).getSingleResult();
+		final DBUser user = this.entityManager.createQuery(query).getResultList().get(0);
 		return new SimpleAccount(user.getUsername(), user.getPassword(), WT2Realm.REALM);
 	}
 
