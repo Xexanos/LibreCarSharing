@@ -16,7 +16,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 //import javax.persistence.criteria.*;
@@ -37,7 +37,7 @@ public class StartupBean {
 
 
         //init();
-        createData(); //uncomment to generate sample data
+        //createData(); //uncomment to generate sample data
         //  queryData();
         shutdown();
     }
@@ -62,20 +62,20 @@ public class StartupBean {
         car2.setSeats(6);
         lisa.addCar(car2);
         final DBRide ride1= new DBRide();
-        ride1.setStart(new Date(2000,1,1));
-        ride1.setEnd(new Date(2000,1,3));
+        ride1.setStart(Timestamp.valueOf("2017-01-01 12:00:00"));
+        ride1.setEnd(Timestamp.valueOf("2017-01-01 13:00:00"));
         ride1.setName("ride1");
         final DBRide ride2= new DBRide();
-        ride2.setStart(new Date(2001,1,1));
-        ride2.setEnd(new Date(2001,1,3));
+        ride2.setStart(Timestamp.valueOf("2017-01-01 15:00:00"));
+        ride2.setEnd(Timestamp.valueOf("2017-01-01 16:00:00"));
         ride2.setName("ride2");
         final DBRide ride3= new DBRide();
-        ride3.setStart(new Date(2003,1,1));
-        ride3.setEnd(new Date(2003,1,3));
+        ride3.setStart(Timestamp.valueOf("2017-01-01 12:00:00"));
+        ride3.setEnd(Timestamp.valueOf("2017-01-01 13:00:00"));
         ride3.setName("ride3");
         final DBRide ride4= new DBRide();
-        ride4.setStart(new Date(2004,1,1));
-        ride4.setEnd(new Date(2004,1,3));
+        ride4.setStart(Timestamp.valueOf("2017-01-01 13:00:00"));
+        ride4.setEnd(Timestamp.valueOf("2017-01-01 14:00:00"));
         ride4.setName("ride4");
         car1.addRide(ride1);
         car1.addRide(ride2);

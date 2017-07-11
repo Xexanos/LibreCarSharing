@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,38 +30,52 @@ public class RestApi {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<CarWithoutRides> getAllCarsFromUser(@PathParam("userId") final long userId) {
+    public Response getAllCarsFromUser(@PathParam("userId") final long userId) {
 
-        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-        final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
-        final Root<DBCar> from = query.from(DBCar.class);
-        final Join<DBCar,DBUser> join = from.join(DBCar_.owner);
-        Predicate predicate = builder.equal(join.get(DBCommunity_.id),userId);
-        Order order = builder.asc(from.get(DBCar_.name));
-        query.select(from).where(predicate).orderBy(order);
-        final List<DBCar> cars = this.entityManager.createQuery(query).getResultList();
-
-        System.out.println("result "+ cars);
-        return cars.stream().map(CarWithoutRides::new).collect(Collectors.toList());
-
+        final Subject subject = SecurityUtils.getSubject();
+        if(subject.getPrincipal()!=null)
+        {
+            long subid=-1;
+            subid = this.getIdFromUname(subject.getPrincipal().toString());
+            if(subid==userId ||subject.hasRole("admin"));
+            {
+                final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+                final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
+                final Root<DBCar> from = query.from(DBCar.class);
+                final Join<DBCar, DBUser> join = from.join(DBCar_.owner);
+                Predicate predicate = builder.equal(join.get(DBCommunity_.id), userId);
+                Order order = builder.asc(from.get(DBCar_.name));
+                query.select(from).where(predicate).orderBy(order);
+                final List<DBCar> cars = this.entityManager.createQuery(query).getResultList();
+                System.out.println("result " + cars);
+                return Response.ok(cars.stream().map(CarWithoutRides::new).collect(Collectors.toList())).build();
+            }
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     @Path("carsfromcommunity/{communityid}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<CarWithoutRides> getAllCarsFromCommunity(@PathParam("communityid") final long comId) {
+    public Response getAllCarsFromCommunity(@PathParam("communityid") final long comId) {
 
-        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-        final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
-        final Root<DBCar> from = query.from(DBCar.class);
-        final Join<DBCar,DBCommunity> join = from.join(DBCar_.community);
-        Predicate predicate = builder.equal(join.get(DBCommunity_.id),comId);
-        Order order = builder.asc(from.get(DBCar_.name));
-        query.select(from).where(predicate).orderBy(order);
-        final List<DBCar> cars = this.entityManager.createQuery(query).getResultList();
 
-        System.out.println("result "+ cars);
-        return cars.stream().map(CarWithoutRides::new).collect(Collectors.toList());
+        final Subject subject = SecurityUtils.getSubject();
+        DBCommunity community;
+        if((community = this.entityManager.find(DBCommunity.class, comId)) != null)
+        {
+            if(community.getUsers().stream().map(DBUser::getUsername)
+                    .collect(Collectors.toList()).contains(subject.getPrincipal())||subject.hasRole("admin"))
+                {
+                    List<CarWithoutRides> cars=community.getCars().stream().map(CarWithoutRides::new).collect(Collectors.toList());
+                    System.out.println("result "+ cars);
+                    return Response.ok(cars).build();
+                }
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
+
+
 
     }
     @Path("users/{communityid}/")
@@ -68,6 +83,7 @@ public class RestApi {
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsersFromCommunity(@PathParam("communityid") final long comId) {
+        final Subject subject = SecurityUtils.getSubject();
 
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
@@ -78,8 +94,6 @@ public class RestApi {
         query.select(from).where(predicate).orderBy(order);
         final List<DBUser> users = this.entityManager.createQuery(query).getResultList();
         System.out.println("result "+ users);
-        final Subject subject = SecurityUtils.getSubject();
-
 
         List<String> usernames=users.stream().map(DBUser::getUsername).collect(Collectors.toList());
 
@@ -181,7 +195,7 @@ public class RestApi {
         return new UserNoRef(owner);
 
     }
-    @Path("carwrides/{id}")
+    @Path("carwrides/{id}") // shiro needed
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -232,7 +246,6 @@ public class RestApi {
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addRide(@PathParam("carid") final long carId, @PathParam("start") final long start,@PathParam("end") final long end) {
-        System.out.println("ADDRIDE ADDRIDE ADDRIDE ADDRIDE");
 
         final Subject subject = SecurityUtils.getSubject();
         DBCar car;
@@ -245,55 +258,42 @@ public class RestApi {
                 if(community.getUsers().stream().map(DBUser::getUsername)
                         .collect(Collectors.toList()).contains(subject.getPrincipal())||subject.hasRole("admin"))
                 {
-//                    final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-//                    final CriteriaQuery<DBRide> query = builder.createQuery(DBRide.class);
-//                    final Root<DBRide> from = query.from(DBRide.class);
-//                    final Join<DBRide,DBCar> join = from.join(DBRide_.car);
-//                    Predicate predicate = builder.equal(join.get(DBCar_.id),carId);
-//                    Order order = builder.asc(from.get(DBRide_.end));
-//                    query.select(from).where(predicate).orderBy(order);
-                    final Set<DBRide> rides = car.getRides();//this.entityManager.createQuery(query).getResultList();
-                    System.out.println("times"+start+" "+end);
-                    System.out.println(rides.stream().map(DBRide::getEnd).collect(Collectors.toList()));
-                    List<DBRide> addlist= new ArrayList<DBRide>();
-                    addlist.addAll(rides);
-                    DBRide newride = new DBRide();
-                    newride.setCar(car);
-                    newride.setEnd(new Date(end));
-                    newride.setStart(new Date(start));
-                    addlist.add(newride);
-                    System.out.println(addlist.stream().map(DBRide::getEnd).collect(Collectors.toList()));
-                    Collections.sort(addlist, new Comparator<DBRide>() {
-                        public int compare(DBRide r1, DBRide r2) {
-                            return r1.getEnd().compareTo(r2.getEnd());
-                        }
-                    });
-                    System.out.println(addlist.stream().map(DBRide::getEnd).collect(Collectors.toList()));
-                    boolean intersects= false;
-                    for(int i=1; i<addlist.size();i++)
-                    {
-                        if(addlist.get(i-1).getEnd().compareTo(addlist.get(i).getStart())>0)
-                        {
-                            intersects=true;
-                            break;
-                        }
-                    }
-                    if(!intersects)
-                    {
-                        car.addRide(newride);
+                    Timestamp startStamp=new Timestamp(start);
+                    Timestamp endStamp= new Timestamp(end);
+                    final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+                    final CriteriaQuery<DBRide> query = builder.createQuery(DBRide.class);
+                    final Root<DBRide> from = query.from(DBRide.class);
+                    final Join<DBRide,DBCar> join = from.join(DBRide_.car);
+                    Predicate predicate1 = builder.equal(join.get(DBCar_.id),carId);
+                    Predicate predicate2 = builder.greaterThanOrEqualTo(from.get(DBRide_.end),startStamp);
+                    Predicate predicate3 = builder.lessThanOrEqualTo(from.get(DBRide_.start),startStamp);
+                    Predicate startpred =builder.and(predicate2,predicate3);
+                    Predicate predicate4 = builder.greaterThanOrEqualTo(from.get(DBRide_.end),endStamp);
+                    Predicate predicate5 = builder.lessThanOrEqualTo(from.get(DBRide_.start),endStamp);
+                    Predicate endpred =builder.and(predicate4,predicate5);
+                    Predicate intersect = builder.or(endpred,startpred);
+                    Predicate whole = builder.and(predicate1,intersect);
+                    Order order = builder.asc(from.get(DBRide_.end));
+                    query.select(from).where(whole).orderBy(order);
+                    List<DBRide> intersects= this.entityManager.createQuery(query).getResultList();
+                    if(intersects.size()==0) {
+                        final Set<DBRide> rides = car.getRides();//this.entityManager.createQuery(query).getResultList();
+
+                        DBRide newride = new DBRide();
+                        newride.setCar(car);
+                        newride.setEnd(endStamp);
+                        newride.setStart(startStamp);
+                        newride.setName(this.entityManager.find(DBUser.class, getIdFromUname(subject.getPrincipal().toString())).getDispname());
                         this.entityManager.persist(newride);
+                        car.addRide(newride);
+                        System.out.println("added"+newride);
+                        return Response.ok(new RideNoRef(newride)).build();
                     }
                     else {
-                        return Response.status(Response.Status.BAD_REQUEST).build();
+                        return Response.ok(intersects.stream().map(RideNoRef::new).collect(Collectors.toList())).build();
                     }
-
-
-                    System.out.println(car.getRides());
-
-
-
-                    return Response.ok().build();
                 }
+
                 return Response.status(Response.Status.UNAUTHORIZED).build();
             }
 
