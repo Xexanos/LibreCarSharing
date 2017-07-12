@@ -13,6 +13,9 @@ class CarDisplayComponent implements OnInit {
   @Input("car")
   Car car;
 
+  @Input("displayFull")
+  bool displayFull;
+
   @override
   Future<Null> ngOnInit() async {
     // TODO: implement ngOnInit

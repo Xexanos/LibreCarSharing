@@ -1,0 +1,5 @@
+<div *ngFor="let type of types">
+    <div *ngFor="let car of cars">
+        <span *ngIf="car.type == type"><carDisplay [car]="car" [displayFull]="false"></carDisplay></span>
+    </div>
+</div>

@@ -6,7 +6,7 @@
         <p>Standort: {{car.location}}</p>
         <p>Anzahl Plätze: {{car.seats}}</p>
     </div>
-    <div class="carInformation">
+    <div class="carInformation" *ngIf="diplayFull">
         <h3>Weiterführende Information:</h3>
         <p>{{car.information}}</p>
     </div>
