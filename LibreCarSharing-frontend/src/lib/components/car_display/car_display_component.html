@@ -1,5 +1,14 @@
 <div *ngIf="car != null">
-    <h2>{{car.name}}</h2>
-    <img *ngIf="car.imageFile != ''" src="{{car.imageFile}}" alt="Image of {{car.name}}">
+    <h2>{{car.name}} ({{car.licencePlate}})</h2>
+    <img class="carImage" height="" *ngIf="car.imageFile != ''" [src]="car.imageFile" alt="Image of {{car.name}}">
+    <div class="carBaseInformation">
+        <p>Typ: {{car.typ}}</p>
+        <p>Standort: {{car.location}}</p>
+        <p>Anzahl Plätze: {{car.seats}}</p>
+    </div>
+    <div class="carInformation">
+        <h3>Weiterführende Information:</h3>
+        <p>{{car.information}}</p>
+    </div>
 </div>
 <div *ngIf="car == null"><span>no car selected</span></div>
