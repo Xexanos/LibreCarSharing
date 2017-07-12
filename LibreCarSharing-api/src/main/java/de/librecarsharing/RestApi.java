@@ -1,8 +1,7 @@
 package de.librecarsharing;
 
-import de.librecarsharing.json.Addride;
+import de.librecarsharing.json.*;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.Permission;
 import org.apache.shiro.subject.Subject;
 
 import javax.persistence.EntityManager;
@@ -13,7 +12,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,12 +25,12 @@ public class RestApi {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Path("carsfromuser/{userId}")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("carsfromuser")//{userId}
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCarsFromUser(@PathParam("userId") final long userId) {
-
+    public Response getAllCarsFromUser(final Id data) {
+        long userId =data.id;
         final Subject subject = SecurityUtils.getSubject();
         if(subject.getPrincipal()!=null)
         {
@@ -54,12 +52,12 @@ public class RestApi {
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
-    @Path("carsfromcommunity/{communityid}")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("carsfromcommunity")//{communityid}
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCarsFromCommunity(@PathParam("communityid") final long comId) {
-
+    public Response getAllCarsFromCommunity(final Id data) {
+        long comId= data.id;
 
         final Subject subject = SecurityUtils.getSubject();
         DBCommunity community;
@@ -79,11 +77,12 @@ public class RestApi {
 
 
     }
-    @Path("users/{communityid}/")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("users")//{communityid}/
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllUsersFromCommunity(@PathParam("communityid") final long comId) {
+    public Response getAllUsersFromCommunity(final Id data) {
+        long comId= data.id;
         final Subject subject = SecurityUtils.getSubject();
 
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
@@ -104,11 +103,12 @@ public class RestApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
     }
-    @Path("communitysformuser/{userid}/")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("communitysformuser")//{userid}
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCommunitysFromUser(@PathParam("userid") final long userId) {
+    public Response getAllCommunitysFromUser(final Id data) {
+        long userId =data.id;
         final Subject subject = SecurityUtils.getSubject();
         DBUser user =this.entityManager.find(DBUser.class, userId);
         if((user!=null&&subject.getPrincipal().equals(user.getUsername()))||subject.hasRole("admin")){
@@ -126,7 +126,7 @@ public class RestApi {
         else
             return Response.status(Response.Status.UNAUTHORIZED).build();
     }
-    @Path("allcommunities/")
+    @Path("allcommunities")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -141,12 +141,12 @@ public class RestApi {
         return communitys.stream().map(CommunityNoRef::new).collect(Collectors.toList());
     }
 
-    @Path("rides/{carid}")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("rides") //carid
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllRidesFromCar(@PathParam("carid") final long carId) {
-
+    public Response getAllRidesFromCar(final Id data) {
+        long carId =data.id;
         final Subject subject = SecurityUtils.getSubject();
         DBCar car;
         if((car = this.entityManager.find(DBCar.class, carId)) != null)
@@ -178,12 +178,13 @@ public class RestApi {
 
     }
 
-    @Path("owner/{carid}")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("owner")//carid
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public UserNoRef getOwnerOfCar(@PathParam("carid") final long carId) {
+    public UserNoRef getOwnerOfCar(final Id data) {
 
+        long carId =data.id;
 
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
@@ -196,20 +197,26 @@ public class RestApi {
         return new UserNoRef(owner);
 
     }
-    @Path("carwrides/{id}") // shiro needed
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("carwrides")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response carsWithRides(@PathParam("id") final long id) {
-        CarWithRides car=new CarWithRides(this.entityManager.find(DBCar.class, id));
-        return Response.ok(car).build();
+    public Response carsWithRides(final Id data) {
+        long id =data.id;
+        final Subject subject = SecurityUtils.getSubject();
+        if(subject.hasRole("admin"))
+            return Response.ok(new CarWithRides(this.entityManager.find(DBCar.class, id))).build();
+        else
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+
     }
 
-    @Path("ride/{id}")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("ride")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRideById(@PathParam("id") final long id) {
+    public Response getRideById(final Id data) {
+        long id =data.id;
         final Subject subject = SecurityUtils.getSubject();
         if(subject.hasRole("admin"))
             return Response.ok(this.entityManager.find(DBRide.class, id)).build();
@@ -217,40 +224,43 @@ public class RestApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
-    @Path("car/{id}")
-    @GET
+    @Path("car")//rideid
+    @POST
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCarById(@PathParam("id") final long id) {
+    public Response getCarById(final Id data) {
+        long rideId =data.id;
         final Subject subject = SecurityUtils.getSubject();
         if(subject.hasRole("admin"))
-            return Response.ok(this.entityManager.find(DBRide.class, id)).build();
+            return Response.ok(this.entityManager.find(DBRide.class, rideId)).build();
         else
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
     }
 
-    @Path("community/{id}")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("community")//comid
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCommunityById(@PathParam("id") final long id) {
+    public Response getCommunityById(final Id data) {
+        long comId =data.id;
         final Subject subject = SecurityUtils.getSubject();
         if(subject.hasRole("admin"))
-            return Response.ok(this.entityManager.find(DBCommunity.class, id)).build();
+            return Response.ok(this.entityManager.find(DBCommunity.class, comId)).build();
         else
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
     }
     @Path("addride")
-    @GET
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addRide(final Addride data) {
 
+
         final Subject subject = SecurityUtils.getSubject();
         DBCar car;
-        if((car = this.entityManager.find(DBCar.class, data.carId)) != null)
+        if((car = this.entityManager.find(DBCar.class, data.carid)) != null &&data.start<data.end)
         {
             DBCommunity community;
             if((community= car.getCommunity())!=null)
@@ -265,7 +275,7 @@ public class RestApi {
                     final CriteriaQuery<DBRide> query = builder.createQuery(DBRide.class);
                     final Root<DBRide> from = query.from(DBRide.class);
                     final Join<DBRide,DBCar> join = from.join(DBRide_.car);
-                    Predicate predicate1 = builder.equal(join.get(DBCar_.id),data.carId);
+                    Predicate predicate1 = builder.equal(join.get(DBCar_.id),data.carid);
                     Predicate predicate2 = builder.greaterThanOrEqualTo(from.get(DBRide_.end),startStamp);
                     Predicate predicate3 = builder.lessThanOrEqualTo(from.get(DBRide_.start),startStamp);
                     Predicate startpred =builder.and(predicate2,predicate3);
@@ -299,15 +309,18 @@ public class RestApi {
             }
 
         }
+        System.out.println("principal: "+subject.getPrincipal()+"addride carid: "+data.carid+" start"+data.start +" end "+data.end +"end - start"+(data.end-data.start));
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
 
     @Path("register/{username}/{password}/")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createUser(@PathParam("username") final String username,@PathParam("password") final String password) {
+    public Response createUser(final Credentials data) {
+        String username=data.username;
+        String password=data.password;
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
         final Root<DBUser> from = query.from(DBUser.class);
@@ -327,11 +340,12 @@ public class RestApi {
         }
     }
 
-    @Path("createcommunity/{name}")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Path("createcommunity")//name
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createCommunity(@PathParam("name") final String name) {
+    public Response createCommunity(final Createcommunity data) {
+        String name= data.name;
         final Subject subject = SecurityUtils.getSubject();
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<DBCommunity> query = builder.createQuery(DBCommunity.class);
@@ -352,10 +366,12 @@ public class RestApi {
         }
     }
 
-    @Path("adduser/{userId}/to/{comId}")
-    @GET
-    @Consumes(MediaType.TEXT_PLAIN)
-    public Response create(@PathParam("userId") final long userId, @PathParam("comId") final long comId) {
+    @Path("adduser")//userid comid
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response create(final Adduser data) {
+        long comId=data.communityid;
+        long userId=data.userid;
         DBCommunity community;
         DBUser user;
         final Subject subject = SecurityUtils.getSubject();
