@@ -46,7 +46,7 @@
                                     <type>${project.packaging}</type>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>${env.HOME}/.wildfly</outputDirectory>
+                            <outputDirectory>${env.HOME}/wildfly/standalone/deployments</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -62,9 +62,7 @@
                             <directory>src/webapp</directory>
                             <filtering>true</filtering>
                         </resource>
-                        <resource>
-                            <directory>${project.build.directory}/src</directory>
-                        </resource>
+
                         <resource>
                             <directory>${project.build.directory}/dart</directory>
                         </resource>
@@ -80,7 +78,7 @@
                     <checkedMode>true</checkedMode>
                     <testFailureIgnore>false</testFailureIgnore>
                     <sourceDirectory>src</sourceDirectory>
-                    <dartSdk>${env.DART_SDK}</dartSdk>
+                    <dartSdk>/usr/lib/dart</dartSdk>
                 </configuration>
                 <executions>
                     <execution>

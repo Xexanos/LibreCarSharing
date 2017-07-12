@@ -1,5 +1,6 @@
 package de.librecarsharing;
 
+import de.librecarsharing.json.Addride;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.Permission;
 import org.apache.shiro.subject.Subject;
@@ -241,15 +242,15 @@ public class RestApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
     }
-    @Path("addride/{carid}/{start}/{end}")
+    @Path("addride")
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addRide(@PathParam("carid") final long carId, @PathParam("start") final long start,@PathParam("end") final long end) {
+    public Response addRide(final Addride data) {
 
         final Subject subject = SecurityUtils.getSubject();
         DBCar car;
-        if((car = this.entityManager.find(DBCar.class, carId)) != null)
+        if((car = this.entityManager.find(DBCar.class, data.carId)) != null)
         {
             DBCommunity community;
             if((community= car.getCommunity())!=null)
@@ -258,13 +259,13 @@ public class RestApi {
                 if(community.getUsers().stream().map(DBUser::getUsername)
                         .collect(Collectors.toList()).contains(subject.getPrincipal())||subject.hasRole("admin"))
                 {
-                    Timestamp startStamp=new Timestamp(start);
-                    Timestamp endStamp= new Timestamp(end);
+                    Timestamp startStamp=new Timestamp(data.start);
+                    Timestamp endStamp= new Timestamp(data.end);
                     final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
                     final CriteriaQuery<DBRide> query = builder.createQuery(DBRide.class);
                     final Root<DBRide> from = query.from(DBRide.class);
                     final Join<DBRide,DBCar> join = from.join(DBRide_.car);
-                    Predicate predicate1 = builder.equal(join.get(DBCar_.id),carId);
+                    Predicate predicate1 = builder.equal(join.get(DBCar_.id),data.carId);
                     Predicate predicate2 = builder.greaterThanOrEqualTo(from.get(DBRide_.end),startStamp);
                     Predicate predicate3 = builder.lessThanOrEqualTo(from.get(DBRide_.start),startStamp);
                     Predicate startpred =builder.and(predicate2,predicate3);

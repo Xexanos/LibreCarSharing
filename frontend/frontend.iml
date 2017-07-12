@@ -9,7 +9,6 @@
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/src/webapp" relative="/" />
-          <root url="file://$MODULE_DIR$/target/src" relative="/" />
           <root url="file://$MODULE_DIR$/target/dart" relative="/" />
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
