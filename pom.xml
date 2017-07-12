@@ -20,7 +20,7 @@
 
     <modules>
         <module>LibreCarSharing-persistence</module>
-        <module>LibreCarSharing-business</module>
+        <module>LibreCarSharing-api</module>
 
         <module>frontend</module>
     </modules>
