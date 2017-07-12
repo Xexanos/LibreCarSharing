@@ -21,8 +21,7 @@
     <modules>
         <module>LibreCarSharing-persistence</module>
         <module>LibreCarSharing-api</module>
-
-        <module>frontend</module>
+        <module>LibreCarSharing-frontend</module>
     </modules>
 
     <build>
