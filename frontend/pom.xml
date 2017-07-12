@@ -65,6 +65,9 @@
                         <resource>
                             <directory>${project.build.directory}/src</directory>
                         </resource>
+                        <resource>
+                            <directory>${project.build.directory}/dart</directory>
+                        </resource>
 
                     </webResources>
                 </configuration>
@@ -105,23 +108,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.1.0</version>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <directory>src/webapp</directory>
-                            <filtering>true</filtering>
-                        </resource>
-                        <resource>
-                            <directory>${project.build.directory}/dart</directory>
-                        </resource>
-                    </webResources>
-                </configuration>
             </plugin>
         </plugins>
     </build>
