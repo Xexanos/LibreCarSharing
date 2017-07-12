@@ -14,13 +14,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <wildfly-swarm.version>2017.5.0</wildfly-swarm.version>
-
-        <dart-sdk.path>/usr/lib/dart</dart-sdk.path>
     </properties>
 
     <modules>
         <module>LibreCarSharing-persistence</module>
-        <module>LibreCarSharing-business</module>
+        <module>LibreCarSharing-api</module>
         <module>frontend</module>
     </modules>
 
@@ -50,4 +48,5 @@
             <version>3.0.9</version>
         </dependency>
     </dependencies>
+
 </project>

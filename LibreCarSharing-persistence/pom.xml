@@ -10,6 +10,7 @@
 	</parent>
 
 	<artifactId>LibreCarSharing-persistence</artifactId>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>${project.artifactId}</name>

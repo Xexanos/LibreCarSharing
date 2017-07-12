@@ -1,5 +1,6 @@
 package de.librecarsharing.auth;
 
+import de.librecarsharing.auth.permission.ReadNewsItemPermission;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -13,7 +14,6 @@ import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.CDI;
-import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -60,7 +60,7 @@ public class WT2Realm extends AuthorizingRealm implements Realm {
 
 			@Override
 			public Collection<Permission> getObjectPermissions() {
-				return Collections.emptyList();
+				return Collections.singleton(new ReadNewsItemPermission());
 			}
 		};
 	}

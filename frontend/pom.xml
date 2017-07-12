@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
-        <artifactId>LibreCarSharing</artifactId>
         <groupId>de.librecarsharing</groupId>
+        <artifactId>LibreCarSharing</artifactId>
         <version>0.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
     <groupId>de.librecarsharing</groupId>
     <artifactId>frontend</artifactId>
     <packaging>war</packaging>
@@ -23,50 +25,50 @@
             </resource>
         </resources>
         <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.0.1</version>
-                    <executions>
-                        <execution>
-                            <id>copy-installed</id>
-                            <phase>install</phase>
-                            <goals>
-                                <goal>copy</goal>
-                            </goals>
-                            <configuration>
-                                <artifactItems>
-                                    <artifactItem>
-                                        <overWrite>true</overWrite>
-                                        <groupId>${project.groupId}</groupId>
-                                        <artifactId>${project.artifactId}</artifactId>
-                                        <version>${project.version}</version>
-                                        <type>${project.packaging}</type>
-                                    </artifactItem>
-                                </artifactItems>
-                                <outputDirectory>/home/wildfly-10.1.0.Final/standalone/deployments</outputDirectory>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-installed</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <overWrite>true</overWrite>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>${project.packaging}</type>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>/home/wildfly-10.1.0.Final/standalone/deployments</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>3.1.0</version>
-                    <configuration>
-                        <webResources>
-                            <resource>
-                                <directory>src/webapp</directory>
-                                <filtering>true</filtering>
-                            </resource>
-                            <resource>
-                                <directory>${project.build.directory}/src</directory>
-                            </resource>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>src/webapp</directory>
+                            <filtering>true</filtering>
+                        </resource>
+                        <resource>
+                            <directory>${project.build.directory}/src</directory>
+                        </resource>
 
-                        </webResources>
-                    </configuration>
-                </plugin>
+                    </webResources>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.github.dzwicker.dart</groupId>
                 <artifactId>dart-maven-plugin</artifactId>
@@ -75,7 +77,7 @@
                     <checkedMode>true</checkedMode>
                     <testFailureIgnore>false</testFailureIgnore>
                     <sourceDirectory>src</sourceDirectory>
-                    <dartSdk>${dart-sdk.path}</dartSdk>
+                    <dartSdk>${env.DART_SDK}</dartSdk>
                 </configuration>
                 <executions>
                     <execution>
@@ -105,24 +107,23 @@
                 </executions>
             </plugin>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>3.1.0</version>
-                    <configuration>
-                        <webResources>
-                            <resource>
-                                <directory>src/webapp</directory>
-                                <filtering>true</filtering>
-                            </resource>
-                            <resource>
-                                <directory>${project.build.directory}/dart</directory>
-                            </resource>
-                        </webResources>
-                    </configuration>
-                </plugin>
-            </plugins>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>src/webapp</directory>
+                            <filtering>true</filtering>
+                        </resource>
+                        <resource>
+                            <directory>${project.build.directory}/dart</directory>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>
@@ -133,8 +134,10 @@
         </dependency>
         <dependency>
             <groupId>de.librecarsharing</groupId>
-            <artifactId>LibreCarSharing-business</artifactId>
+            <artifactId>LibreCarSharing-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
 </project>
+
