@@ -46,7 +46,7 @@
                                     <type>${project.packaging}</type>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>/home/wildfly-10.1.0.Final/standalone/deployments</outputDirectory>
+                            <outputDirectory>${env.HOME}/.wildfly</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
