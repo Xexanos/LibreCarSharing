@@ -4,12 +4,13 @@
 
 	<parent>
 		<groupId>de.librecarsharing</groupId>
-		<artifactId>LibreCarSharing-parent</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<artifactId>LibreCarSharing</artifactId>
+		<version>0.0.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>LibreCarSharing-business</artifactId>
+	<artifactId>LibreCarSharing-api</artifactId>
+	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>${project.artifactId}</name>
