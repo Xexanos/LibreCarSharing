@@ -9,5 +9,6 @@ public class CommunityNoRef {
     public CommunityNoRef(DBCommunity community){this.dbCommunity=community;}
     public String getName(){return this.dbCommunity.getName();}
     public long getId(){return this.dbCommunity.getId();}
+    
 
 }

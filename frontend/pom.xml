@@ -20,22 +20,10 @@
     <build>
         <resources>
             <resource>
-                <directory>src/main/dart</directory>
+                <directory>src</directory>
                 <targetPath>${project.build.directory}/${project.build.finalName}</targetPath>
             </resource>
         </resources>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.wildfly.swarm</groupId>
-                    <artifactId>wildfly-swarm-plugin</artifactId>
-                    <version>${wildfly-swarm.version}</version>
-                    <configuration>
-                        <fractions>jpa,cdi,ejb,jaxrs</fractions>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -58,12 +46,11 @@
                                     <type>${project.packaging}</type>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>/home/wildfly-10.1.0.Final/standalone/deployments</outputDirectory>
+                            <outputDirectory>${env.HOME}/wildfly/standalone/deployments</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -72,12 +59,53 @@
                 <configuration>
                     <webResources>
                         <resource>
-                            <directory>src/main/webapp</directory>
+                            <directory>src/webapp</directory>
                             <filtering>true</filtering>
+                        </resource>
+
+                        <resource>
+                            <directory>${project.build.directory}/dart</directory>
                         </resource>
 
                     </webResources>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.dzwicker.dart</groupId>
+                <artifactId>dart-maven-plugin</artifactId>
+                <version>3.0.9</version>
+                <configuration>
+                    <checkedMode>true</checkedMode>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <sourceDirectory>src</sourceDirectory>
+                    <dartSdk>/usr/lib/dart</dartSdk>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>pub-get</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>pub</goal>
+                        </goals>
+                        <configuration>
+                            <pubCommand>get</pubCommand>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>pub-build</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>pub</goal>
+                        </goals>
+                        <configuration>
+                            <pubCommand>build</pubCommand>
+                            <pubOptions>
+                                <pubOption>--output=${project.build.directory}/dart</pubOption>
+                                <pubOption>--mode=debug</pubOption>
+                            </pubOptions>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

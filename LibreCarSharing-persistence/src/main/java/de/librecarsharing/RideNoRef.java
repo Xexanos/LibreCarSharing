@@ -2,6 +2,7 @@ package de.librecarsharing;
 
 import javax.persistence.Basic;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * Created by fred on 30.06.17.
@@ -15,7 +16,7 @@ public class RideNoRef {
     private String name;
     private Date start;
     private Date end;
-    public Date getStart() {return this.dbRide.getStart();}
-    public Date getEnd() {return this.dbRide.getEnd();}
+    public Timestamp getStart() {return this.dbRide.getStart();}
+    public Timestamp getEnd() {return this.dbRide.getEnd();}
     public String getName() {return this.dbRide.getName();}
 }

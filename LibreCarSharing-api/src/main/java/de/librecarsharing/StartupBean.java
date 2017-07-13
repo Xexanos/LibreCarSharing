@@ -16,6 +16,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 //import javax.persistence.criteria.*;
@@ -36,15 +37,11 @@ public class StartupBean {
 
 
         //init();
-        createData();
+        //createData(); //uncomment to generate sample data
         //  queryData();
         shutdown();
     }
-    private void init() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-        this.entityManager = this.entityManagerFactory.createEntityManager();
-        this.entityManager.getTransaction().begin();
-    }
+
     private void createData() {
         final DBCommunity community1= new DBCommunity();
         final DBCommunity community2= new DBCommunity();
@@ -65,12 +62,20 @@ public class StartupBean {
         car2.setSeats(6);
         lisa.addCar(car2);
         final DBRide ride1= new DBRide();
+        ride1.setStart(Timestamp.valueOf("2017-01-01 12:00:00"));
+        ride1.setEnd(Timestamp.valueOf("2017-01-01 13:00:00"));
         ride1.setName("ride1");
         final DBRide ride2= new DBRide();
+        ride2.setStart(Timestamp.valueOf("2017-01-01 15:00:00"));
+        ride2.setEnd(Timestamp.valueOf("2017-01-01 16:00:00"));
         ride2.setName("ride2");
         final DBRide ride3= new DBRide();
+        ride3.setStart(Timestamp.valueOf("2017-01-01 12:00:00"));
+        ride3.setEnd(Timestamp.valueOf("2017-01-01 13:00:00"));
         ride3.setName("ride3");
         final DBRide ride4= new DBRide();
+        ride4.setStart(Timestamp.valueOf("2017-01-01 13:00:00"));
+        ride4.setEnd(Timestamp.valueOf("2017-01-01 14:00:00"));
         ride4.setName("ride4");
         car1.addRide(ride1);
         car1.addRide(ride2);
@@ -79,12 +84,18 @@ public class StartupBean {
         mark.addCommunity(community1);
         community2.addUser(lisa);
         community1.addUser(tim);
-
-
+        mark.setUsername("mark");
+        mark.setPassword("mark");
+        tim.setUsername("tim");
+        tim.setPassword("tim");
+        lisa.setUsername("lisa");
+        lisa.setPassword("lisa");
         community1.addCar(car1);
         community2.addCar(car2);
         car1.setLocation("A");
         car2.setLocation("B");
+        community1.setAdmin(tim);
+        community2.setAdmin(lisa);
 
 
 

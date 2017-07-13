@@ -2,6 +2,7 @@ package de.librecarsharing;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 
 @Entity
@@ -9,24 +10,24 @@ public class DBRide extends DBIdentified{
 
     private String name;
     private DBCar car;
-    private Date start;
-    private Date end;
+    private Timestamp start;
+    private Timestamp end;
 
 
     @Basic
-    public Date getStart() {
+    public Timestamp getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(Timestamp start) {
         this.start = start;
     }
     @Basic
-    public Date getEnd() {
+    public Timestamp getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(Timestamp end) {
         this.end = end;
     }
 

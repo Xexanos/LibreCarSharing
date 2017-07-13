@@ -14,14 +14,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <wildfly-swarm.version>2017.5.0</wildfly-swarm.version>
-        <h2.path>${env.HOME}/LibreCarSharing</h2.path>
-        <dart-sdk.path>/usr/lib/dart</dart-sdk.path>
     </properties>
 
     <modules>
         <module>LibreCarSharing-persistence</module>
         <module>LibreCarSharing-api</module>
-
         <module>frontend</module>
     </modules>
 
@@ -36,6 +33,7 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 
@@ -45,13 +43,11 @@
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
         </dependency>
-
         <dependency>
             <groupId>com.github.dzwicker.dart</groupId>
             <artifactId>dart-maven-plugin</artifactId>
             <version>3.0.9</version>
         </dependency>
-
     </dependencies>
 
 </project>
