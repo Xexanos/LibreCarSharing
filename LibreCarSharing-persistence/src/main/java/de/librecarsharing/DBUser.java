@@ -13,13 +13,32 @@ public class DBUser extends DBIdentified{
     private String password;
     private Set<DBCar> cars;        //cars owned by user
     private Set<DBCommunity> communities;
+    private Set<DBCommunity> administartes;
 
 
     public DBUser() {
         communities= new HashSet<DBCommunity>();
+        administartes= new HashSet<DBCommunity>();
         cars= new HashSet<DBCar>();
     }
+
+    @OneToMany(mappedBy = "admin")
+    public Set<DBCommunity> getAdministartes() {
+        return administartes;
+    }
+
+    public void setAdministartes(Set<DBCommunity> administartes) {
+        this.administartes = administartes;
+    }
+
+    public void addAdministartes(DBCommunity community) {
+        this.administartes.add(community);
+        if (community.getAdmin()!=this) {
+            community.setAdmin(this);
+        }
+    }
     @Basic
+    @Column(unique=true)
     public String getUsername() {
         return username;
     }

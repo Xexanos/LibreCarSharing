@@ -10,13 +10,21 @@ public class DBCommunity extends DBIdentified{
     private String name;
     private Set<DBCar> cars;
     private Set<DBUser> users;
-
+    private DBUser admin;
 
     public DBCommunity() {
         users= new HashSet<DBUser>();
         cars = new HashSet<DBCar>();
     }
+    @ManyToOne
+    public DBUser getAdmin() {
+        return admin;
+    }
 
+    public void setAdmin(DBUser admin) {
+        this.admin = admin;
+
+    }
 
     @ManyToMany(mappedBy = "communities")
     public Set<DBUser> getUsers() {
