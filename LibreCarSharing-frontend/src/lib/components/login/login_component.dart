@@ -3,7 +3,7 @@ import 'dart:html';
 
 import 'package:angular2/angular2.dart';
 
-import '../../model/user.dart';
+import 'package:frontend/model/user.dart';
 
 @Component(
   selector: 'login',

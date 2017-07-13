@@ -1,0 +1,7 @@
+<div class="communityDisplay" *ngIf="communities != []">
+    <h2>Folgende Communities sind auf diesem Server registriert:</h2>
+    <p class="communityList" *ngFor="let community of communities">{{community.name}}</p>
+</div>
+<div class="communityDisplay" *ngIf="communities == []">
+    <h2>Auf diesem Server sind keine Communities registriert.</h2>
+</div>

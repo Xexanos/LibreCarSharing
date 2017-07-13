@@ -12,7 +12,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>de.librecarsharing</groupId>
-    <artifactId>frontend</artifactId>
+    <artifactId>LibreCarSharing-frontend</artifactId>
     <packaging>war</packaging>
 
     <name>${project.artifactId}</name>
@@ -62,7 +62,6 @@
                             <directory>src/webapp</directory>
                             <filtering>true</filtering>
                         </resource>
-
                         <resource>
                             <directory>${project.build.directory}/dart</directory>
                         </resource>
