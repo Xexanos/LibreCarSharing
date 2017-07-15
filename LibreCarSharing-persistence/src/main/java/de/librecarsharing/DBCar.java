@@ -14,10 +14,19 @@ public class DBCar extends DBIdentified{
     private String location;
     private int seats;
     private int color;
+    private String imageFile;
     private String status;
     private String info;
     private String type;
 
+    @Basic
+    public String getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(String imageFile) {
+        this.imageFile = imageFile;
+    }
 
 
     public DBCar() {

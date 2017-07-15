@@ -15,5 +15,6 @@ public class UserNoRef {
         return dbUser.getDispname();
     }
     public long getId() {return dbUser.getId();}
+    public String getImageFile() {return dbUser.getImageFile();}
 }
 

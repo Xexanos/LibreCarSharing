@@ -31,6 +31,7 @@ public class CarWithRides {
         return this.dbCar.getRides().stream().map(RideNoRef::new).collect(Collectors.toSet());
 
     }
+    public String getImageFile() {return dbCar.getImageFile();}
     public int getSeats(){return this.dbCar.getSeats();}
     public int getColor(){return this.dbCar.getColor();}
     public String getStatus(){return this.dbCar.getStatus();}

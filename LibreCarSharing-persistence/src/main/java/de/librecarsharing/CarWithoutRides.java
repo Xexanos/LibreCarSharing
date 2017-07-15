@@ -25,4 +25,5 @@ public class CarWithoutRides {
     public int getSeats(){return this.dbCar.getSeats();}
     public String getStatus(){return this.dbCar.getStatus();}
     public String getInfo(){return this.dbCar.getInfo();}
+    public String getImageFile() {return dbCar.getImageFile();}
 }
