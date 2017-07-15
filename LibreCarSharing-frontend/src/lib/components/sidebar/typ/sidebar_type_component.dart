@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:frontend/model/car.dart';
+import 'package:LibreCarSharingFrontend/model/car.dart';
+import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
 
 import 'package:angular2/angular2.dart';
 
@@ -8,6 +9,7 @@ import 'package:angular2/angular2.dart';
   selector: 'sidebarType',
   styleUrls: const ['sidebar_type_component.css'],
   templateUrl: 'sidebar_type_component.html',
+    directives: const [CarDisplayComponent],
 )
 class SidebarTypeComponent implements OnInit {
   List<Car> cars = [];
