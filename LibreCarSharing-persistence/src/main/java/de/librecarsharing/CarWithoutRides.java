@@ -12,6 +12,7 @@ public class CarWithoutRides {
     {
         this.dbCar=dbCar;
     }
+    public String getType() {return this.dbCar.getType();}
     public long getId()
     {
         return this.dbCar.getId();

@@ -24,6 +24,7 @@ public class CarWithRides {
     {
         return this.dbCar.getName();
     }
+    public String getType() {return this.dbCar.getType();}
     public String getInfo(){return this.dbCar.getInfo();}
     public Set<RideNoRef> getRides()
     {

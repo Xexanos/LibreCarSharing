@@ -16,7 +16,7 @@ public class DBCar extends DBIdentified{
     private int color;
     private String status;
     private String info;
-
+    private String type;
 
 
 
@@ -55,6 +55,15 @@ public class DBCar extends DBIdentified{
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    @Basic
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Basic
