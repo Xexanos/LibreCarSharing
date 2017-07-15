@@ -4,7 +4,7 @@ class User {
   String displayName = "";
   String email = "";
   String password = "";
-  bool stay = true;
+  bool stayLoggedIn = true;
 
   String toJSON() {
     return JSON.encode({'username':username, 'email':email, 'password':password, 'displayName':displayName});
