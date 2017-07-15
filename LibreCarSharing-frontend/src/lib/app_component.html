@@ -1,13 +1,17 @@
 <h1>{{title}}</h1>
-
+<p>
 <label><input type="number" [(ngModel)]="component">component to display</label>
-<login *ngIf="component == 0"></login>
+</p>
+<div *ngIf="component == 0">
+    <login></login>
+</div>
 <div *ngIf="component == 1">
     <carDisplay [car]="car" [displayFull]="true"></carDisplay>
+    <carDisplay [car]="car" [displayFull]="false"></carDisplay>
 </div>
 <div *ngIf="component == 2">
     <communityDisplay></communityDisplay>
 </div>
 <div *ngIf="component == 3">
-    <SidebarTypeComponent></SidebarTypeComponent>
+    <sidebarType></sidebarType>
 </div>

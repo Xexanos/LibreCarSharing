@@ -5,7 +5,7 @@ import 'package:LibreCarSharingFrontend/model/car.dart';
 import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
 import 'package:LibreCarSharingFrontend/components/community_display/community_display_component.dart';
-import 'package:LibreCarSharingFrontend/components/sidebar/typ/sidebar_type_component.dart';
+import 'package:LibreCarSharingFrontend/components/sidebar/sidebar_component.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
 // Components info: https://webdev.dartlang.org/components
@@ -17,7 +17,7 @@ import 'package:LibreCarSharingFrontend/components/sidebar/typ/sidebar_type_comp
   directives: const [LoginComponent, CarDisplayComponent, CommunityDisplayComponent, SidebarTypeComponent],
 )
 class AppComponent {
-  int component = 1;
+  int component = 3;
   String title = "LibreCarSharing";
 
   Car car = new Car("VW Golf",
