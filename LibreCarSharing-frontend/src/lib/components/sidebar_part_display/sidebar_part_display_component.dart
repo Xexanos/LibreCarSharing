@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:LibreCarSharingFrontend/models/car.dart';
-import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
+import 'package:LibreCarSharingFrontend/components/sidebar_car_display/sidebar_car_display_component.dart';
 
 import 'package:angular2/angular2.dart';
+import 'package:angular2/router.dart';
 import 'package:angular_components/angular_components.dart';
 
 @Component(
   selector: 'sidebarPartDisplay',
   styleUrls: const ['sidebar_part_display_component.css'],
   templateUrl: 'sidebar_part_display_component.html',
-  directives: const [CarDisplayComponent, GlyphComponent],
+  directives: const [SidebarCarDisplayComponent, GlyphComponent],
 )
 class SidebarPartDisplayComponent implements OnInit {
   @Input("title")
@@ -19,10 +20,14 @@ class SidebarPartDisplayComponent implements OnInit {
   List<Car> cars;
   bool display = false;
 
+  final Router _router;
+
   @override
   Future<Null> ngOnInit() async {}
 
-  toggleDisplay() {
+  SidebarPartDisplayComponent(this._router);
+
+  void toggleDisplay() {
     if (!this.display && this.cars == null) {
       // TODO: implement REST API
       this.cars = [
@@ -41,5 +46,9 @@ class SidebarPartDisplayComponent implements OnInit {
       ];
     }
     this.display = !this.display;
+  }
+
+  void displayCar(int carID) {
+    _router.navigate(['Car', {'id': carID.toString()}]);
   }
 }
