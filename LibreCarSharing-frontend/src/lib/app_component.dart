@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'package:LibreCarSharingFrontend/components/register/register_component.dart';
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart'; //Routing
 
@@ -24,7 +25,8 @@ import 'package:LibreCarSharingFrontend/services/user_service.dart';
 )
 @RouteConfig(const [
   const Route(path: '/login', name: 'Login', component: LoginComponent),
-  const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent)
+  const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent),
+  const Route(path: '/register', name: 'Register', component: RegisterComponent)
 ])
 class AppComponent {
   String title = "LibreCarSharing";

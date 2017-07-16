@@ -4,6 +4,7 @@ import 'dart:html';
 import 'package:angular2/angular2.dart';
 
 import 'package:LibreCarSharingFrontend/models/user.dart';
+import 'package:angular2/router.dart';
 
 @Component(
   selector: 'login',
@@ -13,6 +14,10 @@ import 'package:LibreCarSharingFrontend/models/user.dart';
 class LoginComponent implements OnInit {
   User user = new User();
   bool loggedIn = false;
+
+  final Router _router;
+
+  LoginComponent(this._router);
 
   @override
   Future<Null> ngOnInit() async {
@@ -31,5 +36,10 @@ class LoginComponent implements OnInit {
     HttpRequest.request("../logout", method: "GET")
         .then((request) {loggedIn = false; print(request.getAllResponseHeaders());})
         .catchError((n)=>print(n));
+  }
+
+  void routeRegister(dynamic e) {
+    e.preventDefault();
+    _router.navigate(["Register"]);
   }
 }

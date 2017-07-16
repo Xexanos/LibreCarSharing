@@ -2,6 +2,7 @@
     display: inline-block;
     width: 100%;
 }
+
 .sidebarTab {
     display: inline-block;
     width: 49%;
@@ -11,9 +12,11 @@
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
+
 .sidebarTabText {
     margin-left: 1rem;
 }
+
 .sidebarActive {
     background-color: white;
 }
