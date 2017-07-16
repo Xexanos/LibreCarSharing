@@ -8,6 +8,7 @@ environment:
 dependencies:
   angular2: ^3.0.0
   angular_components: ^0.5.1
+  ng_bootstrap: ^0.6.6+1
   json_object: any
 
 dev_dependencies:
