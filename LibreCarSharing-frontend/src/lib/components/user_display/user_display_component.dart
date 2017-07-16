@@ -22,7 +22,6 @@ class UserDisplayComponent implements OnInit {
 
   @override
   Future<Null> ngOnInit() async {
-    print("userDisplay loaded.");
     var _id = _routeParams.get('id');
     var id = int.parse(_id ?? '', onError: (_) => null);
     if (id != null) user = await (_userService.getUser(id));
