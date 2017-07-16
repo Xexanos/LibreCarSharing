@@ -1,4 +1,4 @@
 <input [(ngModel)]="user.username" type="text" placeholder="Username">
 <input [(ngModel)]="user.password" type="password" placeholder="Passwort">
-<input type="button" value="Login" (click)="login($event)">
-<button value="Register" (click)="routeRegister($event)"></button>
+<input [(ngModel)]="user.email" type="email" placeholder="E-Mail">
+<input type="button" value="Register" (click)="register($event)">
