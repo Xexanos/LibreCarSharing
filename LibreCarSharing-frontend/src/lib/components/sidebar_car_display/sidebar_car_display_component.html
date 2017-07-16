@@ -1,0 +1,9 @@
+<div class="carDisplay" *ngIf="car != null">
+    <img *ngIf="car.imageFile != ''" class="carImageThumbnail" [src]="car.imageFile" alt="Image of {{car.name}}">
+    <div class="carInformation">
+        <div class="carBaseInformation">
+            <p class="carTitle">{{car.name}} ({{car.licencePlate}})</p>
+            <p>Typ: {{car.type}}</p>
+        </div>
+    </div>
+</div>
