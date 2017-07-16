@@ -1,4 +1,14 @@
-<input [(ngModel)]="user.username" type="text" placeholder="Username">
-<input [(ngModel)]="user.password" type="password" placeholder="Passwort">
-<input type="button" value="Login" (click)="login($event)">
-<button value="Register" (click)="routeRegister($event)"></button>
+<link href="login_component.css" rel="stylesheet">
+<div class="container">
+
+    <form class="form-signin">
+        <h2 class="form-signin-heading">LibreCarSharing</h2>
+        <label for="username" class="sr-only">Email address</label>
+        <input id="username" [(ngModel)]="user.username" type="text" placeholder="Username">
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input id="inputPassword" [(ngModel)]="user.password" type="password" placeholder="Passwort">
+        <input class="btn btn-success btn-block" type="button" value="Login" (click)="login($event)">
+        <p>New Member? <a href="register.html" class="">Register</a></p>
+    </form>
+
+</div>
