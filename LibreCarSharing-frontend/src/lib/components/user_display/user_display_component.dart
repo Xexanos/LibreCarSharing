@@ -10,7 +10,7 @@ import 'package:angular2/router.dart';
   selector: 'userDisplay',
   styleUrls: const ['user_display_component.css'],
   templateUrl: 'user_display_component.html',
-    directives: const [COMMON_DIRECTIVES]
+  directives: const [COMMON_DIRECTIVES],
 )
 class UserDisplayComponent implements OnInit {
   User user;
