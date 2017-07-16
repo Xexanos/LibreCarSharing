@@ -22,4 +22,13 @@ class UserService {
         }).catchError((n) => print(n));
     return returnList;
   }
+
+  User getCurrentUser(dynamic e) {
+    e.preventDefault();
+    User user = new User();
+    user.username = "max";
+    user.displayName = "Max Mustermann";
+    user.email = "max.mustermann@musterdomain.de";
+    return user;
+  }
 }

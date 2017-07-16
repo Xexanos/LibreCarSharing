@@ -1,8 +1,10 @@
 <div class="sidebarPartDisplay">
     <div class="sidebarPartDisplayTop" (click)="toggleDisplay()">
-        <span class="sidebarPartDisplayTopLeft">{{title}}</span>
-        <glyph class="sidebarPartDisplayTopRight" *ngIf="display" icon="keyboard_arrow_up"></glyph>
-        <glyph class="sidebarPartDisplayTopRight" *ngIf="!display" icon="keyboard_arrow_down"></glyph>
+        <div class="sidebarPartDisplayTopLeft"><span>{{title}}</span></div>
+        <div  class="sidebarPartDisplayTopRight">
+            <glyph *ngIf="display" icon="keyboard_arrow_up"></glyph>
+            <glyph *ngIf="!display" icon="keyboard_arrow_down"></glyph>
+        </div>
     </div>
     <div *ngIf="display && cars != null">
         <div *ngIf="cars.isNotEmpty" class="sidebarCar" *ngFor="let car of cars">

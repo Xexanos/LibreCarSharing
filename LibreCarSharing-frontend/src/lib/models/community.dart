@@ -1,5 +1,5 @@
 class Community {
-  int id = 0;
+  int id;
   String name;
 
   Community(this.id, this.name);

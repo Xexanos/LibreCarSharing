@@ -1,3 +1,2 @@
-<title>{{title}}</title>
-<sidebarCars kind="type"></sidebarCars>
+<sidebar *ngIf="user != null" [user]="user"></sidebar>
 <router-outlet></router-outlet>
