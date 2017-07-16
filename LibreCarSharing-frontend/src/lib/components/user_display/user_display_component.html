@@ -23,15 +23,16 @@
         <hr>
         <div class="form-group">
             <label for="inputOldPassword">Altes Passwort</label>
-            <input type="text" class="form-control" id="inputOldPassword" aria-describedby="oldPasswordHelp"
+            <input required type="password" class="form-control" id="inputOldPassword"
+                   aria-describedby="oldPasswordHelp"
                    placeholder="Passwort">
             <small id="oldPasswordHelp" class="form-text text-muted">Gib dein altes Passwort ein, um deine Änderungen zu
                 bestätigen.
             </small>
             <br>
             <label for="inputNewPassword1">Neues Passwort</label>
-            <input type="text" class="form-control" id="inputNewPassword1">
-            <input type="text" class="form-control" id="inputNewPassword2" aria-describedby="newPasswordHelp">
+            <input type="password" class="form-control" id="inputNewPassword1">
+            <input type="password" class="form-control" id="inputNewPassword2" aria-describedby="newPasswordHelp">
             <small id="newPasswordHelp" class="form-text text-muted">Dein neues Passwort. Gib es 2-mal ein um sicher zu
                 gehen, dass du dich nicht vertippst.
             </small>
@@ -39,13 +40,4 @@
         <button class="btn btn-primary" (click)="sendChanges($event)">Absenden</button>
     </form>
 </div>
-
-<!--<div *ngIf="user != null">-->
-<!--<h2>{{user.username}} ({{user.email}})</h2>-->
-<!--<img class="userImage" height="" *ngIf="user.imageFile != ''" [src]="user.imageFile" alt="Image of {{user.username}}">-->
-<!--<div class="userInformation">-->
-<!--<p>Vollständiger Name: {{user.displayName}}</p>-->
-<!--</div>-->
-<!--<button class="btn-success" (click)=""></button>-->
-<!--</div>-->
 <div *ngIf="user == null"><span>Kein Benutzer gewählt</span></div>
