@@ -1,0 +1,23 @@
+.sidebarCar {
+    display: inline-block;
+    width: 100%;
+}
+.sidebarPartDisplay {
+    display: inline-block;
+    width: 100%;
+}
+.sidebarPartDisplayTop {
+    display: inline-block;
+    width: 100%;
+    background-color: lightgray;
+}
+.sidebarPartDisplayTopLeft {
+    float: left;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    margin-left: 0.7rem;
+}
+.sidebarPartDisplayTopRight {
+    float: right;
+    padding-top: 0.3rem;
+}

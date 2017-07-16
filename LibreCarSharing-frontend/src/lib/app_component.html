@@ -1,13 +1,2 @@
-<h1>{{title}}</h1>
-
-<label><input type="number" [(ngModel)]="component">component to display</label>
-<login *ngIf="component == 0"></login>
-<div *ngIf="component == 1">
-    <carDisplay [car]="car" [displayFull]="true"></carDisplay>
-</div>
-<div *ngIf="component == 2">
-    <communityDisplay></communityDisplay>
-</div>
-<div *ngIf="component == 3">
-    <SidebarTypeComponent></SidebarTypeComponent>
-</div>
+<sidebar *ngIf="user != null" [user]="user"></sidebar>
+<router-outlet></router-outlet>

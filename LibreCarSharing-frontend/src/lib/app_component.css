@@ -11,5 +11,16 @@ login {
     margin-right: auto;
 }
 div {
+    display: inline-block;
     float: none;
+}
+sidebar {
+    display: inline-block;
+    height: 100%;
+    width: 300px;
+}
+carDisplay {
+    display: inline-block;
+    width: 800px;
+    background-color: aqua;
 }

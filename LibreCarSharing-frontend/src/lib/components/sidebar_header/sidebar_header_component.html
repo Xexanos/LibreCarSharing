@@ -1,0 +1,10 @@
+<div class="sidebarHeader">
+    <div *ngFor="let text of tabTexts; let i = index">
+        <div *ngIf="i != activeTab" class="sidebarTab" (click)="setActiveTab(i)">
+            <span class="sidebarTabText">{{text}}</span>
+        </div>
+        <div *ngIf="i == activeTab" class="sidebarTab sidebarActive">
+            <span class="sidebarTabText">{{text}}</span>
+        </div>
+    </div>
+</div>

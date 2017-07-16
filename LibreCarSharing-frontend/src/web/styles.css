@@ -2,11 +2,11 @@
 @import url(https://fonts.googleapis.com/css?family=Material+Icons);
 
 body {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 5vw;
+    max-width: 100%;
+    background-color: white;
+    color: black;
 }
 
 * {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
 }
