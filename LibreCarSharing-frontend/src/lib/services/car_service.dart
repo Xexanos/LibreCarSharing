@@ -22,4 +22,20 @@ class CarService {
         }).catchError((n) => print(n));
     return returnList;
   }
+
+  /** Get all cars of a certain user
+   * @param: id The ID of a user
+   **/
+  List<Car> getUserCars(dynamic e, String UserID) {
+    e.preventDefault();
+    List<Car> returnList = new List<Car>();
+    var id = Uri.encodeQueryComponent(UserID);
+    HttpRequest.postFormData("/rest/api/carsfromuser", {"id": id}).then(
+            (HttpRequest resp) {
+          List response = JSON.decode(resp.responseText);
+          for (int i = 0; i < response.length; i++)
+            returnList.add(CarImpl.fromJsonString(response.take(i)));
+        }).catchError((n) => print(n));
+    return returnList;
+  }
 }

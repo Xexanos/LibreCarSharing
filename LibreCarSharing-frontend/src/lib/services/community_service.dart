@@ -8,9 +8,9 @@ import 'package:LibreCarSharingFrontend/interfaces/community_impl.dart'; // impo
 @Injectable()
 class CommunityService {
   /** Get all communities
-   * @param: id The ID of a community
+   * @param: id The ID of a user
    **/
-  List<Community> getCommunityCars(dynamic e, String userID) {
+  List<Community> getUserCommunities(dynamic e, String userID) {
     e.preventDefault();
     List<Community> returnList = new List<Community>();
     var id = Uri.encodeQueryComponent(userID);

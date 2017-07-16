@@ -9,7 +9,7 @@ import 'package:LibreCarSharingFrontend/components/car_display/car_display_compo
 //import 'package:LibreCarSharingFrontend/components/sidebar/typ/sidebar_type_component.dart';
 
 // Import services
-import 'package:LibreCarSharingFrontend/services/CarService.dart';
+import 'package:LibreCarSharingFrontend/services/car_service.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
 // Components info: https://webdev.dartlang.org/components
