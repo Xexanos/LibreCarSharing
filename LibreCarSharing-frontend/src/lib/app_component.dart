@@ -34,8 +34,12 @@ class AppComponent {
   final CarService _carService;
   final UserService _userService;
 
-  AppComponent(this._carService, this._userService) {
-    this.user = _userService.getCurrentUser(new Event(null));
-    
+  final Router _router;
+
+  AppComponent(this._carService, this._userService, this._router) {
+    //this.user = _userService.getCurrentUser(new Event(null));
+    if (this.user == null) {
+      _router.navigate(['Login']);
+    }
   }
 }
