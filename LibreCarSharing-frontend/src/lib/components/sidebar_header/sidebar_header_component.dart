@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:LibreCarSharingFrontend/services/tab_service.dart';
 import 'package:angular2/angular2.dart';
 
 @Component(
@@ -9,16 +10,20 @@ import 'package:angular2/angular2.dart';
 )
 class SidebarHeaderComponent implements OnInit {
   int activeTab = 0;
-  List<String> tabTexts = ["Communities", "Typ"];
-  List<String> tabOrderBy = ["communities", "types"];
+  List<String> tabTexts;
+
+  final TabService _tabService;
+
+  SidebarHeaderComponent(this._tabService);
 
   @override
   Future<Null> ngOnInit() async {
+    tabTexts = _tabService.tabTexts;
     // TODO: implement REST API
   }
 
   setActiveTab(int i) {
     this.activeTab = i;
-    //TODO: reflect change within displayed cars
+    _tabService.activateTab(i);
   }
 }
