@@ -10,6 +10,7 @@ import 'package:angular2/router.dart';
   selector: 'userDisplay',
   styleUrls: const ['user_display_component.css'],
   templateUrl: 'user_display_component.html',
+    directives: const [COMMON_DIRECTIVES]
 )
 class UserDisplayComponent implements OnInit {
   User user;
@@ -27,5 +28,9 @@ class UserDisplayComponent implements OnInit {
     if (id != null) user = await (_userService.getUser(id));
 
     // TODO: implement ngOnInit
+  }
+
+  void sendChanges(dynamic e) {
+    //TODO: Send changes to backend
   }
 }

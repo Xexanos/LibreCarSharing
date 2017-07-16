@@ -25,7 +25,7 @@ import 'package:LibreCarSharingFrontend/services/user_service.dart';
   selector: 'my-app',
   styleUrls: const ['app_component.css'],
   templateUrl: 'app_component.html',
-  directives: const [ROUTER_DIRECTIVES, SidebarComponent],
+  directives: const [BS_DIRECTIVES, ROUTER_DIRECTIVES, SidebarComponent],
   providers: const [ROUTER_PROVIDERS, CarService, UserService],
 )
 @RouteConfig(const [
