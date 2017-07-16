@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:LibreCarSharingFrontend/model/user.dart';
+import 'package:LibreCarSharingFrontend/models/user.dart';
 
 class Car {
   String name = "";

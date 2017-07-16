@@ -1,4 +1,4 @@
-<p *ngIf="debug">
+<div *ngIf="debug">
     <h1>{{title}}</h1>
     <p>
         <label><input type="number" [(ngModel)]="component">component to display</label>
@@ -14,12 +14,13 @@
         <communityDisplay></communityDisplay>
     </div>
     <div *ngIf="component == 3">
-        <sidebarCars [kind]="type"></sidebarCars>
+        <sidebar></sidebar>
     </div>
     <div *ngIf="component == 4">
         <userDisplay [user]="user"></userDisplay>
     </div>
-</p>
-<p *ngIf="!debug">
-
-</p>
+</div>
+<div *ngIf="!debug">
+    <sidebar></sidebar>
+    <div class="display"></div>
+</div>

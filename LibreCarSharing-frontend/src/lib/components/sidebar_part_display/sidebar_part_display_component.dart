@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:LibreCarSharingFrontend/model/car.dart';
+import 'package:LibreCarSharingFrontend/models/car.dart';
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
 
 import 'package:angular2/angular2.dart';
@@ -26,6 +26,18 @@ class SidebarPartDisplayComponent implements OnInit {
     if (!this.display && this.cars == null) {
       // TODO: implement REST API
       this.cars = [
+        new Car(
+            "VW Golf",
+            "https://upload.wikimedia.org/wikipedia/commons/6/6f/Golf_2_v2.jpg",
+            "Kleinwagen",
+            "Dortmund",
+            "DO-AA:11"),
+        new Car(
+            "Mercedes-Benz Sprinter",
+            "https://upload.wikimedia.org/wikipedia/commons/2/2f/Mercedes_sprinter_1_v_sst.jpg",
+            "Transporter",
+            "Dortmund",
+            "DO-BB:22")
       ];
     }
     this.display = !this.display;

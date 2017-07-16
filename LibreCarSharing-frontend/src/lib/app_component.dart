@@ -1,12 +1,12 @@
 import 'package:angular2/angular2.dart';
 
-import 'package:LibreCarSharingFrontend/model/car.dart';
-import 'package:LibreCarSharingFrontend/model/user.dart';
+import 'package:LibreCarSharingFrontend/models/car.dart';
+import 'package:LibreCarSharingFrontend/models/user.dart';
 
 import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
 import 'package:LibreCarSharingFrontend/components/community_display/community_display_component.dart';
-import 'package:LibreCarSharingFrontend/components/sidebar_cars/sidebar_cars_component.dart';
+import 'package:LibreCarSharingFrontend/components/sidebar/sidebar_component.dart';
 import 'package:LibreCarSharingFrontend/components/user_display/user_display_component.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
@@ -20,13 +20,13 @@ import 'package:LibreCarSharingFrontend/components/user_display/user_display_com
     LoginComponent,
     CarDisplayComponent,
     CommunityDisplayComponent,
-    SidebarCarsComponent,
+    SidebarComponent,
     UserDisplayComponent
   ],
 )
 class AppComponent {
   bool debug = true;
-  int component = 1;
+  int component = 3;
   String title = "LibreCarSharing";
 
   Car car = new Car(
@@ -37,11 +37,4 @@ class AppComponent {
       "DO-AA:11");
 
   User user = new User();
-
-  AppComponent() {
-    user = new User();
-    user.displayName = "Max Mustermann";
-    user.username = "max";
-    user.email = "max.musterman@musterdomain.com";
-  }
 }
