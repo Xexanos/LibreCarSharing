@@ -1,9 +1,11 @@
 import 'dart:async';
-import 'dart:html';
 
 import 'package:angular2/angular2.dart';
 
 import 'package:LibreCarSharingFrontend/models/user.dart';
+import 'package:angular2/router.dart';
+
+import 'package:LibreCarSharingFrontend/services/user_service.dart';
 
 @Component(
   selector: 'login',
@@ -12,7 +14,14 @@ import 'package:LibreCarSharingFrontend/models/user.dart';
 )
 class LoginComponent implements OnInit {
   User user = new User();
-  bool loggedIn = false;
+
+  final UserService _userService;
+
+  LoginComponent(this._userService);
+
+  final Router _router;
+
+  LoginComponent(this._router);
 
   @override
   Future<Null> ngOnInit() async {
@@ -20,16 +29,11 @@ class LoginComponent implements OnInit {
   }
 
   void login(dynamic e){
-    e.preventDefault();
-    HttpRequest.postFormData("../login.jsp", { "username" : this.user.username, "password" : this.user.password })
-      .then((request) {loggedIn = true;})
-      .catchError((n)=>print(n));
+    this._userService.login(e, this.user);
   }
 
-  void logout(dynamic e){
+  void routeRegister(dynamic e) {
     e.preventDefault();
-    HttpRequest.request("../logout", method: "GET")
-        .then((request) {loggedIn = false; print(request.getAllResponseHeaders());})
-        .catchError((n)=>print(n));
+    _router.navigate(["Register"]);
   }
 }
