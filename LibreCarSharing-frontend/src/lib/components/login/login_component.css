@@ -18,7 +18,10 @@ input[type=text], input[type=password] {
 input[type=text]:focus, input[type=password]:focus {
     border: 2px solid #555;
 }
-
+.container {
+    width: 66%;
+    float: left;
+}
 .form-signin {
     max-width: 330px;
     padding: 15px;

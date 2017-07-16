@@ -4,11 +4,11 @@
 sidebar {
     display: inline-block;
     height: 100%;
-    width: 30%;
+    width: 25%;
 }
 .display {
     display: inline-block;
     height: 100%;
-    width: 70%;
+    width: 75%;
     float: right;
 }

@@ -1,22 +1,15 @@
-import 'dart:html';
-import 'package:LibreCarSharingFrontend/components/register/register_component.dart';
-import 'package:angular2/angular2.dart';
-import 'package:angular2/router.dart'; //Routing
-
-import 'package:ng_bootstrap/ng_bootstrap.dart'; // Bootstrap everything!!!
-
-// Import components
-import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
-import 'package:LibreCarSharingFrontend/components/dashboard/dashboard_component.dart';
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
-import 'package:LibreCarSharingFrontend/components/user_display/user_display_component.dart';
+import 'package:LibreCarSharingFrontend/components/dashboard/dashboard_component.dart';
+import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
+import 'package:LibreCarSharingFrontend/components/register/register_component.dart';
 import 'package:LibreCarSharingFrontend/components/sidebar/sidebar_component.dart';
+import 'package:LibreCarSharingFrontend/components/user_display/user_display_component.dart';
 import 'package:LibreCarSharingFrontend/models/user.dart';
-import 'package:LibreCarSharingFrontend/components/sidebar_cars/sidebar_cars_component.dart';
-
-// Import services
 import 'package:LibreCarSharingFrontend/services/car_service.dart';
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
+import 'package:angular2/angular2.dart';
+import 'package:angular2/router.dart';
+import 'package:ng_bootstrap/ng_bootstrap.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
 // Components info: https://webdev.dartlang.org/components
@@ -30,8 +23,7 @@ import 'package:LibreCarSharingFrontend/services/user_service.dart';
 )
 @RouteConfig(const [
   const Route(path: '/login', name: 'Login', component: LoginComponent),
-  const Route(
-      path: '/register', name: 'Register', component: RegisterComponent),
+  const Route(path: '/register', name: 'Register', component: RegisterComponent),
   const Route(path: '/dashboard', name: 'Dashboard', component: DashboardComponent),
   const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent),
   const Route(path: '/user/:id', name: 'User', component: UserDisplayComponent)
@@ -53,7 +45,7 @@ class AppComponent {
       } else {
         _router.navigate(['Dashboard']);
       }
-    }, onError:() {print("Error.");}, onDone: () {print("Done.");});
+    });
 
 //    this.user = _userService.getCurrentUser(new Event(null));
     if (this.user == null) {
