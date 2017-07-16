@@ -183,7 +183,7 @@ public class RestApi {
     @Path("currentuser")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOwnerOfCar() {
+    public Response getCurrentUser() {
         final Subject subject = SecurityUtils.getSubject();
         if(subject!=null)
         {
