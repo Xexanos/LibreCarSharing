@@ -4,12 +4,15 @@ import 'package:LibreCarSharingFrontend/components/sidebar_part_display/sidebar_
 
 import 'package:LibreCarSharingFrontend/services/tab_service.dart';
 import 'package:angular2/angular2.dart';
+import 'package:ng_bootstrap/components/accordion/accordion.dart';
+
 
 @Component(
   selector: 'sidebarCars',
   styleUrls: const ['sidebar_cars_component.css'],
   templateUrl: 'sidebar_cars_component.html',
-  directives: const [SidebarPartDisplayComponent],
+  directives: const [
+    NG_BOOTSTRAP_ACCORDION_DIRECTIVES, SidebarPartDisplayComponent],
 )
 class SidebarCarsComponent implements OnInit {
   @Input("orderBy")
