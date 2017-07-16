@@ -5,12 +5,12 @@ import 'package:LibreCarSharingFrontend/components/sidebar_part_display/sidebar_
 import 'package:angular2/angular2.dart';
 
 @Component(
-  selector: 'sidebar',
-  styleUrls: const ['sidebar_component.css'],
-  templateUrl: 'sidebar_component.html',
+  selector: 'sidebarCars',
+  styleUrls: const ['sidebar_cars_component.css'],
+  templateUrl: 'sidebar_cars_component.html',
   directives: const [SidebarPartDisplayComponent],
 )
-class SidebarTypeComponent implements OnInit {
+class SidebarCarsComponent implements OnInit {
   @Input("kind")
   String kind;
 

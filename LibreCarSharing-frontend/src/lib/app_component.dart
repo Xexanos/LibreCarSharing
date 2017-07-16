@@ -6,7 +6,7 @@ import 'package:LibreCarSharingFrontend/model/user.dart';
 import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
 import 'package:LibreCarSharingFrontend/components/community_display/community_display_component.dart';
-import 'package:LibreCarSharingFrontend/components/sidebar/sidebar_component.dart';
+import 'package:LibreCarSharingFrontend/components/sidebar_cars/sidebar_cars_component.dart';
 import 'package:LibreCarSharingFrontend/components/user_display/user_display_component.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
@@ -20,11 +20,12 @@ import 'package:LibreCarSharingFrontend/components/user_display/user_display_com
     LoginComponent,
     CarDisplayComponent,
     CommunityDisplayComponent,
-    SidebarTypeComponent,
+    SidebarCarsComponent,
     UserDisplayComponent
   ],
 )
 class AppComponent {
+  bool debug = true;
   int component = 1;
   String title = "LibreCarSharing";
 
