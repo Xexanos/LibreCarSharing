@@ -3,12 +3,12 @@
 
     <form class="form-signin">
         <h2 class="form-signin-heading">LibreCarSharing</h2>
-        <label for="username" class="sr-only">Email address</label>
-        <input id="username" [(ngModel)]="user.username" type="text" placeholder="Username">
-        <label for="inputPassword" class="sr-only">Password</label>
+        <label for="username" class="sr-only">Benutzername</label>
+        <input id="username" [(ngModel)]="user.username" type="text" placeholder="Benutzername">
+        <label for="inputPassword" class="sr-only">Passwort</label>
         <input id="inputPassword" [(ngModel)]="user.password" type="password" placeholder="Passwort">
-        <input class="btn btn-success btn-block" type="button" value="Login" (click)="login($event)">
-        <p>New Member? <a href="register.html" class="">Register</a></p>
+        <input class="btn btn-primary btn-block" type="button" value="Login" (click)="login($event)">
+        <p>Neu hier? <a href="register.html" class="">Registrieren</a></p>
     </form>
 
 </div>
