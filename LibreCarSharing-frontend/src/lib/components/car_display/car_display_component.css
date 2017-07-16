@@ -1,6 +1,17 @@
-.carImage {
+.carImage, .carImageThumbnail{
     float: left;
 }
-.carBaseInformation {
+.carImage {
+    height: 20rem;
+}
+.carImageThumbnail {
+    height: 6rem;
+}
+.carInformation {
     float: left;
+}
+.carDisplay {
+    width: 100%;
+    display: inline-block;
+    background-color: lightgray;
 }

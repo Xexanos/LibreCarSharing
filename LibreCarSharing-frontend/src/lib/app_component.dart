@@ -1,12 +1,10 @@
+
 import 'package:angular2/angular2.dart'; //Angular
 import 'package:angular2/router.dart'; //Routing
 
 // Import components
 import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
-//import 'package:LibreCarSharingFrontend/components/user_display/user_display_component.dart';
-//import 'package:LibreCarSharingFrontend/components/community_display/community_display_component.dart';
-//import 'package:LibreCarSharingFrontend/components/sidebar/typ/sidebar_type_component.dart';
 
 // Import services
 import 'package:LibreCarSharingFrontend/services/car_service.dart';
