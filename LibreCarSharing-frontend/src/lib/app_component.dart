@@ -5,6 +5,7 @@ import 'package:angular2/router.dart'; //Routing
 
 // Import components
 import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
+import 'package:LibreCarSharingFrontend/components/dashboard/dashboard_component.dart';
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
 import 'package:LibreCarSharingFrontend/components/sidebar/sidebar_component.dart';
 import 'package:LibreCarSharingFrontend/models/user.dart';
@@ -25,8 +26,9 @@ import 'package:LibreCarSharingFrontend/services/user_service.dart';
 )
 @RouteConfig(const [
   const Route(path: '/login', name: 'Login', component: LoginComponent),
-  const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent),
   const Route(path: '/register', name: 'Register', component: RegisterComponent)
+  const Route(path: '/dashboard', name: 'Dashboard', component: DashboardComponent),
+  const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent)
 ])
 class AppComponent {
   String title = "LibreCarSharing";
@@ -39,7 +41,12 @@ class AppComponent {
   final Router _router;
 
   AppComponent(this._carService, this._userService, this._router) {
-    //this.user = _userService.getCurrentUser(new Event(null));
+    this._userService.userStream.listen((User user) {
+      print(user);
+      this.user = user;
+      _router.navigate(['Dashboard']);
+    });
+    this.user = _userService.getCurrentUser(new Event(null));
     if (this.user == null) {
       _router.navigate(['Login']);
     }
