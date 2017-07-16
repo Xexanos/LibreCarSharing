@@ -1,13 +1,13 @@
-import 'package:angular2/angular2.dart';
 
-import 'package:LibreCarSharingFrontend/model/car.dart';
-import 'package:LibreCarSharingFrontend/model/user.dart';
+import 'package:angular2/angular2.dart'; //Angular
+import 'package:angular2/router.dart'; //Routing
 
+// Import components
 import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
-import 'package:LibreCarSharingFrontend/components/community_display/community_display_component.dart';
-import 'package:LibreCarSharingFrontend/components/sidebar_cars/sidebar_cars_component.dart';
-import 'package:LibreCarSharingFrontend/components/user_display/user_display_component.dart';
+
+// Import services
+import 'package:LibreCarSharingFrontend/services/car_service.dart';
 
 // AngularDart info: https://webdev.dartlang.org/angular
 // Components info: https://webdev.dartlang.org/components
@@ -16,32 +16,20 @@ import 'package:LibreCarSharingFrontend/components/user_display/user_display_com
   selector: 'my-app',
   styleUrls: const ['app_component.css'],
   templateUrl: 'app_component.html',
-  directives: const [
-    LoginComponent,
-    CarDisplayComponent,
-    CommunityDisplayComponent,
-    SidebarCarsComponent,
-    UserDisplayComponent
-  ],
+  directives: const [ROUTER_DIRECTIVES],
+  providers: const [ROUTER_PROVIDERS, CarService],
+  template: '''
+  <h1>{{title}}</h1>
+  <router-outlet></router-outlet>''',
 )
-class AppComponent {
-  bool debug = true;
-  int component = 1;
+@RouteConfig(const[
+  const Route(path: '/login', name: 'Login', component: LoginComponent),
+  const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent)
+])
+class AppComponent{
   String title = "LibreCarSharing";
 
-  Car car = new Car(
-      "VW Golf",
-      "https://upload.wikimedia.org/wikipedia/commons/6/6f/Golf_2_v2.jpg",
-      "Kleinwagen",
-      "Dortmund",
-      "DO-AA:11");
+  final CarService _carService;
 
-  User user = new User();
-
-  AppComponent() {
-    user = new User();
-    user.displayName = "Max Mustermann";
-    user.username = "max";
-    user.email = "max.musterman@musterdomain.com";
-  }
+  AppComponent(this._carService);
 }
