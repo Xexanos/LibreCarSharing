@@ -1,8 +1,43 @@
 <div *ngIf="user != null">
-    <h2>{{user.username}} ({{user.email}})</h2>
-    <img class="userImage" height="" *ngIf="user.imageFile != ''" [src]="user.imageFile" alt="Image of {{user.username}}">
-    <div class="userInformation">
-        <p>Vollständiger Name: {{user.displayName}}</p>
+    <form>
+        <!-- TODO: insert user profile pic display and upload here -->
+        <div class="form-group">
+            <label>Benutzername: {{user.username}}</label>
     </div>
+        <div class="form-group">
+            <label for="inputDisplayname">Anzeigename</label>
+            <input type="text" class="form-control" id="inputDisplayname" aria-describedby="DisplaynameHelp"
+                   [(ngModel)]="user.displayName" ngControl="displayName">
+            <small id="displayNameHelp" class="form-text text-muted">Dein Anzeigename. Dieser wird anderen Benutzern
+                angezeigt.<br>Ist der Anzeigename leer wird dein Benutzername angezeigt.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail">E-Mail Adresse</label>
+            <input required type="text" class="form-control" id="inputEmail" aria-describedby="EmailHelp"
+                   placeholder="E-Mail Adresse" [(ngModel)]="user.email" ngControl="email">
+            <small id="emailHelp" class="form-text text-muted">Deine E-Mail Adresse. Wir verwenden sie um dich zu
+                kontaktieren und dir Benachrichtigungen zu schicken.
+            </small>
+        </div>
+        <hr>
+        <div class="form-group">
+            <label for="inputOldPassword">Altes Passwort</label>
+            <input required type="password" class="form-control" id="inputOldPassword"
+                   aria-describedby="oldPasswordHelp"
+                   placeholder="Passwort">
+            <small id="oldPasswordHelp" class="form-text text-muted">Gib dein altes Passwort ein, um deine Änderungen zu
+                bestätigen.
+            </small>
+            <br>
+            <label for="inputNewPassword1">Neues Passwort</label>
+            <input type="password" class="form-control" id="inputNewPassword1">
+            <input type="password" class="form-control" id="inputNewPassword2" aria-describedby="newPasswordHelp">
+            <small id="newPasswordHelp" class="form-text text-muted">Dein neues Passwort. Gib es 2-mal ein um sicher zu
+                gehen, dass du dich nicht vertippst.
+            </small>
+        </div>
+        <button class="btn btn-primary" (click)="sendChanges($event)">Absenden</button>
+    </form>
 </div>
-<div *ngIf="user == null"><span>no user selected</span></div>
+<div *ngIf="user == null"><span>Kein Benutzer gewählt</span></div>

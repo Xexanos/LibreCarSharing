@@ -15,11 +15,11 @@ class CarService {
     List<Car> returnList = new List<Car>();
     var id = Uri.encodeQueryComponent(CommunityID);
     HttpRequest.postFormData("/rest/api/carsfromcommunity", {"id": id}).then(
-            (HttpRequest resp) {
-          List response = JSON.decode(resp.responseText);
-          for (int i = 0; i < response.length; i++)
-            returnList.add(CarImpl.fromJsonString(response.take(i)));
-        }).catchError((n) => print(n));
+        (HttpRequest resp) {
+      List response = JSON.decode(resp.responseText);
+      for (int i = 0; i < response.length; i++)
+        returnList.add(CarImpl.fromJsonString(response.take(i)));
+    }).catchError((n) => print(n));
     return returnList;
   }
 
@@ -31,11 +31,20 @@ class CarService {
     List<Car> returnList = new List<Car>();
     var id = Uri.encodeQueryComponent(UserID);
     HttpRequest.postFormData("/rest/api/carsfromuser", {"id": id}).then(
-            (HttpRequest resp) {
-          List response = JSON.decode(resp.responseText);
-          for (int i = 0; i < response.length; i++)
-            returnList.add(CarImpl.fromJsonString(response.take(i)));
-        }).catchError((n) => print(n));
+        (HttpRequest resp) {
+      List response = JSON.decode(resp.responseText);
+      for (int i = 0; i < response.length; i++)
+        returnList.add(CarImpl.fromJsonString(response.take(i)));
+    }).catchError((n) => print(n));
     return returnList;
+  }
+
+  getCar(int id) {
+    return new Car(
+        "Mercedes-Benz Sprinter",
+        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Mercedes_sprinter_1_v_sst.jpg",
+        "Transporter",
+        "Dortmund",
+        "DO-BB:22");
   }
 }
