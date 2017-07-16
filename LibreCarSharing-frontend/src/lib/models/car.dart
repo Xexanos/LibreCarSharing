@@ -1,13 +1,14 @@
+import 'user.dart';
 import 'dart:convert';
-import 'package:LibreCarSharingFrontend/models/user.dart';
 
 class Car {
+  int id = 0;
   String name = "";
   String type = "";
   String location = "";
   String imageFile = "";
   bool status = true;
-  String information = "";
+  String info = "";
   User owner = null;
   int seats = 1;
   int color = 0x000000;
