@@ -28,14 +28,14 @@ public class RestApi {
     private EntityManager entityManager;
 
 
-    @Path("carsfromuser")//{userId}
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("user/{userid}/car")//{userId}
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCarsFromUser(final Id data) {
-        long userId =data.id;
+    public Response getAllCarsFromUser(@PathParam("userid")final long userId) {
+
         final Subject subject = SecurityUtils.getSubject();
-        if(subject.getPrincipal()!=null)
+
+        if(subject!=null&&subject.getPrincipal()!=null)
         {
             long subid=-1;
             subid = this.getIdFromUname(subject.getPrincipal().toString());
@@ -55,37 +55,33 @@ public class RestApi {
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
-    @Path("carsfromcommunity")//{communityid}
-    @POST
+    @Path("community/{comid}/car")//{communityid}
+    @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllCarsFromCommunity(final Id data) {
-        long comId= data.id;
-
+    public Response getAllCarsFromCommunity(@PathParam("comid")final long comId){
         final Subject subject = SecurityUtils.getSubject();
         DBCommunity community;
         if((community = this.entityManager.find(DBCommunity.class, comId)) != null)
         {
-            if(community.getUsers().stream().map(DBUser::getUsername)
-                    .collect(Collectors.toList()).contains(subject.getPrincipal())||subject.hasRole("admin"))
-                {
-                    List<CarWithoutRides> cars=community.getCars().stream().map(CarWithoutRides::new).collect(Collectors.toList());
-                    System.out.println("result "+ cars);
+            if(community!=null) {
+                if (subject!=null&&subject.getPrincipal()!=null&&(community.getUsers().stream().map(DBUser::getUsername)
+                        .collect(Collectors.toList()).contains(subject.getPrincipal()))|| subject.hasRole("admin")) {
+                    List<CarWithoutRides> cars = community.getCars().stream().map(CarWithoutRides::new).collect(Collectors.toList());
+                    System.out.println("result " + cars);
                     return Response.ok(cars).build();
                 }
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
-
-
-
     }
-    @Path("usersfomcommunity")//{communityid}/
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    /*
+    @Path("community/{comid}/user")//{communityid}/
+    @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllUsersFromCommunity(final Id data) {
-        long comId= data.id;
+    public Response getAllUsersFromCommunity(@PathParam("comid") final long comId) {
+
         final Subject subject = SecurityUtils.getSubject();
 
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
@@ -105,29 +101,29 @@ public class RestApi {
         else
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
-    }
-    @Path("communitiesformuser")//{userid}
-    @POST
+    }*/
+    @Path("user/{userid}/community")//{userid}
+    @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllcommunitiesFromUser(final Id data) {
-        long userId =data.id;
+    public Response getAllcommunitiesFromUser(@PathParam("userid") final long userId) {
         final Subject subject = SecurityUtils.getSubject();
         DBUser user =this.entityManager.find(DBUser.class, userId);
-        if((user!=null&&subject.getPrincipal()!=null&&subject.getPrincipal().equals(user.getUsername()))||subject.hasRole("admin")){
-            final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-            final CriteriaQuery<DBCommunity> query = builder.createQuery(DBCommunity.class);
-            final Root<DBCommunity> from = query.from(DBCommunity.class);
-            final Join<DBCommunity, DBUser> join = from.join(DBCommunity_.users);
-            Predicate predicate = builder.equal(join.get(DBCommunity_.id), userId);
-            Order order = builder.asc(from.get(DBCommunity_.name));
-            query.select(from).where(predicate).orderBy(order);
-            final List<DBCommunity> communities = this.entityManager.createQuery(query).getResultList();
-            System.out.println("result " + communities);
-            return Response.ok(communities.stream().map(CommunityNoRef::new).collect(Collectors.toList())).build();
+        if(user!=null) {
+            if (subject!=null&&(user != null && subject.getPrincipal() != null && (subject.getPrincipal().equals(user.getUsername())) || subject.hasRole("admin"))) {
+                final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+                final CriteriaQuery<DBCommunity> query = builder.createQuery(DBCommunity.class);
+                final Root<DBCommunity> from = query.from(DBCommunity.class);
+                final Join<DBCommunity, DBUser> join = from.join(DBCommunity_.users);
+                Predicate predicate = builder.equal(join.get(DBCommunity_.id), userId);
+                Order order = builder.asc(from.get(DBCommunity_.name));
+                query.select(from).where(predicate).orderBy(order);
+                final List<DBCommunity> communities = this.entityManager.createQuery(query).getResultList();
+                System.out.println("result " + communities);
+                return Response.ok(communities.stream().map(CommunityNoRef::new).collect(Collectors.toList())).build();
+            }
         }
-        else
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     @Path("allcommunities")
     @GET
@@ -201,7 +197,11 @@ public class RestApi {
         return Response.status(Response.Status.UNAUTHORIZED).build();
 
     }
-    @Path("owner")//carid  //TODO: shiro Status
+
+
+
+
+    @Path("owner")//carid  //TODO: shiro Status remove
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -274,7 +274,7 @@ public class RestApi {
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
     }
-    @Path("addride")
+    @Path("ride")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -325,7 +325,7 @@ public class RestApi {
     }
 
 
-    @Path("register")
+    @Path("user")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -358,8 +358,8 @@ public class RestApi {
     }
 
 
-    @Path("updateprofile")
-    @POST
+    @Path("user")//update
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateUser(final UpdateProfile data) {
@@ -403,8 +403,8 @@ public class RestApi {
         return Response.status(Response.Status.BAD_REQUEST).build();
 }
 
-    @Path("updateride")
-    @POST
+    @Path("ride")
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateRide(final UpdateRide data) {
@@ -448,9 +448,60 @@ public class RestApi {
             System.out.println("I");
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
+    @Path("car") //TODO: weitermachen
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateRide(final UpdateCar data) {
+        long id = data.id;
+        int color =data.color;
+        String imageFile=data.imageFile;
+        String info=data.info;
+        String licencePlate=data.licencePlate;
+        String location=data.location;
+        boolean status=data.status;
+        String principal;
+        final Subject subject = SecurityUtils.getSubject();
+        
+        System.out.println("I");
+        return Response.status(Response.Status.BAD_REQUEST).build();
+    }
 
 
+    @Path("ride/{id}")
+    @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response deletride(@PathParam("id") final long id) {
+        String principal;
+        final Subject subject = SecurityUtils.getSubject();
+        if (subject.getPrincipal() != null) {
+            principal = subject.getPrincipal().toString();
+            if (principal != null) {
+                DBRide ride =this.entityManager.find(DBRide.class,id);
+                if(ride!=null)
+                {
+                    DBUser user = this.entityManager.find(DBUser.class,getIdFromUname(principal));
+                    if(user!=null)
+                    {
+                        if(ride.getCar().getOwner().getId()==user.getId()||subject.hasRole("admin"))
+                        {
+                            this.entityManager.remove(ride);
+                            return Response.ok().build();
+                        }
+                        else{
+                            return Response.status(Response.Status.UNAUTHORIZED).build();
+                        }
+                    }
+                }
+                else{
+                    return Response.status(Response.Status.NOT_FOUND).build();
+                }
 
+            }
+        }
+
+        return Response.status(Response.Status.BAD_REQUEST).build();
+    }
 
     @Path("createcommunity")//name
     @POST
@@ -478,26 +529,37 @@ public class RestApi {
         }
     }
 
-    @Path("adduser")//userid comid
+    @Path("community/{comid}/user")//userid comid
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(final Adduser data) {
-        long comId=data.communityid;
-        long userId=data.userid;
+    public Response addusertcommunity(@PathParam("comid") long comId, final Id data) {
+
+        long userId=data.id;
         DBCommunity community;
         DBUser user;
         final Subject subject = SecurityUtils.getSubject();
-        if((community=this.entityManager.find(DBCommunity.class,comId ))!=null);
+        if(subject!=null)
         {
-            if(community.getAdmin().getUsername().equals(subject.getPrincipal())) {
-                if ((user = this.entityManager.find(DBUser.class, userId)) != null) {
-                    community.addUser(user);
+            if((community=this.entityManager.find(DBCommunity.class,comId ))!=null);
+            {
+                if(subject.getPrincipal()!=null) {
+                    if (community.getAdmin().getUsername().equals(subject.getPrincipal())) {
+                        if ((user = this.entityManager.find(DBUser.class, userId)) != null) {
+                            if(community.getUsers().contains(user))
+                                return Response.status(Response.Status.BAD_REQUEST).build();
+                            else
+                            {
+                                community.addUser(user);
+                                return Response.ok().build();}
+                        }
+                    } else {
+                        return Response.status(Response.Status.UNAUTHORIZED).build();
+                    }
                 }
             }
-            else{
-                return Response.status(Response.Status.UNAUTHORIZED).build();
-            }
+
         }
+
         return Response.ok().build();
     }
 
