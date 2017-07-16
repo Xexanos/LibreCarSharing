@@ -14,8 +14,13 @@ div {
     display: inline-block;
     float: none;
 }
-sidebartype {
+sidebar {
     display: inline-block;
     height: 100%;
     width: 300px;
+}
+carDisplay {
+    display: inline-block;
+    width: 800px;
+    background-color: aqua;
 }

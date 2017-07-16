@@ -6,12 +6,15 @@
     <login></login>
 </div>
 <div *ngIf="component == 1">
-    <carDisplay [car]="car" [displayFull]="true"></carDisplay>
-    <carDisplay [car]="car" [displayFull]="false"></carDisplay>
+    <p><carDisplay [car]="car" [displayFull]="true"></carDisplay></p>
+    <p><carDisplay [car]="car" [displayFull]="false"></carDisplay></p>
 </div>
 <div *ngIf="component == 2">
     <communityDisplay></communityDisplay>
 </div>
 <div *ngIf="component == 3">
-    <sidebarType></sidebarType>
+    <sidebar></sidebar>
+</div>
+<div *ngIf="component == 4">
+    <userDisplay [user]="user"></userDisplay>
 </div>

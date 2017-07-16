@@ -12,10 +12,8 @@
     background-color: lightgray;
 }
 .sidebarPartDisplayTopLeft {
-    display: inline;
     float: left;
 }
 .sidebarPartDisplayTopRight {
-    display: inline;
     float: right;
 }

@@ -1,8 +1,8 @@
 <div *ngIf="user != null">
-    <h2>{{user.name}} ({{user.email}})</h2>
-    <img class="userImage" height="" *ngIf="user.imageFile != ''" [src]="user.imageFile" alt="Image of {{user.name}}">
+    <h2>{{user.username}} ({{user.email}})</h2>
+    <img class="userImage" height="" *ngIf="user.imageFile != ''" [src]="user.imageFile" alt="Image of {{user.username}}">
     <div class="userInformation">
         <p>Vollständiger Name: {{user.displayName}}</p>
     </div>
 </div>
-<div *ngIf="car == null"><span>no car selected</span></div>
+<div *ngIf="user == null"><span>no user selected</span></div>

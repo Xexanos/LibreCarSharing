@@ -5,7 +5,7 @@ import 'package:LibreCarSharingFrontend/components/sidebar_part_display/sidebar_
 import 'package:angular2/angular2.dart';
 
 @Component(
-  selector: 'sidebarType',
+  selector: 'sidebar',
   styleUrls: const ['sidebar_component.css'],
   templateUrl: 'sidebar_component.html',
   directives: const [SidebarPartDisplayComponent],
