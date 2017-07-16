@@ -11,14 +11,18 @@ import 'package:angular2/angular2.dart';
   directives: const [SidebarPartDisplayComponent],
 )
 class SidebarCarsComponent implements OnInit {
-  @Input("kind")
-  String kind;
+  @Input("orderBy")
+  String orderBy;
 
   List<String> titles = [];
 
   @override
   Future<Null> ngOnInit() async {
-    this.titles = ["Kleinwagen", "Transporter", "Sportwagen"];
+    if (this.orderBy == "types") {
+      this.titles = ["Kleinwagen", "Transporter", "Sportwagen"];
+    } else if (this.orderBy == "communities") {
+      this.titles = ["Dortmund", "Bochum", "Essen"];
+    }
     // TODO: implement REST API
   }
 }

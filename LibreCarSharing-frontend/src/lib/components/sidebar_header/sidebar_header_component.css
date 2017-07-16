@@ -5,8 +5,15 @@
 .sidebarTab {
     display: inline-block;
     width: 49%;
-    background-color: aquamarine;
+    background-color: lightgray;
     float: left;
     border-right: solid;
-    padding: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.sidebarTabText {
+    margin-left: 1rem;
+}
+.sidebarActive {
+    background-color: white;
 }

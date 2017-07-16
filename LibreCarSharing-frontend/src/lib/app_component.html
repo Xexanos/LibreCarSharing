@@ -1,26 +1,3 @@
-<div *ngIf="debug">
-    <h1>{{title}}</h1>
-    <p>
-        <label><input type="number" [(ngModel)]="component">component to display</label>
-    </p>
-    <div *ngIf="component == 0">
-        <login></login>
-    </div>
-    <div *ngIf="component == 1">
-        <p><carDisplay [car]="car" [displayFull]="true"></carDisplay></p>
-        <p><carDisplay [car]="car" [displayFull]="false"></carDisplay></p>
-    </div>
-    <div *ngIf="component == 2">
-        <communityDisplay></communityDisplay>
-    </div>
-    <div *ngIf="component == 3">
-        <sidebar></sidebar>
-    </div>
-    <div *ngIf="component == 4">
-        <userDisplay [user]="user"></userDisplay>
-    </div>
-</div>
-<div *ngIf="!debug">
-    <sidebar></sidebar>
-    <div class="display"></div>
-</div>
+<sidebar *ngIf="user != null" [user]="user"></sidebar>
+<login></login>
+<router-outlet></router-outlet>
