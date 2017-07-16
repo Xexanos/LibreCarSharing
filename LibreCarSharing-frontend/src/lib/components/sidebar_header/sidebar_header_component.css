@@ -1,0 +1,12 @@
+.sidebarHeader {
+    display: inline-block;
+    width: 100%;
+}
+.sidebarTab {
+    display: inline-block;
+    width: 49%;
+    background-color: aquamarine;
+    float: left;
+    border-right: solid;
+    padding: 1rem;
+}
