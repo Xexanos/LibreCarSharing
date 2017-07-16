@@ -37,9 +37,12 @@ public class RestApi {
 
         if(subject!=null&&subject.getPrincipal()!=null)
         {
-            long subid=-1;
+            Long subid;
+
+
             subid = this.getIdFromUname(subject.getPrincipal().toString());
-            if(subid==userId ||subject.hasRole("admin"));
+
+            if((subid!=null&&subid==userId) ||subject.hasRole("admin"));
             {
                 final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
                 final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
