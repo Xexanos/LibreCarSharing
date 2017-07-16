@@ -85,6 +85,8 @@ public class StartupBean {
         car1.addRide(ride2);
         car2.addRide(ride3);
         car2.addRide(ride4);
+        car1.setStatus(true);
+        car2.setStatus(true);
         mark.addCommunity(community1);
         community2.addUser(lisa);
         community1.addUser(tim);

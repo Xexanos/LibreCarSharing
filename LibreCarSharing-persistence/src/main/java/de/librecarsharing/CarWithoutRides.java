@@ -1,7 +1,5 @@
 package de.librecarsharing;
 
-import java.util.Set;
-
 /**
  * Created by fred on 30.06.17.
  */
@@ -23,7 +21,7 @@ public class CarWithoutRides {
             return this.dbCar.getName();
         }
     public int getSeats(){return this.dbCar.getSeats();}
-    public String getStatus(){return this.dbCar.getStatus();}
+    public boolean isStatus(){return this.dbCar.isStatus();}
     public String getInfo(){return this.dbCar.getInfo();}
     public String getImageFile() {return dbCar.getImageFile();}
 }

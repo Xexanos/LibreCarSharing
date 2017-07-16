@@ -1,6 +1,5 @@
 package de.librecarsharing;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,5 +33,5 @@ public class CarWithRides {
     public String getImageFile() {return dbCar.getImageFile();}
     public int getSeats(){return this.dbCar.getSeats();}
     public int getColor(){return this.dbCar.getColor();}
-    public String getStatus(){return this.dbCar.getStatus();}
+    public boolean isStatus(){return this.dbCar.isStatus();}
 }

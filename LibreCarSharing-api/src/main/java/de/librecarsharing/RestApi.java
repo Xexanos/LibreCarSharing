@@ -19,13 +19,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-@Path("api")
+@Path("")
 @Transactional
 public class RestApi {
 
 
     @PersistenceContext
     private EntityManager entityManager;
+
 
     @Path("carsfromuser")//{userId}
     @POST
@@ -79,7 +80,7 @@ public class RestApi {
 
 
     }
-    @Path("users")//{communityid}/
+    @Path("usersfomcommunity")//{communityid}/
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -130,7 +131,6 @@ public class RestApi {
     }
     @Path("allcommunities")
     @GET
-    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public List<CommunityNoRef> getAllcommunities() {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
@@ -180,7 +180,28 @@ public class RestApi {
 
     }
 
-    @Path("owner")//carid
+    @Path("currentuser")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOwnerOfCar() {
+        final Subject subject = SecurityUtils.getSubject();
+        if(subject!=null)
+        {
+            if(subject.getPrincipal()!=null)
+            {
+                Long id= getIdFromUname(subject.getPrincipal().toString());
+                if(id!=null)
+                {
+                    Response.ok(new UserNoRef(this.entityManager.find(DBUser.class, id))).build();
+                }
+
+            }
+        }
+
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+
+    }
+    @Path("owner")//carid  //TODO: shiro Status
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -199,7 +220,7 @@ public class RestApi {
         return new UserNoRef(owner);
 
     }
-    @Path("carwrides")
+    @Path("carwrides")//eher für admins
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -387,17 +408,14 @@ public class RestApi {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateRide(final UpdateRide data) {
-        System.out.println("A");
-        long id=data.rideid;
-        long newstart=data.newstart;
-        long newend=data.newend;
+        long id = data.rideid;
+        Timestamp newstart = new Timestamp(data.newstart);
+        Timestamp newend = new Timestamp(data.newend);
         String principal;
         final Subject subject = SecurityUtils.getSubject();
-        if(subject.getPrincipal()!=null) {
-            System.out.println("B");
+        if (subject.getPrincipal() != null) {
             principal = subject.getPrincipal().toString();
-            if (principal != null ) {
-                System.out.println("C");
+            if (principal != null) {
                 final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
                 final CriteriaQuery<DBRide> query = builder.createQuery(DBRide.class);
                 final Root<DBRide> from = query.from(DBRide.class);
@@ -405,50 +423,34 @@ public class RestApi {
                 query.select(from).where(predicate);
                 List<DBRide> rides = this.entityManager.createQuery(query).getResultList();
                 if (rides.size() == 1) {
-
                     DBRide ride = rides.get(0);
-                    System.out.println("D");
+                    System.out.println("D"+ride.getCreator().getId());
                     ride.getCreator().getId();
-                    if(ride.getCreator().getId()==this.getIdFromUname(subject.getPrincipal().toString())) {
+                    if (ride.getCreator().getId() == this.getIdFromUname(subject.getPrincipal().toString())) {
                         System.out.println("E");
-                        Addride addride = new Addride();
-                        addride.carid=ride.getCar().getId();
-                        addride.end=newend;
-                        addride.start=newstart;
-                        ride= this.entityManager.find(DBRide.class,ride.getId());
+                        ride = this.entityManager.find(DBRide.class, ride.getId());
+                        if (ride != null) {
+                            List<DBRide> intersects = this.getIntersects(newstart, newend, ride.getCar().getId());
+                            if (intersects.size() == 0 || (intersects.size() == 1 && intersects.get(0).getId() == id)) {
+                                ride.setStart(newstart);
+                                ride.setEnd(newend);
 
-                        if(ride!=null)
-                        {
+                                return Response.ok(new RideNoRef(ride)).build();
 
-                            System.out.println("F");
-                            List<DBRide> intersects=this.getIntersects(new Timestamp(newstart),new Timestamp(newend),ride.getCar().getId());
-                            if(intersects.size()==1)
-                                //HIER WEITER MACHEN 
-
-                            this.entityManager.remove(ride);
-                            Response r=addRide(addride);
-                            if(200 == r.getStatus())
-                            {
-                                System.out.println("G");
-                                return Response.ok().build();
-                            }
-                            else
-                            {
-                                System.out.println("H");
-                                if()
-                                return Response.status(Response.Status.BAD_REQUEST).build();
                             }
 
                         }
-                        System.out.println("I");
-                        return Response.ok().build();
                     }
+
                 }
             }
         }
-
+            System.out.println("I");
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
+
+
+
 
     @Path("createcommunity")//name
     @POST
@@ -535,6 +537,7 @@ public class RestApi {
         Predicate predicate1 = builder.equal(join.get(DBCar_.id),carid);
         Predicate predicate2 = builder.greaterThanOrEqualTo(from.get(DBRide_.end),startStamp);
         Predicate predicate3 = builder.lessThanOrEqualTo(from.get(DBRide_.start),startStamp);
+
         Predicate startpred =builder.and(predicate2,predicate3);
         Predicate predicate4 = builder.greaterThanOrEqualTo(from.get(DBRide_.end),endStamp);
         Predicate predicate5 = builder.lessThanOrEqualTo(from.get(DBRide_.start),endStamp);
@@ -542,12 +545,16 @@ public class RestApi {
         Predicate predicate6 = builder.greaterThanOrEqualTo(from.get(DBRide_.start),startStamp);
         Predicate predicate7 = builder.lessThanOrEqualTo(from.get(DBRide_.end),endStamp);
         Predicate enclosepred =builder.and(predicate6,predicate7);
-        Predicate intersect = builder.or(endpred,startpred,enclosepred);
+        Predicate intersect = builder.or(endpred,startpred);
+        intersect=builder.or(intersect,enclosepred);
         Predicate whole = builder.and(predicate1,intersect);
         Order order = builder.asc(from.get(DBRide_.end));
         query.select(from).where(whole).orderBy(order);
+
         return this.entityManager.createQuery(query).getResultList();
 
     }
+
+
 
 }
