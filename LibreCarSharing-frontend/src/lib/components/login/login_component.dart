@@ -16,12 +16,9 @@ class LoginComponent implements OnInit {
   User user = new User();
 
   final UserService _userService;
-
-  LoginComponent(this._userService);
-
   final Router _router;
 
-  LoginComponent(this._router);
+  LoginComponent(this._userService, this._router);
 
   @override
   Future<Null> ngOnInit() async {

@@ -29,7 +29,8 @@ import 'package:LibreCarSharingFrontend/services/user_service.dart';
 )
 @RouteConfig(const [
   const Route(path: '/login', name: 'Login', component: LoginComponent),
-  const Route(path: '/register', name: 'Register', component: RegisterComponent)
+  const Route(
+      path: '/register', name: 'Register', component: RegisterComponent),
   const Route(path: '/dashboard', name: 'Dashboard', component: DashboardComponent),
   const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent)
 ])
