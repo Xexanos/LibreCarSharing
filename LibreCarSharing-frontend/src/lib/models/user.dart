@@ -1,5 +1,6 @@
 import 'dart:convert';
 class User {
+  int id = 0;
   String username;
   String displayName;
   String email;

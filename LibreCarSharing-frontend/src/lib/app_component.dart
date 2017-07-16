@@ -7,6 +7,7 @@ import 'package:angular2/router.dart'; //Routing
 import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
 import 'package:LibreCarSharingFrontend/components/dashboard/dashboard_component.dart';
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
+import 'package:LibreCarSharingFrontend/components/user_display/user_display_component.dart';
 import 'package:LibreCarSharingFrontend/components/sidebar/sidebar_component.dart';
 import 'package:LibreCarSharingFrontend/models/user.dart';
 
@@ -27,27 +28,33 @@ import 'package:LibreCarSharingFrontend/services/user_service.dart';
 @RouteConfig(const [
   const Route(path: '/login', name: 'Login', component: LoginComponent),
   const Route(path: '/dashboard', name: 'Dashboard', component: DashboardComponent),
-  const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent)
+  const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent),
+  const Route(path: '/user/:id', name: 'User', component: UserDisplayComponent)
 ])
 class AppComponent {
   String title = "LibreCarSharing";
   bool debug = false;
   User user;
 
-  final CarService _carService;
   final UserService _userService;
 
   final Router _router;
 
-  AppComponent(this._carService, this._userService, this._router) {
+  AppComponent(this._userService, this._router) {
     this._userService.userStream.listen((User user) {
-      print(user);
       this.user = user;
-      _router.navigate(['Dashboard']);
-    });
-    this.user = _userService.getCurrentUser(new Event(null));
+      if (this.user == null) {
+        _router.navigate(['Login']);
+      } else {
+        _router.navigate(['Dashboard']);
+      }
+    }, onError:() {print("Error.");}, onDone: () {print("Done.");});
+
+//    this.user = _userService.getCurrentUser(new Event(null));
     if (this.user == null) {
       _router.navigate(['Login']);
+    } else {
+      _router.navigate(['Dashboard']);
     }
   }
 }
