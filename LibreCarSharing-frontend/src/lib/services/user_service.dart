@@ -14,7 +14,7 @@ class UserService {
   Stream userStream;
   StreamController userStreamController;
 
-  bool debug = true;
+  bool debug =true;
 
   UserService() {
     this.userStreamController = new StreamController();
@@ -42,7 +42,7 @@ class UserService {
    */
   void login(dynamic e, User user) {
     e.preventDefault();
-    if (debug) {
+    if (!debug) {
       this.userStreamController.add(this.getCurrentUser(e));
     } else {
       HttpRequest.postFormData("../login.jsp",
@@ -57,7 +57,7 @@ class UserService {
    */
   void logout(dynamic e) {
     e.preventDefault();
-    if (debug) {
+    if (!debug) {
       this.userStreamController.add(null);
     } else {
       HttpRequest.request("../logout", method: "GET").then((request) {

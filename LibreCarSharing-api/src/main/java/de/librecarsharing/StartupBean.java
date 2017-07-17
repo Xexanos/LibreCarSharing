@@ -1,8 +1,5 @@
 package de.librecarsharing;
 
-/**
- * Created by Admin on 19.06.2017.
- */
 
 
 
