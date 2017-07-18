@@ -14,7 +14,7 @@ class CarService {
     e.preventDefault();
     List<Car> returnList = new List<Car>();
     var id = Uri.encodeQueryComponent(CommunityID);
-    HttpRequest.request("/api/community/"+id+"/car", method: "GET" ).then(
+    HttpRequest.request("../api/community/"+id+"/car", method: "GET" ).then(
         (HttpRequest resp) {
       List response = JSON.decode(resp.responseText);
       for (int i = 0; i < response.length; i++)
@@ -30,7 +30,7 @@ class CarService {
     e.preventDefault();
     List<Car> returnList = new List<Car>();
     var id = Uri.encodeQueryComponent(UserID);
-    HttpRequest.request("/api/user/"+id+"/car",method: "GET").then(
+    HttpRequest.request("../api/user/"+id+"/car",method: "GET").then(
         (HttpRequest resp) {
       List response = JSON.decode(resp.responseText);
       for (int i = 0; i < response.length; i++)

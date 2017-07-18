@@ -22,7 +22,7 @@ class RegisterComponent implements OnInit {
     e.preventDefault();
     HttpRequest.postFormData("/register", {
       "username": this.user.username,
-      "displayname": this.user.username,
+      "displayName": this.user.username,
       "password": this.user.password,
       "email": this.user.email
     })

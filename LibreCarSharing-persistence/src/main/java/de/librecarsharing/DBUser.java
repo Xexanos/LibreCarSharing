@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 public class DBUser extends DBIdentified{
 
-    private String dispname;
+    private String displayName;
     private String username;
     private String password;
     private Set<DBCar> cars;        //cars owned by user
@@ -80,11 +80,11 @@ public class DBUser extends DBIdentified{
     }
 
     @Basic
-    public String getDispname() {
-        return dispname;
+    public String getDisplayName() {
+        return displayName;
     }
-    public void setDispname(String dispname) {
-        this.dispname = dispname;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @ManyToMany
@@ -135,7 +135,7 @@ public class DBUser extends DBIdentified{
     }
 
     public String toString() {
-        return this.getDispname();
+        return this.getDisplayName();
     }
 
 

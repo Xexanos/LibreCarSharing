@@ -28,7 +28,7 @@ class UserService {
     e.preventDefault();
     List<User> returnList = new List<User>();
     var id = Uri.encodeQueryComponent(communityID);
-    HttpRequest.request("/api/community/"+id+"/user", method:"GET").then(
+    HttpRequest.request("../api/community/"+id+"/user", method:"GET").then(
             (HttpRequest resp) {
           List response = JSON.decode(resp.responseText);
           for (int i = 0; i < response.length; i++)
@@ -72,7 +72,7 @@ class UserService {
    */
   User getCurrentUser(dynamic e) {
     e.preventDefault();
-    if (debug) {
+    if (!debug) {
       User user = new User();
       user.username = "max";
       user.displayName = "Max Mustermann";
@@ -80,13 +80,19 @@ class UserService {
       return user;
     }
     else{
-      User userj;
-      HttpRequest.request("/api/currentuser", method: "GET").then(
-              (HttpRequest resp) {
-            userj= JSON.decode(resp.responseText);
 
+      HttpRequest.request("../api/currentuser", method: "GET").then(
+              (HttpRequest resp) {
+            User userj=new User();
+
+            userj.email = "tim@tim.tim";
+            userj.username="tim";
+            userj=JSON.decode(resp.responseText);
+
+
+            return userj;
           }).catchError((n) => print(n));
-      return userj;
+
     }
   }
 

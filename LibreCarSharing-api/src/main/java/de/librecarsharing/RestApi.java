@@ -14,7 +14,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.security.interfaces.RSAKey;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -195,7 +194,7 @@ public class RestApi {
                 {
                     DBUser user=this.entityManager.find(DBUser.class, id);
                     if(user!=null)
-                        Response.ok(new UserNoRef(user)).build();
+                        return Response.ok(new UserNoRef(user)).build();
                     else
                         return Response.status(Response.Status.NOT_FOUND).build();
                 }
@@ -327,7 +326,7 @@ public class RestApi {
                             newride.setEnd(endStamp);
                             newride.setStart(startStamp);
                             newride.setCreator(creator);
-                            newride.setName(creator.getDispname());
+                            newride.setName(creator.getDisplayName());
                             this.entityManager.persist(newride);
                             car.addRide(newride);
                             System.out.println("added" + newride);
@@ -365,7 +364,7 @@ public class RestApi {
         query.select(from).where(predicate);
         if(this.entityManager.createQuery(query).getResultList().size()==0) {
             final DBUser user = new DBUser();
-            user.setDispname(displayname);
+            user.setDisplayName(displayname);
             user.setUsername(username);
             user.setPassword(password);
             user.setEmail(email);
@@ -413,7 +412,7 @@ public class RestApi {
                         if (user != null) {
                             user.setEmail(email);
                             user.setPassword(newpassword);
-                            user.setDispname(displayname);
+                            user.setDisplayName(displayname);
                             user.setImageFile(imagefile);
                         }
                         return Response.ok(new UserNoRef(user)).build();
