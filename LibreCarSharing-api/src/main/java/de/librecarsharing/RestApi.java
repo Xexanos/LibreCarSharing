@@ -6,6 +6,7 @@ import org.apache.shiro.subject.Subject;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
@@ -480,6 +481,7 @@ public class RestApi {
         String info=data.info;
         String licencePlate=data.licencePlate;
         String location=data.location;
+        String type=data.type;
         boolean status=data.status;
         String principal;
         final Subject subject = SecurityUtils.getSubject();
@@ -489,6 +491,7 @@ public class RestApi {
             DBCar car=this.entityManager.find(DBCar.class,carId);
             if(car!=null)
             {
+                DBType typetoset=checktype(type);
                 if(car.getOwner().getUsername().equals(principal)||subject.hasRole("admin"))
                 {
                     car.setColor(color);
@@ -497,6 +500,7 @@ public class RestApi {
                     car.setLicencePlate(licencePlate);
                     car.setLocation(location);
                     car.setStatus(status);
+                    car.setType(typetoset);
                     return Response.ok().build();
 
                 }
@@ -648,19 +652,8 @@ public class RestApi {
         final Subject subject = SecurityUtils.getSubject();
         if(subject!=null&&subject.getPrincipal()!=null)
         {
-            principal =subject.getPrincipal().toString();
+            DBType typetoset=checktype(type);
 
-
-            final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-            final CriteriaQuery<DBType> query = builder.createQuery(DBType.class);
-            final Root<DBType> from = query.from(DBType.class);
-            query.select(from);
-            List<DBType> types=null;//this.entityManager.createQuery(query).getResultList().stream().map(DBType::getName).collect(Collectors.toList());
-            if(!types.contains(type)) {
-                DBType newtype=new DBType();
-                newtype.setName(type);
-                entityManager.persist(newtype);
-            }
             principal = subject.getPrincipal().toString();
             Long iduser=getIdFromUname(principal);
             if(iduser!=null) {
@@ -677,9 +670,11 @@ public class RestApi {
                     car.setStatus(status);
                     this.entityManager.persist(car);
                     user.addCar(car);
+                    car.setType(typetoset);
 
+                    return Response.ok().build();
                 }
-                return Response.ok().build();
+                return Response.status(Response.Status.UNAUTHORIZED).build();
 
 
             }
@@ -778,7 +773,32 @@ public class RestApi {
         return this.entityManager.createQuery(query).getResultList();
 
     }
+private DBType checktype(String type)
+{
+    final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+    final CriteriaQuery<DBType> query = builder.createQuery(DBType.class);
+    final Root<DBType> from = query.from(DBType.class);
+    query.select(from);
+    DBType typetoset=null;
+    List<DBType> types=this.entityManager.createQuery(query).getResultList();
+    List<String> typenames=types.stream().map(DBType::getName).collect(Collectors.toList());
+    if(!typenames.contains(type)) {
+        DBType newtype=new DBType();
+        newtype.setName(type);
+        entityManager.persist(newtype);
+        typetoset=newtype;
+    }
+    else{
+        Predicate where= builder.equal(from.get(DBType_.name),type);
+        query.select(from).where(where);
+        if((types=this.entityManager.createQuery(query).getResultList()).size()==1)
+        {
+            typetoset=types.get(0);
+        }
 
+    }
+    return typetoset;
+}
 
 
 }
