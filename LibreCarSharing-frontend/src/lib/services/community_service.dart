@@ -17,7 +17,7 @@ class CommunityService {
         .then((String responseText) {
       List response = JSON.decode(responseText);
       for (int i = 0; i < response.length; i++) {
-        returnList.add(CommunityImpl.fromJsonString(response.take(i)));
+        returnList.add(new CommunityImpl.fromJsonString(response[i]));
       }
       return returnList;
     }).catchError((n) => print(n));

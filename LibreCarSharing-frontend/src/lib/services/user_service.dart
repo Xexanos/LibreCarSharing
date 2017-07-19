@@ -14,7 +14,7 @@ class UserService {
   Stream userStream;
   StreamController userStreamController;
 
-  bool debug = true;
+  User user = null;
 
   UserService() {
     this.userStreamController = new StreamController();
@@ -31,7 +31,7 @@ class UserService {
         .then((String responseText) {
       List response = JSON.decode(responseText);
       for (int i = 0; i < response.length; i++)
-        returnList.add(UserImpl.fromJsonString(response.take(i)));
+        returnList.add(new UserImpl.fromJsonString(response[i]));
     }).catchError((n) => print(n));
     return returnList;
   }
@@ -40,27 +40,19 @@ class UserService {
    * @param: user The user to login
    */
   void login(String userName, String password) {
-    if (debug) {
+    HttpRequest.postFormData("../login.jsp",
+        {"username": userName, "password": password}).then((request) {
       this.userStreamController.add(this.getCurrentUser());
-    } else {
-      HttpRequest.postFormData("../login.jsp",
-          {"username": userName, "password": password}).then((request) {
-        this.userStreamController.add(this.getCurrentUser());
-      }).catchError((n) => print(n));
-    }
+    }).catchError((n) => print(n));
   }
 
   /** logout user
    *
    */
   void logout() {
-    if (debug) {
-      this.userStreamController.add(null);
-    } else {
-      HttpRequest.request("../logout", method: "GET").then((request) {
-        print(request.getAllResponseHeaders());
-      }).catchError((n) => print(n));
-    }
+    HttpRequest.request("../logout", method: "GET").then((request) {
+      print(request.getAllResponseHeaders());
+    }).catchError((n) => print(n));
   }
 
   /**
@@ -68,7 +60,7 @@ class UserService {
    */
   User getCurrentUser() {
     HttpRequest.getString("../api/currentuser").then((String responseText) {
-      return UserImpl.fromJsonString(responseText);
+      return new UserImpl.fromJsonString(responseText);
     }).catchError((n) => print(n));
   }
 }

@@ -19,7 +19,7 @@ class CarService {
         .then((String responseText) {
       List response = JSON.decode(responseText);
       for (int i = 0; i < response.length; i++) {
-        returnList.add(CarImpl.fromJsonString(response.take(i)));
+        returnList.add(new CarImpl.fromJsonString(response[i]));
       }
       return returnList;
     }).catchError((n) => print(n));
@@ -36,7 +36,7 @@ class CarService {
         .then((String responseText) {
       List response = JSON.decode(responseText);
       for (int i = 0; i < response.length; i++) {
-        returnList.add(CarImpl.fromJsonString(response.take(i)));
+        returnList.add(new CarImpl.fromJsonString(response[i]));
       }
       return returnList;
     }).catchError((n) => print(n));
@@ -46,7 +46,7 @@ class CarService {
     HttpRequest
         .getString("../api/car/" + id.toString())
         .then((String responseText) {
-      return CarImpl.fromJsonString(responseText);
+      return new CarImpl.fromJsonString(responseText);
     });
   }
 }
