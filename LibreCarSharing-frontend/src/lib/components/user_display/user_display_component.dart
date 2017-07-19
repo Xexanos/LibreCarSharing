@@ -15,16 +15,13 @@ import 'package:angular2/router.dart';
 class UserDisplayComponent implements OnInit {
   User user;
 
-  final RouteParams _routeParams;
   final UserService _userService;
 
-  UserDisplayComponent(this._routeParams, this._userService);
+  UserDisplayComponent(this._userService);
 
   @override
   Future<Null> ngOnInit() async {
-    var _id = _routeParams.get('id');
-    var id = int.parse(_id ?? '', onError: (_) => null);
-    if (id != null) user = await (_userService.getUser(id));
+    user = _userService.getCurrentUser();
 
     // TODO: implement ngOnInit
   }

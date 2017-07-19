@@ -15,13 +15,12 @@ class CommunityDisplayComponent implements OnInit {
   List<Community> communities;
   
   final CommunityService _communityService;
-  final UserService _userService;
-  
-  CommunityDisplayComponent(this._communityService, this._userService);
+
+  CommunityDisplayComponent(this._communityService);
   
   @override
   Future<Null> ngOnInit() async {
-    communities = this._communityService.getUserCommunities(this._userService.getCurrentUser().id);
+    communities = this._communityService.getCommunities();
     // TODO: implement ngOnInit
   }
 }

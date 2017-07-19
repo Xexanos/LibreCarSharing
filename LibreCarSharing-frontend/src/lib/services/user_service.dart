@@ -24,13 +24,12 @@ class UserService {
   /** Get all users
    * @param: id The ID of a community
    **/
-  List<User> getCommunityUsers(String communityID) {
+  List<User> getCommunityUsers(int id) {
     List<User> returnList = new List<User>();
-    var id = Uri.encodeQueryComponent(communityID);
     HttpRequest
-        .request("../api/community/" + id + "/user", method: "GET")
-        .then((HttpRequest resp) {
-      List response = JSON.decode(resp.responseText);
+        .getString("../api/community/" + id.toString() + "/user")
+        .then((String responseText) {
+      List response = JSON.decode(responseText);
       for (int i = 0; i < response.length; i++)
         returnList.add(UserImpl.fromJsonString(response.take(i)));
     }).catchError((n) => print(n));
@@ -54,13 +53,11 @@ class UserService {
   /** logout user
    *
    */
-  void logout(dynamic e) {
-    e.preventDefault();
+  void logout() {
     if (debug) {
       this.userStreamController.add(null);
     } else {
       HttpRequest.request("../logout", method: "GET").then((request) {
-        this.userStreamController.add(null);
         print(request.getAllResponseHeaders());
       }).catchError((n) => print(n));
     }
@@ -70,26 +67,8 @@ class UserService {
    * @return: user currently logged in
    */
   User getCurrentUser() {
-    if (debug) {
-      User user = new UserImpl(
-          userName: "max",
-          displayName: "Max Mustermann",
-          email: "max.mustermann@musterdomain.de");
-      return user;
-    } else {
-      HttpRequest.getString("../api/currentuser").then((String responseText) {
-        return UserImpl.fromJsonString(responseText);
-      }).catchError((n) => print(n));
-    }
-  }
-
-  User getUser(int id) {
-    if (debug) {
-      User user = new UserImpl(
-          userName: "max",
-          displayName: "Max Mustermann",
-          email: "max.mustermann@musterdomain.de");
-      return user;
-    }
+    HttpRequest.getString("../api/currentuser").then((String responseText) {
+      return UserImpl.fromJsonString(responseText);
+    }).catchError((n) => print(n));
   }
 }

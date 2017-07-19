@@ -28,10 +28,12 @@ class SidebarBottomComponent implements OnInit {
   }
 
   void logout(dynamic e) {
-    this._userService.logout(e);
+    e.preventDefault();
+    this._userService.logout();
   }
 
   void displayUser(dynamic e) {
-    this._router.navigate(['User', {'id': this.user.id.toString()}]);
+    e.preventDefault();
+    this._router.navigate(['User']);
   }
 }

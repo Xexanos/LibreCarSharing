@@ -8,12 +8,12 @@ import 'package:LibreCarSharingFrontend/implementation/community_impl.dart'; // 
 @Injectable()
 class CommunityService {
   /** Get all communities
-   * @param: id The ID of a user
-   **/
-  List<Community> getUserCommunities(int id) {
+   *
+   */
+  List<Community> getCommunities() {
     List<Community> returnList = new List<Community>();
     HttpRequest
-        .getString("../api/user/" + id.toString() + "/community")
+        .getString("../api/communities")
         .then((String responseText) {
       List response = JSON.decode(responseText);
       for (int i = 0; i < response.length; i++) {
