@@ -12,9 +12,9 @@ class UserImpl extends JsonObject implements User {
     return new JsonObject.fromJsonString(jsonString, new UserImpl());
   }
 
-  UserImpl({int id, String userName, String displayName, String email, String imageFile}) {
+  UserImpl({int id, String username, String displayName, String email, String imageFile}) {
     this.id = id;
-    this.userName = userName;
+    this.username = username;
     this.displayName = displayName;
     this.email = email;
     this.imageFile = imageFile;

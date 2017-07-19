@@ -1,4 +1,3 @@
-import 'user.dart';
 import 'dart:convert';
 
 class Car {

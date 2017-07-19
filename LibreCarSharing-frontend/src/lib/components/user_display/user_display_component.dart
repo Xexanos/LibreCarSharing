@@ -4,7 +4,6 @@ import 'package:LibreCarSharingFrontend/interfaces/user.dart';
 
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:angular2/angular2.dart';
-import 'package:angular2/router.dart';
 
 @Component(
   selector: 'userDisplay',
@@ -21,7 +20,9 @@ class UserDisplayComponent implements OnInit {
 
   @override
   Future<Null> ngOnInit() async {
-    user = _userService.getCurrentUser();
+    _userService.getCurrentUser().then((user) {
+      this.user = user;
+    });
 
     // TODO: implement ngOnInit
   }

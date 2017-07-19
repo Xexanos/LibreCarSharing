@@ -15,56 +15,67 @@ class UserService {
   StreamController userStreamController;
 
   User user = null;
+  Completer completer = new Completer();
 
   UserService() {
     this.userStreamController = new StreamController();
     this.userStream = this.userStreamController.stream;
   }
 
-  /** Get all users
+  /**
+   * Get all users
    * @param: id The ID of a community
    **/
-  List<User> getCommunityUsers(int id) {
+  Future<List<User>> getCommunityUsers(int id) {
     List<User> returnList = new List<User>();
     HttpRequest
         .getString("../api/community/" + id.toString() + "/user")
         .then((String responseText) {
       List response = JSON.decode(responseText);
-      for (int i = 0; i < response.length; i++)
+      for (int i = 0; i < response.length; i++) {
         returnList.add(new UserImpl.fromJsonString(response[i]));
-    }).catchError((n) => print(n));
-    return returnList;
+      }
+      completer.complete(returnList);
+    }).catchError((n) {
+      print("Error in getCommunityUsers.");
+      completer.complete(null);
+    });
+    return completer.future;
   }
 
   /** try to login given user
    * @param: user The user to login
    */
-  void login(String userName, String password) {
+  void login(String username, String password) {
     HttpRequest.postFormData("../login.jsp",
-        {"username": userName, "password": password}).then((request) {
-      this.userStreamController.add(this.getCurrentUser());
-    }).catchError((n) => print(n));
+        {"username": username, "password": password}).then((request) {
+      getCurrentUser().then((User user) => this.userStreamController.add(user));
+    }).catchError((n) => print("Error in login."));
   }
 
-  /** logout user
-   *
+  /**
+   * logout user
    */
   void logout() {
     HttpRequest.request("../logout", method: "GET").then((request) {
       print(request.getAllResponseHeaders());
-    }).catchError((n) => print(n));
+      this.userStreamController.add(null);
+    }).catchError((n) => print("Error in logout."));
   }
-
   /**
    * @return: user currently logged in
    */
-  User getCurrentUser() {
+  Future<User> getCurrentUser() {
     if (user == null) {
       HttpRequest.getString("../api/currentuser").then((String responseText) {
-        return new UserImpl.fromJsonString(responseText);
-      }).catchError((n) => print(n));
+        user = new UserImpl.fromJsonString(responseText);
+        completer.complete(user);
+      }).catchError((Event e) {
+        completer.complete(null);
+      });
     } else {
-      return user;
+      completer.complete(user);
     }
+    return completer.future;
   }
 }

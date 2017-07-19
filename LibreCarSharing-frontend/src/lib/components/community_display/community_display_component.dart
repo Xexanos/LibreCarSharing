@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:LibreCarSharingFrontend/interfaces/community.dart';
 
 import 'package:LibreCarSharingFrontend/services/community_service.dart';
-import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:angular2/angular2.dart';
 
 @Component(

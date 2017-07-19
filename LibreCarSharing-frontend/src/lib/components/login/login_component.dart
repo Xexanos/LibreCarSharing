@@ -12,8 +12,8 @@ import 'package:LibreCarSharingFrontend/services/user_service.dart';
   templateUrl: 'login_component.html',
 )
 class LoginComponent implements OnInit {
-  String userName;
-  String password;
+  String username = "";
+  String password = "";
 
   final UserService _userService;
   final Router _router;
@@ -27,7 +27,7 @@ class LoginComponent implements OnInit {
 
   void login(dynamic e){
     e.preventDefault();
-    this._userService.login(this.userName, this.password);
+    this._userService.login(this.username, this.password);
   }
 
   void routeRegister(dynamic e) {

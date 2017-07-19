@@ -9,7 +9,7 @@ import 'package:angular2/angular2.dart';
   templateUrl: 'register_component.html',
 )
 class RegisterComponent implements OnInit {
-  String userName;
+  String username;
   String password;
   String email;
 
@@ -22,8 +22,8 @@ class RegisterComponent implements OnInit {
   void register(dynamic e) {
     e.preventDefault();
     HttpRequest.postFormData("/register", {
-      "username": this.userName,
-      "displayName": this.userName,
+      "username": this.username,
+      "displayName": this.username,
       "password": this.password,
       "email": this.email
     })
