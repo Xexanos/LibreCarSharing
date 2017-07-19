@@ -43,7 +43,11 @@
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.tuckey</groupId>
+            <artifactId>urlrewritefilter</artifactId>
+            <version>4.0.3</version>
+        </dependency>
         <dependency>
             <groupId>com.github.dzwicker.dart</groupId>
             <artifactId>dart-maven-plugin</artifactId>

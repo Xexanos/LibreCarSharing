@@ -10,11 +10,12 @@ public class UserNoRef {
     {
         this.dbUser=dbUser;
     }
-    public String getDisplayname()
+    public String getDisplayName()
     {
-        return dbUser.getDispname();
+        return dbUser.getDisplayName();
     }
     public long getId() {return dbUser.getId();}
     public String getImageFile() {return dbUser.getImageFile();}
+    public String getEmail(){return dbUser.getEmail();}
 }
 

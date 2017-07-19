@@ -14,7 +14,7 @@ class CommunityService {
     e.preventDefault();
     List<Community> returnList = new List<Community>();
     var id = Uri.encodeQueryComponent(userID);
-    HttpRequest.postFormData("/rest/api/communitiesfromuser", {"id": id}).then(
+    HttpRequest.request("../api/user/"+id+"/community", method: "GET").then(
             (HttpRequest resp) {
           List response = JSON.decode(resp.responseText);
           for (int i = 0; i < response.length; i++)

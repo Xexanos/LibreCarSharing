@@ -1,0 +1,47 @@
+<urlrewrite>
+    <rule>
+        <from>/api/</from>
+        <to last="true">-</to>
+    </rule>
+    <!--<rule match-type="wildcard">
+
+        <condition type="request-uri"
+                   operator="notequal">/librecarsharing/web/packages/**</condition>
+        <condition type="request-uri"
+                   operator="notequal">/librecarsharing/web/fonts/**</condition>
+        <condition type="request-uri"
+                   operator="notequal">../login.jsp</condition>
+        <condition type="request-uri" operator="notequal">/web/index.html</condition>
+        <condition type="request-uri" operator="notequal">/login.jsp</condition>
+        <condition type="request-uri" operator="notequal">**.js</condition>
+        <from>/**</from>
+        <to>/web/index.html</to>
+    </rule>-->
+
+    <rule match-type="wildcard">
+        <from>/web/login</from>
+        <to>/web/index.html</to>
+    </rule>
+    <rule match-type="wildcard">
+        <from>/web/dashboard</from>
+        <to>/web/index.html</to>
+    </rule>
+    <rule match-type="wildcard">
+        <from>/web/register</from>
+        <to>/web/index.html</to>
+    </rule>
+    <rule match-type="wildcard">
+        <from>/web/car/**</from>
+        <to>/web/index.html</to>
+    </rule>
+    <rule match-type="wildcard">
+        <from>/web/user/**</from>
+        <to>/web/index.html</to>
+    </rule>
+    <rule match-type="wildcard">
+        <from>/web/dashboard</from>
+        <to>/web/index.html</to>
+    </rule>
+
+
+</urlrewrite>

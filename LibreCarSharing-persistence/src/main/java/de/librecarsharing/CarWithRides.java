@@ -34,4 +34,5 @@ public class CarWithRides {
     public int getSeats(){return this.dbCar.getSeats();}
     public int getColor(){return this.dbCar.getColor();}
     public boolean isStatus(){return this.dbCar.isStatus();}
+    public String getLicencePlate(){return this.dbCar.getLicencePlate();}
 }

@@ -14,7 +14,7 @@ class UserService {
   Stream userStream;
   StreamController userStreamController;
 
-  bool debug = true;
+  bool debug =false;
 
   UserService() {
     this.userStreamController = new StreamController();
@@ -28,7 +28,7 @@ class UserService {
     e.preventDefault();
     List<User> returnList = new List<User>();
     var id = Uri.encodeQueryComponent(communityID);
-    HttpRequest.postFormData("/rest/api/usersfromcommunity", {"id": id}).then(
+    HttpRequest.request("../api/community/"+id+"/user", method:"GET").then(
             (HttpRequest resp) {
           List response = JSON.decode(resp.responseText);
           for (int i = 0; i < response.length; i++)
@@ -72,17 +72,32 @@ class UserService {
    */
   User getCurrentUser(dynamic e) {
     e.preventDefault();
-    if (debug) {
+    if (!debug) {
       User user = new User();
       user.username = "max";
       user.displayName = "Max Mustermann";
       user.email = "max.mustermann@musterdomain.de";
       return user;
     }
+    else{
+
+      HttpRequest.request("../api/currentuser", method: "GET").then(
+              (HttpRequest resp) {
+            User userj=new User();
+
+            userj.email = "tim@tim.tim";
+            userj.username="tim";
+            userj=JSON.decode(resp.responseText);
+
+
+            return userj;
+          }).catchError((n) => print(n));
+
+    }
   }
 
   User getUser(int id) {
-    if (debug) {
+    if (!debug) {
       User user = new User();
       user.username = "max";
       user.displayName = "Max Mustermann";
