@@ -482,6 +482,7 @@ public class RestApi {
         String licencePlate=data.licencePlate;
         String location=data.location;
         String type=data.type;
+        int seats= data.seats;
         boolean status=data.status;
         String principal;
         final Subject subject = SecurityUtils.getSubject();
@@ -501,6 +502,7 @@ public class RestApi {
                     car.setLocation(location);
                     car.setStatus(status);
                     car.setType(typetoset);
+                    car.setSeats(seats);
                     return Response.ok().build();
 
                 }
@@ -635,56 +637,107 @@ public class RestApi {
 
 
 
-    @Path("community/{comid}/car")
+    @Path("community/{comid}/car")//todo here
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createCarInCommunity(@PathParam("comid") long comId, final JsonCar data) {
-        int color =data.color;
-        String imageFile=data.imageFile;
-        String info=data.info;
-        String licencePlate=data.licencePlate;
-        String location=data.location;
-        String type=data.type;
-
-
-        boolean status=data.status;
+        int color = data.color;
+        String imageFile = data.imageFile;
+        String info = data.info;
+        String licencePlate = data.licencePlate;
+        String location = data.location;
+        String type = data.type;
+        String name = data.name;
+        int seats = data.seats;
+        boolean status = data.status;
         String principal;
+        DBCommunity community = this.entityManager.find(DBCommunity.class, comId);
+        if (community == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
         final Subject subject = SecurityUtils.getSubject();
-        if(subject!=null&&subject.getPrincipal()!=null)
-        {
-            DBType typetoset=checktype(type);
+        if (subject != null && subject.getPrincipal() != null) {
+
 
             principal = subject.getPrincipal().toString();
-            Long iduser=getIdFromUname(principal);
-            if(iduser!=null) {
+            Long iduser = getIdFromUname(principal);
+            if (iduser != null) {
                 DBUser user = this.entityManager.find(DBUser.class, iduser);
-                if(user.getCommunities().stream().map(DBCommunity::getId).collect(Collectors.toList())
-                        .contains(comId)||subject.hasRole("admin")) {
-
+                if (user.getCommunities().stream().map(DBCommunity::getId).collect(Collectors.toList())
+                        .contains(comId) || subject.hasRole("admin")) {
+                    DBType typetoset = checktype(type);
                     DBCar car = new DBCar();
+                    car.setName(name);
                     car.setColor(color);
                     car.setImageFile(imageFile);
                     car.setInfo(info);
                     car.setLicencePlate(licencePlate);
                     car.setLocation(location);
                     car.setStatus(status);
+                    car.setSeats(seats);
                     this.entityManager.persist(car);
                     user.addCar(car);
                     car.setType(typetoset);
+                    community.addCar(car);
 
                     return Response.ok().build();
                 }
-                return Response.status(Response.Status.UNAUTHORIZED).build();
 
 
             }
-            }
-            else {
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            return null;
         }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
 
+    }
+
+    @Path("types")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response getTypeList()
+    {
+        final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        final CriteriaQuery<DBType> query = builder.createQuery(DBType.class);
+        final Root<DBType> from = query.from(DBType.class);
+
+        query.select(from);
+        List<String> types= entityManager.createQuery(query).getResultList().stream().map(DBType::getName).collect(Collectors.toList());
+        return Response.ok(types).build();
+    }
+    @Path("currentuser/car/{typeid}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCarsFromUserWithType(@PathParam("typeid")final long typeId)
+    {
+
+        final Subject subject = SecurityUtils.getSubject();
+
+        if(subject!=null&&subject.getPrincipal()!=null)
+        {
+            Long subid;
+
+
+            subid = this.getIdFromUname(subject.getPrincipal().toString());
+            if((subid!=null) ||subject.hasRole("admin"));
+            {
+                final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+                final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
+                final Root<DBCar> from = query.from(DBCar.class);
+                final Join<DBCar, DBUser> join = from.join(DBCar_.owner);
+                Predicate predicate = builder.equal(join.get(DBCommunity_.id), subid);
+                Predicate typepred = builder.equal(from.get(DBCar_.type.getName()),typeId);
+                Predicate where =builder.or(predicate,typepred);
+                Order order = builder.asc(from.get(DBCar_.name));
+                query.select(from).where(where).orderBy(order);
+                final List<DBCar> cars = this.entityManager.createQuery(query).getResultList();
+                System.out.println("result " + cars);
+                List<CarWithoutRides> response = cars.stream().map(CarWithoutRides::new).collect(Collectors.toList());
+                return Response.ok(response).build();
+            }
+        }
+        System.out.println("failed");
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+
+    }
 
     @Path("community/{comid}/user")
     @POST

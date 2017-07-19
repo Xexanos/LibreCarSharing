@@ -109,6 +109,8 @@ public class StartupBean {
 
         this.entityManager.persist(community2);
         this.entityManager.persist(community1);
+        this.entityManager.persist(smallcar);
+        this.entityManager.persist(transporter);
         this.entityManager.persist(tim);
         this.entityManager.persist(mark);
         this.entityManager.persist(lisa);
