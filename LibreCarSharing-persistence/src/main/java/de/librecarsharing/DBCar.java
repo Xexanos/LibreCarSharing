@@ -14,10 +14,19 @@ public class DBCar extends DBIdentified{
     private String location;
     private int seats;
     private int color;
-    private String status;
+    private String imageFile;
+    private boolean status;
     private String info;
+    private String type;
 
+    @Basic
+    public String getImageFile() {
+        return imageFile;
+    }
 
+    public void setImageFile(String imageFile) {
+        this.imageFile = imageFile;
+    }
 
 
     public DBCar() {
@@ -58,11 +67,20 @@ public class DBCar extends DBIdentified{
     }
 
     @Basic
-    public String getStatus() {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Basic
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

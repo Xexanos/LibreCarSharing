@@ -12,7 +12,16 @@ public class DBRide extends DBIdentified{
     private DBCar car;
     private Timestamp start;
     private Timestamp end;
+    private DBUser creator;
 
+    @ManyToOne
+    public DBUser getCreator() {
+        return creator;
+    }
+
+    public void setCreator(DBUser creator) {
+        this.creator = creator;
+    }
 
     @Basic
     public Timestamp getStart() {
