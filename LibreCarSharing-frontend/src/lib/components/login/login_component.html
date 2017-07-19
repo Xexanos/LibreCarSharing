@@ -1,4 +1,3 @@
-<link href="login_component.css" rel="stylesheet">
 <div class="container">
 
     <form class="form-signin">
@@ -7,7 +6,10 @@
         <input id="username" [(ngModel)]="user.username" type="text" placeholder="Benutzername">
         <label for="inputPassword" class="sr-only">Passwort</label>
         <input id="inputPassword" [(ngModel)]="user.password" type="password" placeholder="Passwort">
-        <input class="btn btn-primary btn-block" type="button" value="Login" type="submit" (click)="login($event)">
+        <button class="btn btn-primary btn-block" (click)="login($event)">
+            Login
+            <span class="fa fa-sign-in"></span>
+        </button>
         <p>Neu hier? <a href="register.html" class="">Registrieren</a></p>
     </form>
 
