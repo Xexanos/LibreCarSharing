@@ -1,0 +1,17 @@
+<div class="sidebarPartDisplay">
+    <div class="sidebarPartDisplayTop" (click)="toggleDisplay()">
+        <div class="sidebarPartDisplayTopLeft"><span>{{title}}</span></div>
+        <div class="sidebarPartDisplayTopRight">
+            <span *ngIf="display" class="fa fa-chevron-up"></span>
+            <span *ngIf="!display" class="fa fa-chevron-down"></span>
+        </div>
+    </div>
+    <div *ngIf="display && cars != null">
+        <div *ngIf="cars.isNotEmpty" class="sidebarCar" *ngFor="let car of cars">
+            <sidebarCarDisplay *ngIf="car != null" [car]="car" (click)="displayCar(car.id)"></sidebarCarDisplay>
+        </div>
+        <div *ngIf="cars.isEmpty" class="sidebarCar">
+            <p>Keine Autos vorhanden</p>
+        </div>
+    </div>
+</div>

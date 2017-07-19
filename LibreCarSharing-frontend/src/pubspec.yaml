@@ -1,4 +1,4 @@
-name: frontend
+name: LibreCarSharingFrontend
 description: A web app that uses AngularDart Components
 version: 0.0.1
 homepage: http://www.librecarsharing.de
@@ -8,6 +8,8 @@ environment:
 dependencies:
   angular2: ^3.0.0
   angular_components: ^0.5.1
+  json_object: any
+  ng_bootstrap: ^0.6.6+1
 
 dev_dependencies:
   angular_test: ^1.0.0-beta+2

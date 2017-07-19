@@ -14,8 +14,11 @@ public class DBCar extends DBIdentified{
     private String location;
     private int seats;
     private int color;
-    private String status;
+    private String imageFile;
+    private String licencePlate;
+    private boolean status;
     private String info;
+    private String type;
 
 
 
@@ -23,6 +26,25 @@ public class DBCar extends DBIdentified{
     public DBCar() {
         this.rides = new HashSet<DBRide>();
     }
+
+    @Basic
+    public String getLicencePlate() {
+        return licencePlate;
+    }
+
+    public void setLicencePlate(String licencePlate) {
+        this.licencePlate = licencePlate;
+    }
+
+    @Basic
+    public String getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(String imageFile) {
+        this.imageFile = imageFile;
+    }
+
     @Basic
     public String getLocation() {
         return location;
@@ -58,15 +80,24 @@ public class DBCar extends DBIdentified{
     }
 
     @Basic
-    public String getStatus() {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Basic
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car" ,cascade=CascadeType.REMOVE)
     public Set<DBRide> getRides(){
         return rides;
     }

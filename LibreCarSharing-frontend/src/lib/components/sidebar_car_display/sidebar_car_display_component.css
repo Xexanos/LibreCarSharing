@@ -1,0 +1,9 @@
+.carImageThumbnail {
+    float: left;
+    height: 6rem;
+}
+.carDisplay {
+    width: 100%;
+    display: inline-block;
+    background-color: lightgray;
+}

@@ -1,8 +1,5 @@
 package de.librecarsharing;
 
-/**
- * Created by Admin on 19.06.2017.
- */
 
 
 
@@ -13,7 +10,6 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.sql.Timestamp;
@@ -50,9 +46,9 @@ public class StartupBean {
         final DBUser tim = new DBUser();
         final DBUser mark = new DBUser();
         final DBUser lisa = new DBUser();
-        tim.setDispname("Tim");
-        mark.setDispname("Mark");
-        lisa.setDispname("Lisa");
+        tim.setDisplayName("Tim");
+        mark.setDisplayName("Mark");
+        lisa.setDisplayName("Lisa");
         final DBCar car1 = new DBCar();
         car1.setName("car1");
         car1.setSeats(5);
@@ -64,23 +60,29 @@ public class StartupBean {
         final DBRide ride1= new DBRide();
         ride1.setStart(Timestamp.valueOf("2017-01-01 12:00:00"));
         ride1.setEnd(Timestamp.valueOf("2017-01-01 13:00:00"));
+        ride1.setCreator(mark);
         ride1.setName("ride1");
         final DBRide ride2= new DBRide();
         ride2.setStart(Timestamp.valueOf("2017-01-01 15:00:00"));
         ride2.setEnd(Timestamp.valueOf("2017-01-01 16:00:00"));
         ride2.setName("ride2");
+        ride2.setCreator(tim);
         final DBRide ride3= new DBRide();
         ride3.setStart(Timestamp.valueOf("2017-01-01 12:00:00"));
         ride3.setEnd(Timestamp.valueOf("2017-01-01 13:00:00"));
         ride3.setName("ride3");
+        ride3.setCreator(lisa);
         final DBRide ride4= new DBRide();
         ride4.setStart(Timestamp.valueOf("2017-01-01 13:00:00"));
         ride4.setEnd(Timestamp.valueOf("2017-01-01 14:00:00"));
         ride4.setName("ride4");
+        ride4.setCreator(lisa);
         car1.addRide(ride1);
         car1.addRide(ride2);
         car2.addRide(ride3);
         car2.addRide(ride4);
+        car1.setStatus(true);
+        car2.setStatus(true);
         mark.addCommunity(community1);
         community2.addUser(lisa);
         community1.addUser(tim);
@@ -133,7 +135,7 @@ public class StartupBean {
         final Root<DBUser> fromUser = query.from(DBUser.class);
         final Join<DBUser,DBCommunity> communityJoin = fromUser.join(DBUser_.communities);
         predicate = builder.equal(communityJoin.get(DBCommunity_.name),"community1");
-        order = builder.asc(fromUser.get(DBUser_.dispname));
+        order = builder.asc(fromUser.get(DBUser_.displayName));
         query.select(fromUser).where(predicate).orderBy(order);
         final List<DBUser> users = this.entityManager.createQuery(query).getResultList();
         System.out.println("result "+ users);

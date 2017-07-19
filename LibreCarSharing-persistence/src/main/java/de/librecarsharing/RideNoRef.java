@@ -13,10 +13,8 @@ public class RideNoRef {
         this.dbRide=ride;
     }
     private DBRide dbRide;
-    private String name;
-    private Date start;
-    private Date end;
     public Timestamp getStart() {return this.dbRide.getStart();}
     public Timestamp getEnd() {return this.dbRide.getEnd();}
     public String getName() {return this.dbRide.getName();}
+    public long getId(){return this.dbRide.getId();}
 }

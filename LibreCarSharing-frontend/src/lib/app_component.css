@@ -1,15 +1,14 @@
 :host {
     /* This is equivalent of the 'body' selector of a page. */
 }
-h1 {
-    text-align: center;
+sidebar {
+    display: inline-block;
+    height: 100%;
+    width: 25%;
 }
-login {
-    display: block;
-    width: 40%;
-    margin-left: auto;
-    margin-right: auto;
-}
-div {
-    float: none;
+.display {
+    display: inline-block;
+    height: 100%;
+    width: 75%;
+    float: right;
 }

@@ -1,6 +1,12 @@
 .carImage {
     float: left;
+    height: 20rem;
 }
-.carBaseInformation {
+.carInformation {
     float: left;
+}
+.carDisplay {
+    width: 100%;
+    display: inline-block;
+    background-color: lightgray;
 }
