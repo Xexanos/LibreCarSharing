@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:LibreCarSharingFrontend/models/car.dart';
+import 'package:LibreCarSharingFrontend/implementation/car_impl.dart';
 import 'package:LibreCarSharingFrontend/components/sidebar_car_display/sidebar_car_display_component.dart';
 
 import 'package:angular2/angular2.dart';
@@ -17,7 +17,7 @@ class SidebarPartDisplayComponent implements OnInit {
   @Input("title")
   String title;
 
-  List<Car> cars;
+  List<CarImpl> cars;
   bool display = false;
 
   final Router _router;
@@ -31,24 +31,27 @@ class SidebarPartDisplayComponent implements OnInit {
     if (!this.display && this.cars == null) {
       // TODO: implement REST API
       this.cars = [
-        new Car(
-            "VW Golf",
-            "https://upload.wikimedia.org/wikipedia/commons/6/6f/Golf_2_v2.jpg",
-            "Kleinwagen",
-            "Dortmund",
-            "DO-AA:11"),
-        new Car(
-            "Mercedes-Benz Sprinter",
-            "https://upload.wikimedia.org/wikipedia/commons/2/2f/Mercedes_sprinter_1_v_sst.jpg",
-            "Transporter",
-            "Dortmund",
-            "DO-BB:22")
+        new CarImpl(
+            name: "VW Golf",
+            imageFile: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Golf_2_v2.jpg",
+            type: "Kleinwagen",
+            location: "Dortmund",
+            licencePlate: "DO-AA:11"),
+        new CarImpl(
+            name: "Mercedes-Benz Sprinter",
+            imageFile: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Mercedes_sprinter_1_v_sst.jpg",
+            type: "Transporter",
+            location: "Dortmund",
+            licencePlate: "DO-BB:22")
       ];
     }
     this.display = !this.display;
   }
 
   void displayCar(int carID) {
-    _router.navigate(['Car', {'id': carID.toString()}]);
+    _router.navigate([
+      'Car',
+      {'id': carID.toString()}
+    ]);
   }
 }

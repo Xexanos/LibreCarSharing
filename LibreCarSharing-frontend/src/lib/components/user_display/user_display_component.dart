@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:LibreCarSharingFrontend/models/user.dart';
+import 'package:LibreCarSharingFrontend/interfaces/user.dart';
 
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:angular2/angular2.dart';

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
 
-import 'package:LibreCarSharingFrontend/interfaces/user_impl.dart';
-import 'package:LibreCarSharingFrontend/models/user.dart';
+import 'package:LibreCarSharingFrontend/implementation/user_impl.dart';
+import 'package:LibreCarSharingFrontend/interfaces/user.dart';
 import 'package:angular2/angular2.dart';
 
 // Import user model
@@ -14,7 +14,7 @@ class UserService {
   Stream userStream;
   StreamController userStreamController;
 
-  bool debug =false;
+  bool debug = true;
 
   UserService() {
     this.userStreamController = new StreamController();
@@ -24,30 +24,29 @@ class UserService {
   /** Get all users
    * @param: id The ID of a community
    **/
-  List<User> getCommunityUsers(dynamic e, String communityID) {
-    e.preventDefault();
+  List<User> getCommunityUsers(String communityID) {
     List<User> returnList = new List<User>();
     var id = Uri.encodeQueryComponent(communityID);
-    HttpRequest.request("../api/community/"+id+"/user", method:"GET").then(
-            (HttpRequest resp) {
-          List response = JSON.decode(resp.responseText);
-          for (int i = 0; i < response.length; i++)
-            returnList.add(UserImpl.fromJsonString(response.take(i)));
-        }).catchError((n) => print(n));
+    HttpRequest
+        .request("../api/community/" + id + "/user", method: "GET")
+        .then((HttpRequest resp) {
+      List response = JSON.decode(resp.responseText);
+      for (int i = 0; i < response.length; i++)
+        returnList.add(UserImpl.fromJsonString(response.take(i)));
+    }).catchError((n) => print(n));
     return returnList;
   }
 
   /** try to login given user
    * @param: user The user to login
    */
-  void login(dynamic e, User user) {
-    e.preventDefault();
+  void login(String userName, String password) {
     if (debug) {
-      this.userStreamController.add(this.getCurrentUser(e));
+      this.userStreamController.add(this.getCurrentUser());
     } else {
       HttpRequest.postFormData("../login.jsp",
-          {"username": user.username, "password": user.password}).then((request) {
-        this.userStreamController.add(this.getCurrentUser(e));
+          {"username": userName, "password": password}).then((request) {
+        this.userStreamController.add(this.getCurrentUser());
       }).catchError((n) => print(n));
     }
   }
@@ -70,38 +69,26 @@ class UserService {
   /**
    * @return: user currently logged in
    */
-  User getCurrentUser(dynamic e) {
-    e.preventDefault();
-    if (!debug) {
-      User user = new User();
-      user.username = "max";
-      user.displayName = "Max Mustermann";
-      user.email = "max.mustermann@musterdomain.de";
+  User getCurrentUser() {
+    if (debug) {
+      User user = new UserImpl(
+          userName: "max",
+          displayName: "Max Mustermann",
+          email: "max.mustermann@musterdomain.de");
       return user;
-    }
-    else{
-
-      HttpRequest.request("../api/currentuser", method: "GET").then(
-              (HttpRequest resp) {
-            User userj=new User();
-
-            userj.email = "tim@tim.tim";
-            userj.username="tim";
-            userj=JSON.decode(resp.responseText);
-
-
-            return userj;
-          }).catchError((n) => print(n));
-
+    } else {
+      HttpRequest.getString("../api/currentuser").then((String responseText) {
+        return UserImpl.fromJsonString(responseText);
+      }).catchError((n) => print(n));
     }
   }
 
   User getUser(int id) {
-    if (!debug) {
-      User user = new User();
-      user.username = "max";
-      user.displayName = "Max Mustermann";
-      user.email = "max.mustermann@musterdomain.de";
+    if (debug) {
+      User user = new UserImpl(
+          userName: "max",
+          displayName: "Max Mustermann",
+          email: "max.mustermann@musterdomain.de");
       return user;
     }
   }

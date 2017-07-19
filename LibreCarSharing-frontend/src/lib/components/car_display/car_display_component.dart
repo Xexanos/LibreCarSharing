@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:LibreCarSharingFrontend/models/car.dart';
+import 'package:LibreCarSharingFrontend/implementation/car_impl.dart';
 
 import 'package:LibreCarSharingFrontend/services/car_service.dart';
 import 'package:angular2/angular2.dart';
@@ -13,7 +13,7 @@ import 'package:angular2/router.dart';
 )
 class CarDisplayComponent implements OnInit {
   @Input("car")
-  Car car;
+  CarImpl car;
 
   @Input("displayFull")
   bool displayFull;

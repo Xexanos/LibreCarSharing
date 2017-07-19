@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:angular2/angular2.dart';
 
-import 'package:LibreCarSharingFrontend/models/user.dart';
 import 'package:angular2/router.dart';
 
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
@@ -13,7 +12,8 @@ import 'package:LibreCarSharingFrontend/services/user_service.dart';
   templateUrl: 'login_component.html',
 )
 class LoginComponent implements OnInit {
-  User user = new User();
+  String userName;
+  String password;
 
   final UserService _userService;
   final Router _router;
@@ -26,7 +26,8 @@ class LoginComponent implements OnInit {
   }
 
   void login(dynamic e){
-    this._userService.login(e, this.user);
+    e.preventDefault();
+    this._userService.login(this.userName, this.password);
   }
 
   void routeRegister(dynamic e) {

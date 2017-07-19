@@ -1,11 +1,12 @@
+<link href="login_component.css" rel="stylesheet">
 <div class="container">
 
     <form class="form-signin">
         <h2 class="form-signin-heading">LibreCarSharing</h2>
         <label for="username" class="sr-only">Benutzername</label>
-        <input id="username" [(ngModel)]="user.username" type="text" placeholder="Benutzername">
+        <input id="username" [(ngModel)]="username" type="text" placeholder="Benutzername">
         <label for="inputPassword" class="sr-only">Passwort</label>
-        <input id="inputPassword" [(ngModel)]="user.password" type="password" placeholder="Passwort">
+        <input id="inputPassword" [(ngModel)]="password" type="password" placeholder="Passwort">
         <button class="btn btn-primary btn-block" (click)="login($event)">
             Login
             <span class="fa fa-sign-in"></span>

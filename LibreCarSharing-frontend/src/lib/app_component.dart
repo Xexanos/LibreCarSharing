@@ -1,10 +1,11 @@
+import 'dart:html';
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
 import 'package:LibreCarSharingFrontend/components/dashboard/dashboard_component.dart';
 import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
 import 'package:LibreCarSharingFrontend/components/register/register_component.dart';
 import 'package:LibreCarSharingFrontend/components/sidebar/sidebar_component.dart';
 import 'package:LibreCarSharingFrontend/components/user_display/user_display_component.dart';
-import 'package:LibreCarSharingFrontend/models/user.dart';
+import 'package:LibreCarSharingFrontend/implementation/user_impl.dart';
 import 'package:LibreCarSharingFrontend/services/car_service.dart';
 import 'package:LibreCarSharingFrontend/services/tab_service.dart';
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
@@ -32,13 +33,13 @@ import 'package:ng_bootstrap/ng_bootstrap.dart';
 class AppComponent {
   String title = "LibreCarSharing";
   bool debug = false;
-  User user;
+  UserImpl user;
 
   final UserService _userService;
   final Router _router;
 
   AppComponent(this._userService, this._router) {
-    this._userService.userStream.listen((User user) {
+    this._userService.userStream.listen((UserImpl user) {
       this.user = user;
       if (this.user == null) {
         _router.navigate(['Login']);
@@ -47,7 +48,7 @@ class AppComponent {
       }
     });
 
-//    this.user = _userService.getCurrentUser(new Event(null));
+    this.user = _userService.getCurrentUser();
     if (this.user == null) {
       _router.navigate(['Login']);
     } else {

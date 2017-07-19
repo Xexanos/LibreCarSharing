@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 
-import 'package:LibreCarSharingFrontend/models/user.dart';
+import 'package:LibreCarSharingFrontend/interfaces/user.dart';
 
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
 

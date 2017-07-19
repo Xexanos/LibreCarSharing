@@ -10,3 +10,7 @@ body {
 * {
     font-family: Roboto, Helvetica, Arial, sans-serif;
 }
+
+.fa-circle {
+    color: #0275d8;
+}

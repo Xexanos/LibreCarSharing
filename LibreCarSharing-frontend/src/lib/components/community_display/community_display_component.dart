@@ -1,7 +1,9 @@
 import 'dart:async';
 
-import 'package:LibreCarSharingFrontend/models/community.dart';
+import 'package:LibreCarSharingFrontend/interfaces/community.dart';
 
+import 'package:LibreCarSharingFrontend/services/community_service.dart';
+import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:angular2/angular2.dart';
 
 @Component(
@@ -10,10 +12,16 @@ import 'package:angular2/angular2.dart';
   templateUrl: 'community_display_component.html',
 )
 class CommunityDisplayComponent implements OnInit {
-  List<Community> communities = [
-    new Community(0, "Community 1"), new Community(1, "Community 2")];
+  List<Community> communities;
+  
+  final CommunityService _communityService;
+  final UserService _userService;
+  
+  CommunityDisplayComponent(this._communityService, this._userService);
+  
   @override
   Future<Null> ngOnInit() async {
+    communities = this._communityService.getUserCommunities(this._userService.getCurrentUser().id);
     // TODO: implement ngOnInit
   }
 }

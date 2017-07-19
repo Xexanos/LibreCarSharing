@@ -4,7 +4,7 @@ import 'package:LibreCarSharingFrontend/components/sidebar_header/sidebar_header
 import 'package:LibreCarSharingFrontend/components/sidebar_cars/sidebar_cars_component.dart';
 import 'package:LibreCarSharingFrontend/components/sidebar_bottom/sidebar_bottom_component.dart';
 
-import 'package:LibreCarSharingFrontend/models/user.dart';
+import 'package:LibreCarSharingFrontend/interfaces/user.dart';
 
 import 'package:angular2/angular2.dart';
 
