@@ -23,7 +23,7 @@ public class CarWithRides {
     {
         return this.dbCar.getName();
     }
-    public String getType() {return this.dbCar.getType();}
+    public String getType() {return this.dbCar.getType().getName();}
     public String getInfo(){return this.dbCar.getInfo();}
     public Set<RideNoRef> getRides()
     {

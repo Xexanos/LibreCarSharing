@@ -56,6 +56,12 @@ public class StartupBean {
         final DBCar car2 = new DBCar();
         car2.setName("car2");
         car2.setSeats(6);
+        final DBType smallcar=new DBType();
+        final DBType transporter= new DBType();
+        smallcar.setName("Kleinwagen");
+        transporter.setName("Transporter");
+        car2.setType(smallcar);
+        car1.setType(transporter);
         lisa.addCar(car2);
         final DBRide ride1= new DBRide();
         ride1.setStart(Timestamp.valueOf("2017-01-01 12:00:00"));

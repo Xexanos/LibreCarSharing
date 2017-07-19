@@ -129,7 +129,7 @@ public class RestApi {
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
-    @Path("allcommunities")
+    @Path("communities")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<CommunityNoRef> getAllcommunities() {
@@ -469,12 +469,12 @@ public class RestApi {
             System.out.println("I");
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
-    @Path("car")
+    @Path("car/{carid}")//TODO: create Car
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateRide(final UpdateCar data) {
-        long carId = data.id;
+    public Response updateCar(@PathParam("carid")final long carId, final JsonCar data) {
+
         int color =data.color;
         String imageFile=data.imageFile;
         String info=data.info;
@@ -628,6 +628,68 @@ public class RestApi {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+
+
+
+    @Path("community/{comid}/car")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createCarInCommunity(@PathParam("comid") long comId, final JsonCar data) {
+        int color =data.color;
+        String imageFile=data.imageFile;
+        String info=data.info;
+        String licencePlate=data.licencePlate;
+        String location=data.location;
+        String type=data.type;
+
+
+        boolean status=data.status;
+        String principal;
+        final Subject subject = SecurityUtils.getSubject();
+        if(subject!=null&&subject.getPrincipal()!=null)
+        {
+            principal =subject.getPrincipal().toString();
+
+
+            final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+            final CriteriaQuery<DBType> query = builder.createQuery(DBType.class);
+            final Root<DBType> from = query.from(DBType.class);
+            query.select(from);
+            List<DBType> types=null;//this.entityManager.createQuery(query).getResultList().stream().map(DBType::getName).collect(Collectors.toList());
+            if(!types.contains(type)) {
+                DBType newtype=new DBType();
+                newtype.setName(type);
+                entityManager.persist(newtype);
+            }
+            principal = subject.getPrincipal().toString();
+            Long iduser=getIdFromUname(principal);
+            if(iduser!=null) {
+                DBUser user = this.entityManager.find(DBUser.class, iduser);
+                if(user.getCommunities().stream().map(DBCommunity::getId).collect(Collectors.toList())
+                        .contains(comId)||subject.hasRole("admin")) {
+
+                    DBCar car = new DBCar();
+                    car.setColor(color);
+                    car.setImageFile(imageFile);
+                    car.setInfo(info);
+                    car.setLicencePlate(licencePlate);
+                    car.setLocation(location);
+                    car.setStatus(status);
+                    this.entityManager.persist(car);
+                    user.addCar(car);
+
+                }
+                return Response.ok().build();
+
+
+            }
+            }
+            else {
+                return Response.status(Response.Status.NOT_FOUND).build();
+            }
+            return null;
+        }
+
 
     @Path("community/{comid}/user")
     @POST
