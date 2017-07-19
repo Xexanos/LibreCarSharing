@@ -59,8 +59,12 @@ class UserService {
    * @return: user currently logged in
    */
   User getCurrentUser() {
-    HttpRequest.getString("../api/currentuser").then((String responseText) {
-      return new UserImpl.fromJsonString(responseText);
-    }).catchError((n) => print(n));
+    if (user == null) {
+      HttpRequest.getString("../api/currentuser").then((String responseText) {
+        return new UserImpl.fromJsonString(responseText);
+      }).catchError((n) => print(n));
+    } else {
+      return user;
+    }
   }
 }
