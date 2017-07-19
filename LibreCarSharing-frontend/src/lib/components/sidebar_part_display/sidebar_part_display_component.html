@@ -2,8 +2,8 @@
     <div class="sidebarPartDisplayTop" (click)="toggleDisplay()">
         <div class="sidebarPartDisplayTopLeft"><span>{{title}}</span></div>
         <div class="sidebarPartDisplayTopRight">
-            <span *ngIf="display" class="fa fa-chevron-up fa-2x"></span>
-            <span *ngIf="!display" class="fa fa-chevron-down fa-2x"></span>
+            <span *ngIf="display" class="fa fa-chevron-up"></span>
+            <span *ngIf="!display" class="fa fa-chevron-down"></span>
         </div>
     </div>
     <div *ngIf="display && cars != null">
