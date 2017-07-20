@@ -75,6 +75,7 @@ class UserService {
         user = new UserImpl.fromJsonString(responseText);
         completer.complete(user);
       }).catchError((Event e) {
+        print("Error in getCurrentUser.");
         completer.complete(null);
       });
     } else {
@@ -95,7 +96,9 @@ class UserService {
     if (user.imageFile == null) user.imageFile = "";
     HttpRequest.request("../api/user/" + user.id.toString(),
         method: "PUT",
-        requestHeaders: {"Content-Type": "application/json"},
+        requestHeaders: {
+          "Content-Type": "application/json"
+        },
         sendData: {
           '"username"': '"' + user.username + '"',
           '"password"': '"' + password + '"',
@@ -111,7 +114,26 @@ class UserService {
         completer.complete(null);
       }
     }).catchError((Event e) {
+      print("Error in changeUser.");
       completer.complete(null);
+    });
+    return completer.future;
+  }
+
+  Future<int> registerUser(String username, String password, String email) {
+    Completer completer = new Completer();
+
+    HttpRequest.postFormData("/register", {
+      "username": username,
+      "displayName": username,
+      "password": password,
+      "email": email
+    }).then((HttpRequest response) {
+        completer.complete(response.status);
+
+    }).catchError((Event e) {
+      print("Error in registerUser.");
+      completer.complete(0);
     });
     return completer.future;
   }

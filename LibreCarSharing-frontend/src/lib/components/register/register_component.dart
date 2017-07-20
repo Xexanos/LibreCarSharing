@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:html';
 
+import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:angular2/angular2.dart';
 
 @Component(
@@ -13,19 +13,16 @@ class RegisterComponent implements OnInit {
   String password;
   String email;
 
+  final UserService _userService;
+
+  RegisterComponent(this._userService);
+
   @override
   Future<Null> ngOnInit() async {}
 
-  // TODO: move to user_service
-  void register(dynamic e) {
+  register(dynamic e) async {
     e.preventDefault();
-    HttpRequest.postFormData("/register", {
-      "username": this.username,
-      "displayName": this.username,
-      "password": this.password,
-      "email": this.email
-    })
-        .then((request) {})
-        .catchError((n) => print(n));
+    int status = await _userService.registerUser(username, password, email);
+    //TODO: react to status
   }
 }
