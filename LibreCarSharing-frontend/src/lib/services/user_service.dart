@@ -92,6 +92,7 @@ class UserService {
   Future<User> changeUser(User user, String password, String newPassword) {
     Completer completer = new Completer();
 
+    if (user.imageFile == null) user.imageFile = "";
     HttpRequest.request("../api/user/" + user.id.toString(),
         method: "PUT",
         requestHeaders: {"Content-Type": "application/json"},
@@ -100,7 +101,7 @@ class UserService {
           '"password"': '"' + password + '"',
           '"email"': '"' + user.email + '"',
           '"displayName"': '"' + user.displayName + '"',
-//          '"imageFile"': '"' + user.imageFile + '"',
+          '"imageFile"': '"' + user.imageFile + '"',
           '"newPasswort"': '"' + newPassword + '"'
         }).then((HttpRequest response) {
       if (response.status == 200) {
