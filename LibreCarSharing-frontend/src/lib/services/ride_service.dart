@@ -89,7 +89,7 @@ class RideService {
 
   /**
    * Delete an existing ride
-   * @param: rideId id of the ride beeing deleted
+   * @param: rideId id of the ride being deleted
    */
   Future<bool> deleteRide(int rideId) {
     Completer completer=new Completer();

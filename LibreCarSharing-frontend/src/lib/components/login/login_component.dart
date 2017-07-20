@@ -10,15 +10,15 @@ import 'package:LibreCarSharingFrontend/services/user_service.dart';
   selector: 'login',
   styleUrls: const ['login_component.css'],
   templateUrl: 'login_component.html',
+  directives: const [ROUTER_DIRECTIVES],
 )
 class LoginComponent implements OnInit {
   String username = "";
   String password = "";
 
   final UserService _userService;
-  final Router _router;
 
-  LoginComponent(this._userService, this._router);
+  LoginComponent(this._userService);
 
   @override
   Future<Null> ngOnInit() async {}
@@ -28,8 +28,4 @@ class LoginComponent implements OnInit {
     this._userService.login(this.username, this.password);
   }
 
-  void routeRegister(dynamic e) {
-    e.preventDefault();
-    _router.navigate(["Register"]);
-  }
 }
