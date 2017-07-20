@@ -120,6 +120,13 @@ class UserService {
     return completer.future;
   }
 
+  /**
+   * register new user
+   * @param: username
+   * @param password
+   * @param: email
+   * @return: HTML status code to handle exceptions
+   */
   Future<int> registerUser(String username, String password, String email) {
     Completer completer = new Completer();
 
@@ -129,8 +136,7 @@ class UserService {
       "password": password,
       "email": email
     }).then((HttpRequest response) {
-        completer.complete(response.status);
-
+      completer.complete(response.status);
     }).catchError((Event e) {
       print("Error in registerUser.");
       completer.complete(0);

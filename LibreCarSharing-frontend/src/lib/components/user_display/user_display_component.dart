@@ -26,10 +26,10 @@ class UserDisplayComponent implements OnInit {
     user = await _userService.getCurrentUser();
   }
 
-  void sendChanges(dynamic e) {
+  sendChanges(dynamic e) async {
     e.preventDefault();
     if (newPassword == newPassword2) {
-      _userService.changeUser(user, password, newPassword).then((User user) => this.user);
+      user = await _userService.changeUser(user, password, newPassword);
     }
   }
 }

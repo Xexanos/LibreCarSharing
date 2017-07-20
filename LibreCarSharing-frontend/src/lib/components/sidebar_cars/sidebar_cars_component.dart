@@ -1,22 +1,22 @@
 import 'dart:async';
+import 'package:angular2/angular2.dart';
+import 'package:ng_bootstrap/components/accordion/accordion.dart';
 
 import 'package:LibreCarSharingFrontend/components/sidebar_part_display/sidebar_part_display_component.dart';
-
 import 'package:LibreCarSharingFrontend/interfaces/part.dart';
 import 'package:LibreCarSharingFrontend/services/community_service.dart';
 import 'package:LibreCarSharingFrontend/services/tab_service.dart';
 import 'package:LibreCarSharingFrontend/services/type_service.dart';
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
-import 'package:angular2/angular2.dart';
-import 'package:ng_bootstrap/components/accordion/accordion.dart';
-
 
 @Component(
   selector: 'sidebarCars',
   styleUrls: const ['sidebar_cars_component.css'],
   templateUrl: 'sidebar_cars_component.html',
   directives: const [
-    NG_BOOTSTRAP_ACCORDION_DIRECTIVES, SidebarPartDisplayComponent],
+    NG_BOOTSTRAP_ACCORDION_DIRECTIVES,
+    SidebarPartDisplayComponent
+  ],
 )
 class SidebarCarsComponent implements OnInit {
   @Input("orderBy")
@@ -29,7 +29,8 @@ class SidebarCarsComponent implements OnInit {
   final UserService _userService;
   final TypeService _typeService;
 
-  SidebarCarsComponent(this._tabService, this._communityService, this._userService, this._typeService);
+  SidebarCarsComponent(this._tabService, this._communityService,
+      this._userService, this._typeService);
 
   @override
   Future<Null> ngOnInit() async {

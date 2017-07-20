@@ -34,7 +34,7 @@ class SidebarPartDisplayComponent implements OnInit {
   SidebarPartDisplayComponent(
       this._router, this._userService, this._carService);
 
-  Future toggleDisplay() {
+  toggleDisplay() {
     if (!display && cars == null) {
       _userService.getCurrentUser().then((user) async {
         switch (kind) {
@@ -42,8 +42,7 @@ class SidebarPartDisplayComponent implements OnInit {
             cars = await _carService.getCommunityCars(title.id);
             break;
           case "types":
-            cars = await _carService
-                .getTypeCars(title.id);
+            cars = await _carService.getTypeCars(title.id);
             break;
           default:
             cars = null;

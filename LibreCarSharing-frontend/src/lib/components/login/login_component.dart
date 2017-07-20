@@ -27,5 +27,4 @@ class LoginComponent implements OnInit {
     e.preventDefault();
     this._userService.login(this.username, this.password);
   }
-
 }

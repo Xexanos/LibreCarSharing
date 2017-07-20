@@ -1,8 +1,7 @@
 import 'dart:async';
+import 'package:angular2/angular2.dart';
 
 import 'package:LibreCarSharingFrontend/interfaces/car.dart';
-
-import 'package:angular2/angular2.dart';
 
 @Component(
   selector: 'sidebarCarDisplay',
