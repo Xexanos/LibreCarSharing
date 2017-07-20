@@ -1,8 +1,5 @@
 package de.librecarsharing;
 
-/**
- * Created by fred on 30.06.17.
- */
 public class UserNoRef {
 
     private DBUser dbUser;
@@ -17,5 +14,6 @@ public class UserNoRef {
     public long getId() {return dbUser.getId();}
     public String getImageFile() {return dbUser.getImageFile();}
     public String getEmail(){return dbUser.getEmail();}
+    public String getUsername(){return dbUser.getUsername();}
 }
 
