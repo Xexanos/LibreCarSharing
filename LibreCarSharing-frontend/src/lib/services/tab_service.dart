@@ -5,17 +5,17 @@ import 'package:angular2/angular2.dart';
 @Injectable()
 class TabService{
   Stream tabStream;
-  StreamController tabStreamController;
+  StreamController _tabStreamController;
 
   List<String> tabTexts = ["Communities", "Typ"];
   List<String> tabOrderBy = ["communities", "types"];
 
   TabService() {
-    this.tabStreamController = new StreamController();
-    this.tabStream = this.tabStreamController.stream;
+    _tabStreamController = new StreamController();
+    tabStream = _tabStreamController.stream;
   }
 
   void activateTab(int i) {
-    this.tabStreamController.add(this.tabOrderBy[i]);
+    _tabStreamController.add(tabOrderBy[i]);
   }
 }

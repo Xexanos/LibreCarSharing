@@ -1,5 +1,9 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto);
-@import url(https://fonts.googleapis.com/css?family=Material+Icons);
+@font-face {
+    font-family: 'Work Sans Medium';
+    src: url('fonts/work-sans/fonts/webfonts/woff2/WorkSans-Medium.woff2') format('woff2');
+    src: url('fonts/work-sans/fonts/webfonts/woff/WorkSans-Medium.woff') format('woff');
+    src: url('fonts/work-sans/fonts/webfonts/ttf/WorkSans-Medium.ttf') format('ttf');
+}
 
 body {
     max-width: 100%;
@@ -8,7 +12,7 @@ body {
 }
 
 * {
-    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Work Sans Medium', Helvetica, Arial, sans-serif;
 }
 
 .fa-circle {

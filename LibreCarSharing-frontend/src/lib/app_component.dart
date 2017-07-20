@@ -6,8 +6,10 @@ import 'package:LibreCarSharingFrontend/components/sidebar/sidebar_component.dar
 import 'package:LibreCarSharingFrontend/components/user_display/user_display_component.dart';
 import 'package:LibreCarSharingFrontend/interfaces/user.dart';
 import 'package:LibreCarSharingFrontend/services/car_service.dart';
+import 'package:LibreCarSharingFrontend/services/community_service.dart';
 import 'package:LibreCarSharingFrontend/services/tab_service.dart';
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
+import 'package:LibreCarSharingFrontend/services/type_service.dart';
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 import 'package:ng_bootstrap/ng_bootstrap.dart';
@@ -20,7 +22,7 @@ import 'package:ng_bootstrap/ng_bootstrap.dart';
   styleUrls: const ['app_component.css'],
   templateUrl: 'app_component.html',
   directives: const [BS_DIRECTIVES, ROUTER_DIRECTIVES, SidebarComponent],
-  providers: const [ROUTER_PROVIDERS, CarService, UserService, TabService],
+  providers: const [ROUTER_PROVIDERS, CarService, UserService, TabService, CommunityService, TypeService],
 )
 @RouteConfig(const [
   const Route(path: '/login', name: 'Login', component: LoginComponent),

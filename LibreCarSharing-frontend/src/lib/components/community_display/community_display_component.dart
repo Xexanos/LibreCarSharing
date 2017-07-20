@@ -12,14 +12,13 @@ import 'package:angular2/angular2.dart';
 )
 class CommunityDisplayComponent implements OnInit {
   List<Community> communities;
-  
+
   final CommunityService _communityService;
 
   CommunityDisplayComponent(this._communityService);
-  
+
   @override
   Future<Null> ngOnInit() async {
-    communities = this._communityService.getCommunities();
-    // TODO: implement ngOnInit
+    communities = await _communityService.getCommunities();
   }
 }

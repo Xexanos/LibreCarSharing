@@ -10,6 +10,7 @@ class CommunityImpl extends JsonObject implements Community {
   factory CommunityImpl.fromJsonString(String jsonString){
     return new JsonObject.fromJsonString(jsonString, new CommunityImpl());
   }
+
   CommunityImpl({int id, String name}) {
     this.id = id;
     this.name = name;

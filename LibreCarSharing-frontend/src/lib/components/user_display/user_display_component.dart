@@ -12,7 +12,10 @@ import 'package:angular2/angular2.dart';
   directives: const [COMMON_DIRECTIVES],
 )
 class UserDisplayComponent implements OnInit {
-  User user;
+  User user = null;
+  String password = "";
+  String newPassword = "";
+  String newPassword2 = "";
 
   final UserService _userService;
 
@@ -20,14 +23,13 @@ class UserDisplayComponent implements OnInit {
 
   @override
   Future<Null> ngOnInit() async {
-    _userService.getCurrentUser().then((user) {
-      this.user = user;
-    });
-
-    // TODO: implement ngOnInit
+    user = await _userService.getCurrentUser();
   }
 
   void sendChanges(dynamic e) {
-    //TODO: Send changes to backend
+    e.preventDefault();
+    if (newPassword == newPassword2) {
+      _userService.changeUser(user, password, newPassword).then((User user) => this.user);
+    }
   }
 }

@@ -1,4 +1,3 @@
-abstract class Community {
-  int id;
-  String name;
-}
+import 'package:LibreCarSharingFrontend/interfaces/part.dart';
+
+abstract class Community implements Part {}
