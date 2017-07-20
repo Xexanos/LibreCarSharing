@@ -5,6 +5,9 @@ import 'package:LibreCarSharingFrontend/components/sidebar_car_display/sidebar_c
 
 import 'package:LibreCarSharingFrontend/interfaces/car.dart';
 import 'package:LibreCarSharingFrontend/interfaces/part.dart';
+import 'package:LibreCarSharingFrontend/services/community_service.dart';
+import 'package:LibreCarSharingFrontend/services/type_service.dart';
+import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 
@@ -18,18 +21,25 @@ class SidebarPartDisplayComponent implements OnInit {
   @Input("title")
   Part title;
 
+  @Input("kind")
+  String kind;
+
   List<Car> cars;
   bool display = false;
 
   final Router _router;
+  final UserService _userService;
+  final TypeService _typeService;
+  final CommunityService _communityService;
 
   @override
   Future<Null> ngOnInit() async {}
 
-  SidebarPartDisplayComponent(this._router);
+  SidebarPartDisplayComponent(this._router, this._userService, this._typeService, this._communityService);
 
   void toggleDisplay() {
     if (!this.display && this.cars == null) {
+
       // TODO: implement REST API
       this.cars = [
         new CarImpl(

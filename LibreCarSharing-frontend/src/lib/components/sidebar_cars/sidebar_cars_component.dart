@@ -5,6 +5,7 @@ import 'package:LibreCarSharingFrontend/components/sidebar_part_display/sidebar_
 import 'package:LibreCarSharingFrontend/interfaces/part.dart';
 import 'package:LibreCarSharingFrontend/services/community_service.dart';
 import 'package:LibreCarSharingFrontend/services/tab_service.dart';
+import 'package:LibreCarSharingFrontend/services/type_service.dart';
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:angular2/angular2.dart';
 import 'package:ng_bootstrap/components/accordion/accordion.dart';
@@ -26,8 +27,9 @@ class SidebarCarsComponent implements OnInit {
   final TabService _tabService;
   final CommunityService _communityService;
   final UserService _userService;
+  final TypeService _typeService;
 
-  SidebarCarsComponent(this._tabService, this._communityService, this._userService);
+  SidebarCarsComponent(this._tabService, this._communityService, this._userService, this._typeService);
 
   @override
   Future<Null> ngOnInit() async {
@@ -41,7 +43,9 @@ class SidebarCarsComponent implements OnInit {
   setTitles() {
     _userService.getCurrentUser().then((user) {
       if (this.orderBy == "types") {
-        //this.titles = ["Kleinwagen", "Transporter", "Sportwagen"];
+        _typeService.getUserType(user.id).then((List<Part> types) {
+          titles = types;
+        });
       } else if (this.orderBy == "communities") {
         _communityService.getUserCommunity(user.id).then((List<Part> communities) {
           titles = communities;
