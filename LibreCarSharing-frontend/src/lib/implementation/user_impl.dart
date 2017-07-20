@@ -4,10 +4,10 @@ import 'package:LibreCarSharingFrontend/interfaces/user.dart';
 
 
 class UserImpl extends JsonObject implements User {
+
   /**
    * This factory creates a car object from a JSON string
    */
-
   factory UserImpl.fromJsonString(String jsonString){
     return new JsonObject.fromJsonString(jsonString, new UserImpl());
   }

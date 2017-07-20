@@ -12,7 +12,7 @@ import 'package:angular2/angular2.dart';
   directives: const [COMMON_DIRECTIVES],
 )
 class UserDisplayComponent implements OnInit {
-  User user;
+  User user = null;
 
   final UserService _userService;
 
@@ -23,8 +23,6 @@ class UserDisplayComponent implements OnInit {
     _userService.getCurrentUser().then((user) {
       this.user = user;
     });
-
-    // TODO: implement ngOnInit
   }
 
   void sendChanges(dynamic e) {
