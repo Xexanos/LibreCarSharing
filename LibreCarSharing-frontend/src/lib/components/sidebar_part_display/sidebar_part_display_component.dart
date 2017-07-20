@@ -3,21 +3,22 @@ import 'dart:async';
 import 'package:LibreCarSharingFrontend/implementation/car_impl.dart';
 import 'package:LibreCarSharingFrontend/components/sidebar_car_display/sidebar_car_display_component.dart';
 
+import 'package:LibreCarSharingFrontend/interfaces/car.dart';
+import 'package:LibreCarSharingFrontend/interfaces/part.dart';
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
-import 'package:angular_components/angular_components.dart';
 
 @Component(
   selector: 'sidebarPartDisplay',
   styleUrls: const ['sidebar_part_display_component.css'],
   templateUrl: 'sidebar_part_display_component.html',
-  directives: const [SidebarCarDisplayComponent, GlyphComponent],
+  directives: const [SidebarCarDisplayComponent],
 )
 class SidebarPartDisplayComponent implements OnInit {
   @Input("title")
-  String title;
+  Part title;
 
-  List<CarImpl> cars;
+  List<Car> cars;
   bool display = false;
 
   final Router _router;

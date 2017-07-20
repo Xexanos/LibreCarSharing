@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:LibreCarSharingFrontend/components/sidebar_part_display/sidebar_part_display_component.dart';
 
+import 'package:LibreCarSharingFrontend/interfaces/part.dart';
+import 'package:LibreCarSharingFrontend/services/community_service.dart';
 import 'package:LibreCarSharingFrontend/services/tab_service.dart';
+import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:angular2/angular2.dart';
 import 'package:ng_bootstrap/components/accordion/accordion.dart';
 
@@ -18,11 +21,13 @@ class SidebarCarsComponent implements OnInit {
   @Input("orderBy")
   String orderBy;
 
-  List<String> titles = [];
+  List<Part> titles = [];
 
   final TabService _tabService;
+  final CommunityService _communityService;
+  final UserService _userService;
 
-  SidebarCarsComponent(this._tabService);
+  SidebarCarsComponent(this._tabService, this._communityService, this._userService);
 
   @override
   Future<Null> ngOnInit() async {
@@ -33,12 +38,16 @@ class SidebarCarsComponent implements OnInit {
     });
   }
 
-  String setTitles() {
-    if (this.orderBy == "types") {
-      this.titles = ["Kleinwagen", "Transporter", "Sportwagen"];
-    } else if (this.orderBy == "communities") {
-      this.titles = ["Dortmund", "Bochum", "Essen"];
-    }
+  setTitles() {
+    _userService.getCurrentUser().then((user) {
+      if (this.orderBy == "types") {
+        //this.titles = ["Kleinwagen", "Transporter", "Sportwagen"];
+      } else if (this.orderBy == "communities") {
+        _communityService.getUserCommunity(user.id).then((List<Part> communities) {
+          titles = communities;
+        });
+      }
+    });
     // TODO: implement REST API
   }
 }
