@@ -19,9 +19,6 @@ class CommunityDisplayComponent implements OnInit {
 
   @override
   Future<Null> ngOnInit() async {
-    this
-        ._communityService
-        .getCommunities()
-        .then((List<Community> communities) => this.communities = communities);
+    communities = await _communityService.getCommunities();
   }
 }

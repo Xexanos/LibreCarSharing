@@ -23,9 +23,7 @@ class UserDisplayComponent implements OnInit {
 
   @override
   Future<Null> ngOnInit() async {
-    _userService.getCurrentUser().then((user) {
-      this.user = user;
-    });
+    user = await _userService.getCurrentUser();
   }
 
   void sendChanges(dynamic e) {

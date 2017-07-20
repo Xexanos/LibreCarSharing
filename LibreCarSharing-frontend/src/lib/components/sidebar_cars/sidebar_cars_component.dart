@@ -41,17 +41,12 @@ class SidebarCarsComponent implements OnInit {
   }
 
   setTitles() {
-    _userService.getCurrentUser().then((user) {
+    _userService.getCurrentUser().then((user) async {
       if (this.orderBy == "types") {
-        _typeService.getUserType(user.id).then((List<Part> types) {
-          titles = types;
-        });
+        titles = await _typeService.getUserType(user.id);
       } else if (this.orderBy == "communities") {
-        _communityService.getUserCommunity(user.id).then((List<Part> communities) {
-          titles = communities;
-        });
+        titles = await _communityService.getUserCommunity(user.id);
       }
     });
-    // TODO: implement REST API
   }
 }

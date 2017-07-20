@@ -1,15 +1,12 @@
 import 'dart:async';
-
-import 'package:LibreCarSharingFrontend/implementation/car_impl.dart';
-import 'package:LibreCarSharingFrontend/components/sidebar_car_display/sidebar_car_display_component.dart';
-
-import 'package:LibreCarSharingFrontend/interfaces/car.dart';
-import 'package:LibreCarSharingFrontend/interfaces/part.dart';
-import 'package:LibreCarSharingFrontend/services/community_service.dart';
-import 'package:LibreCarSharingFrontend/services/type_service.dart';
-import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
+
+import 'package:LibreCarSharingFrontend/components/sidebar_car_display/sidebar_car_display_component.dart';
+import 'package:LibreCarSharingFrontend/interfaces/car.dart';
+import 'package:LibreCarSharingFrontend/interfaces/part.dart';
+import 'package:LibreCarSharingFrontend/services/car_service.dart';
+import 'package:LibreCarSharingFrontend/services/user_service.dart';
 
 @Component(
   selector: 'sidebarPartDisplay',
@@ -29,32 +26,29 @@ class SidebarPartDisplayComponent implements OnInit {
 
   final Router _router;
   final UserService _userService;
-  final TypeService _typeService;
-  final CommunityService _communityService;
+  final CarService _carService;
 
   @override
   Future<Null> ngOnInit() async {}
 
-  SidebarPartDisplayComponent(this._router, this._userService, this._typeService, this._communityService);
+  SidebarPartDisplayComponent(
+      this._router, this._userService, this._carService);
 
-  void toggleDisplay() {
-    if (!this.display && this.cars == null) {
-
-      // TODO: implement REST API
-      this.cars = [
-        new CarImpl(
-            name: "VW Golf",
-            imageFile: "https://upload.wikimedia.org/wikipedia/commons/6/6f/Golf_2_v2.jpg",
-            type: "Kleinwagen",
-            location: "Dortmund",
-            licencePlate: "DO-AA:11"),
-        new CarImpl(
-            name: "Mercedes-Benz Sprinter",
-            imageFile: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Mercedes_sprinter_1_v_sst.jpg",
-            type: "Transporter",
-            location: "Dortmund",
-            licencePlate: "DO-BB:22")
-      ];
+  Future toggleDisplay() {
+    if (!display && cars == null) {
+      _userService.getCurrentUser().then((user) async {
+        switch (kind) {
+          case "communities":
+            cars = await _carService.getCommunityCars(title.id);
+            break;
+          case "types":
+            cars = await _carService
+                .getTypeCars(title.id);
+            break;
+          default:
+            cars = null;
+        }
+      });
     }
     this.display = !this.display;
   }
