@@ -256,15 +256,24 @@ public class RestApi {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRideById(@PathParam("rideid") final long id) {
+    public Response getRideById(@PathParam("rideid") final long rideId) {
 
         final Subject subject = SecurityUtils.getSubject();
-        if(subject==null)
+        if(subject==null||subject.getPrincipal()==null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        if(subject.hasRole("admin"))
-            return Response.ok(this.entityManager.find(DBRide.class, id)).build();
-        else
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+        String principal = subject.getPrincipal().toString();
+        Long subid= getIdFromUname(principal);
+        if(subid!=null) {
+            DBUser user=this.entityManager.find(DBUser.class, subid);
+            DBRide ride= this.entityManager.find(DBRide.class,rideId);
+            if(user!=null&&ride!=null) {
+                if (subject.hasRole("admin")||ride.getCar().getCommunity().getUsers().stream().map(DBUser::getId).collect(Collectors.toList()).contains(user.getId()))
+                    return Response.ok(new RideNoRef(ride)).build();
+                else
+                    return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @Path("car/{carid}")
@@ -273,13 +282,21 @@ public class RestApi {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCarById(@PathParam("carid") final long carId) {
         final Subject subject = SecurityUtils.getSubject();
-        if(subject==null)
+        if(subject==null||subject.getPrincipal()==null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        if(subject.hasRole("admin"))
-            return Response.ok(this.entityManager.find(DBCar.class, carId)).build();
-        else
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-
+        String principal = subject.getPrincipal().toString();
+        Long subid= getIdFromUname(principal);
+        if(subid!=null) {
+            DBUser user=this.entityManager.find(DBUser.class, subid);
+            DBCar car= this.entityManager.find(DBCar.class,carId);
+            if(user!=null&&car!=null) {
+                if (subject.hasRole("admin")||car.getCommunity().getUsers().stream().map(DBUser::getId).collect(Collectors.toList()).contains(user.getId()))
+                        return Response.ok(new CarWithoutRides(car)).build();
+                    else
+                        return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @Path("community/{comid}")//comid
@@ -289,12 +306,21 @@ public class RestApi {
     public Response getCommunityById(@PathParam("comid")final long comId) {
 
         final Subject subject = SecurityUtils.getSubject();
-        if(subject==null)
+        if(subject==null||subject.getPrincipal()==null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
-        if(subject.hasRole("admin"))
-            return Response.ok(this.entityManager.find(DBCommunity.class, comId)).build();
-        else
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+        String principal = subject.getPrincipal().toString();
+        Long subid= getIdFromUname(principal);
+        if(subid!=null) {
+            DBUser user=this.entityManager.find(DBUser.class, subid);
+            DBCommunity community= this.entityManager.find(DBCommunity.class,comId);
+            if(user!=null&&community!=null) {
+                if (subject.hasRole("admin")||community.getUsers().stream().map(DBUser::getId).collect(Collectors.toList()).contains(user.getId()))
+                    return Response.ok(new CommunityNoRef(community)).build();
+                else
+                    return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
 
     }
     @Path("car/{carid}/ride")
@@ -349,32 +375,10 @@ public class RestApi {
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
-    @Path("user")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response register(final Credentials data){
-        String username= data.username;
-        String password= data.password;
-        String email= data.email;
-        String displayName= data.displayName;
-        if(username==null||password==null||email==null|| displayName==null)
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        if(isValidEmailAddress(email)&&isValidPasword(password))
-        {
-            DBUser user= new DBUser();
-            user.setPassword(password);
-            user.setEmail(email);
-            user.setImageFile("");
-            user.setUsername(username);
-            user.setDisplayName(displayName);
-            
-
-        }
-
-    }
 
 
-    @Path("user/{userid}")//update todo:check if null maby , username to lowercase
+
+    @Path("user/{userid}")//update
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -385,86 +389,39 @@ public class RestApi {
         String displayName = data.displayName;
         String imageFile = data.imageFile;
         String newPassword = data.newPassword;
-        if(email==null)email="";
+        if(username==null||password==null||email==null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        username=username.toLowerCase();
+        if(displayName==null||!isValidNotJustSpace(displayName))
+            displayName=username;
+        if(newPassword==null)
+            newPassword=password;
         String principal;
+
         final Subject subject = SecurityUtils.getSubject();
         if (subject != null && subject.getPrincipal() != null) {
             principal = subject.getPrincipal().toString();
             if (principal.equals(username)) {
                 DBUser user = this.entityManager.find(DBUser.class, userId);
-
-                if (user != null&& user.getUsername() != null  &&user.getUsername().equals(username)&& user.getPassword() != null && password.equals(user.getPassword())) {
-                    if (!isValidEmailAddress(email)) {
+                if (user != null&& user.getUsername()!= null&&user.getUsername().equals(username)&&
+                        user.getPassword() != null && (password.equals(user.getPassword())||subject.hasRole("admin"))) {
+                    if (!isValidEmailAddress(email)||!isValidPasword(newPassword)) {
                         return Response.status(Response.Status.BAD_REQUEST).build();
                     }
-
                     user.setEmail(email);
                     user.setDisplayName(displayName);
                     user.setImageFile(imageFile);
-
-                    if (newPassword!=null) {
-                        if(isValidPasword(newPassword))
-                        user.setPassword(newPassword);
-                    }
-
+                    user.setPassword(newPassword);
                     return Response.ok(new UserNoRef(user)).build();
                 }
             }
         }
-        return Response.status(Response.Status.BAD_REQUEST).build();
-    }
-
-    private boolean isValidPasword(String password) {
-        Pattern letters = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$");
-        Matcher m = letters.matcher(password);
-        return( m.matches());
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
 
-    @Path("user")//update
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(final UpdateUser data) {
-        String email = data.email;
-        String username = data.username;
-        String newpassword = data.newPassword;
-        String password = data.password;
-        String displayname = data.displayName;
-        String imagefile = data.imageFile;
-        String principal;
-        final Subject subject = SecurityUtils.getSubject();
-        if(subject.getPrincipal()!=null) {
-            principal = subject.getPrincipal().toString();
-            if (principal != null && principal.equals(username)) {
-                final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-                final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
-                final Root<DBUser> from = query.from(DBUser.class);
-                Predicate predicate = builder.equal(from.get(DBUser_.username), username);
-                query.select(from).where(predicate);
-                List<DBUser> users = this.entityManager.createQuery(query).getResultList();
-                if (users.size() == 1) {
-                    DBUser user = users.get(0);
-                    if (user.getPassword() != null && password.equals(user.getPassword())) {
-                        if (!isValidEmailAddress(email))
-                        {
-                            return Response.status(Response.Status.BAD_REQUEST).build();
-                        }
-                        user = this.entityManager.find(DBUser.class, user.getId());
-                        if (user != null) {
-                            user.setEmail(email);
-                            user.setPassword(newpassword);
-                            user.setDisplayName(displayname);
-                            user.setImageFile(imagefile);
-                        }
-                        return Response.ok(new UserNoRef(user)).build();
-                    }
-                }
-            }
-        }
 
-        return Response.status(Response.Status.BAD_REQUEST).build();
-}
+
 
     @Path("ride")
     @PUT
@@ -558,7 +515,41 @@ public class RestApi {
 
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
+    @Path("user") //register
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createUser(final Credentials data) {
+        String email =data.email;
+        String username=data.username;
+        String password=data.password;
+        String displayname=data.displayName;
+        if(email==null||username==null||password==null||displayname==null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        if(isValidNotJustSpace(username)) {
+            username = username.toLowerCase();
+            if(!isValidNotJustSpace(displayname))
+                displayname=username;
+            if (!isValidEmailAddress(email) || !isValidPasword(password))
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+            final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
+            final Root<DBUser> from = query.from(DBUser.class);
+            Predicate predicate = builder.equal(from.get(DBUser_.username), username);
+            query.select(from).where(predicate);
+            if (this.entityManager.createQuery(query).getResultList().size() == 0) {
+                final DBUser user = new DBUser();
+                user.setDisplayName(displayname);
+                user.setUsername(username);
+                user.setPassword(password);
+                user.setEmail(email);
 
+                this.entityManager.persist(user);
+                return Response.ok(user).build();
+            }
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
+    }
 
     @Path("ride/{rideid}")
     @DELETE
@@ -656,6 +647,8 @@ public class RestApi {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createCommunity(final Createcommunity data) {
         String name= data.name;
+        if(name==null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
         final Subject subject = SecurityUtils.getSubject();
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<DBCommunity> query = builder.createQuery(DBCommunity.class);
@@ -663,17 +656,19 @@ public class RestApi {
         Predicate predicate = builder.equal(from.get(DBCommunity_.name),name);
         query.select(from).where(predicate);
         if(this.entityManager.createQuery(query).getResultList().size()==0) {
-            final DBCommunity community = new DBCommunity();
-            DBUser creator= entityManager.find(DBUser.class,getIdFromUname(subject.getPrincipal().toString()));
-            community.setAdmin(creator);
-            community.setName(name);
-            this.entityManager.persist(community);
-            return Response.ok(community).build();
+            if(subject!=null&&subject.getPrincipal()!=null) {
+                DBUser creator = entityManager.find(DBUser.class, getIdFromUname(subject.getPrincipal().toString()));
+                if (creator != null) {
+                    final DBCommunity community = new DBCommunity();
+                    community.setAdmin(creator);
+                    community.setName(name);
+                    this.entityManager.persist(community);
+                    return Response.ok(community).build();
+                }
+            }
         }
-        else
-        {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
+
     }
 
 
@@ -837,6 +832,18 @@ public class RestApi {
         }
         return result;
     }
+    private boolean isValidPasword(String password) {
+        Pattern letters = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$");
+        Matcher m = letters.matcher(password);
+        return( m.matches());
+    }
+    private boolean isValidNotJustSpace(String str) {
+        Pattern letters = Pattern.compile(".*\\S.*");
+        Matcher m = letters.matcher(str);
+        return( m.matches());
+    }
+
+
 
     private List<DBRide> getIntersects(Timestamp startStamp, Timestamp endStamp, long carid) {
 
@@ -890,7 +897,6 @@ private DBType checktype(String type)
     }
     return typetoset;
 }
-    //TODO fix check null of json attributes      register .. ?
-
+  
 
 }
