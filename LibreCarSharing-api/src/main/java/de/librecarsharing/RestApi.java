@@ -349,9 +349,32 @@ public class RestApi {
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
+    @Path("user")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response register(final Credentials data){
+        String username= data.username;
+        String password= data.password;
+        String email= data.email;
+        String displayName= data.displayName;
+        if(username==null||password==null||email==null|| displayName==null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        if(isValidEmailAddress(email)&&isValidPasword(password))
+        {
+            DBUser user= new DBUser();
+            user.setPassword(password);
+            user.setEmail(email);
+            user.setImageFile("");
+            user.setUsername(username);
+            user.setDisplayName(displayName);
+            
+
+        }
+
+    }
 
 
-    @Path("user/{userid}")//update
+    @Path("user/{userid}")//update todo:check if null maby , username to lowercase
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -362,6 +385,7 @@ public class RestApi {
         String displayName = data.displayName;
         String imageFile = data.imageFile;
         String newPassword = data.newPassword;
+        if(email==null)email="";
         String principal;
         final Subject subject = SecurityUtils.getSubject();
         if (subject != null && subject.getPrincipal() != null) {
@@ -710,6 +734,7 @@ public class RestApi {
     @Path("types")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getTypeList()
     {
         final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -717,7 +742,7 @@ public class RestApi {
         final Root<DBType> from = query.from(DBType.class);
 
         query.select(from);
-        List<String> types= entityManager.createQuery(query).getResultList().stream().map(DBType::getName).collect(Collectors.toList());
+        List<DBType> types= entityManager.createQuery(query).getResultList();
         return Response.ok(types).build();
     }
     @Path("currentuser/car/{typeid}")
@@ -865,6 +890,7 @@ private DBType checktype(String type)
     }
     return typetoset;
 }
+    //TODO fix check null of json attributes      register .. ?
 
 
 }
