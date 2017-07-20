@@ -12,14 +12,12 @@ import 'package:angular2/angular2.dart';
 @Injectable()
 class UserService {
   Stream userStream;
-  StreamController userStreamController;
+  StreamController _userStreamController;
 
   User user = null;
-  Completer completer = new Completer();
-
   UserService() {
-    this.userStreamController = new StreamController();
-    this.userStream = this.userStreamController.stream;
+    _userStreamController = new StreamController();
+    userStream = _userStreamController.stream;
   }
 
   /**
@@ -27,6 +25,8 @@ class UserService {
    * @param: id The ID of a community
    **/
   Future<List<User>> getCommunityUsers(int id) {
+    Completer completer = new Completer();
+
     List<User> returnList = new List<User>();
     HttpRequest
         .getString("../api/community/" + id.toString() + "/user")
@@ -49,7 +49,7 @@ class UserService {
   void login(String username, String password) {
     HttpRequest.postFormData("../login.jsp",
         {"username": username, "password": password}).then((request) {
-      getCurrentUser().then((User user) => this.userStreamController.add(user));
+      getCurrentUser().then((User user) => _userStreamController.add(user));
     }).catchError((n) => print("Error in login."));
   }
 
@@ -59,13 +59,16 @@ class UserService {
   void logout() {
     HttpRequest.request("../logout", method: "GET").then((request) {
       print(request.getAllResponseHeaders());
-      this.userStreamController.add(null);
+      _userStreamController.add(null);
     }).catchError((n) => print("Error in logout."));
   }
+
   /**
    * @return: user currently logged in
    */
   Future<User> getCurrentUser() {
+    Completer completer = new Completer();
+
     if (user == null) {
       HttpRequest.getString("../api/currentuser").then((String responseText) {
         user = new UserImpl.fromJsonString(responseText);
