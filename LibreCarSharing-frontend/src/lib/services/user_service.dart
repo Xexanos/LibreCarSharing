@@ -15,6 +15,7 @@ class UserService {
   StreamController _userStreamController;
 
   User user = null;
+
   UserService() {
     _userStreamController = new StreamController();
     userStream = _userStreamController.stream;
@@ -79,6 +80,38 @@ class UserService {
     } else {
       completer.complete(user);
     }
+    return completer.future;
+  }
+
+  /**
+   * update userdata inside DB
+   * @param: user modified base data
+   * @param: password to validate user
+   * @param: newPassword
+   */
+  Future<User> changeUser(User user, String password, String newPassword) {
+    Completer completer = new Completer();
+
+    HttpRequest.request("../api/user/" + user.id.toString(),
+        method: "PUT",
+        requestHeaders: {"Content-Type": "application/json"},
+        sendData: {
+          '"username"': '"' + user.username + '"',
+          '"password"': '"' + password + '"',
+          '"email"': '"' + user.email + '"',
+          '"displayName"': '"' + user.displayName + '"',
+//          '"imageFile"': '"' + user.imageFile + '"',
+          '"newPasswort"': '"' + newPassword + '"'
+        }).then((HttpRequest response) {
+      if (response.status == 200) {
+        user = new UserImpl.fromJsonString(response.responseText);
+        completer.complete(user);
+      } else {
+        completer.complete(null);
+      }
+    }).catchError((Event e) {
+      completer.complete(null);
+    });
     return completer.future;
   }
 }

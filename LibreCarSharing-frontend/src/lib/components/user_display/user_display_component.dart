@@ -13,6 +13,9 @@ import 'package:angular2/angular2.dart';
 )
 class UserDisplayComponent implements OnInit {
   User user = null;
+  String password = "";
+  String newPassword = "";
+  String newPassword2 = "";
 
   final UserService _userService;
 
@@ -26,6 +29,9 @@ class UserDisplayComponent implements OnInit {
   }
 
   void sendChanges(dynamic e) {
-    //TODO: Send changes to backend
+    e.preventDefault();
+    if (newPassword == newPassword2) {
+      _userService.changeUser(user, password, newPassword).then((User user) => this.user);
+    }
   }
 }
