@@ -402,12 +402,11 @@ public class RestApi {
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    @Path("ride")
+    @Path("ride/{rideid}")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateRide(final UpdateRide data) {
-        long id = data.rideid;
+    public Response updateRide(final UpdateRide data, @PathParam("rideid") final long id) {
         Timestamp newstart = new Timestamp(data.newstart);
         Timestamp newend = new Timestamp(data.newend);
         String principal;
