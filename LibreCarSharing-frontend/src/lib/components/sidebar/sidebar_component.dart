@@ -12,14 +12,16 @@ import 'package:angular2/angular2.dart';
   selector: 'sidebar',
   styleUrls: const ['sidebar_component.css'],
   templateUrl: 'sidebar_component.html',
-  directives: const [SidebarCarsComponent, SidebarHeaderComponent, SidebarBottomComponent],
+  directives: const [
+    SidebarCarsComponent,
+    SidebarHeaderComponent,
+    SidebarBottomComponent
+  ],
 )
 class SidebarComponent implements OnInit {
   @Input("user")
   User user;
 
   @override
-  Future<Null> ngOnInit() async {
-    // TODO: implement REST API
-  }
+  Future<Null> ngOnInit() async {}
 }

@@ -21,11 +21,9 @@ class LoginComponent implements OnInit {
   LoginComponent(this._userService, this._router);
 
   @override
-  Future<Null> ngOnInit() async {
-    // TODO: implement ngOnInit
-  }
+  Future<Null> ngOnInit() async {}
 
-  void login(dynamic e){
+  void login(dynamic e) {
     e.preventDefault();
     this._userService.login(this.username, this.password);
   }

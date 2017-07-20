@@ -23,9 +23,7 @@ class SidebarBottomComponent implements OnInit {
   SidebarBottomComponent(this._router, this._userService);
 
   @override
-  Future<Null> ngOnInit() async {
-    // TODO: implement REST API
-  }
+  Future<Null> ngOnInit() async {}
 
   void logout(dynamic e) {
     e.preventDefault();

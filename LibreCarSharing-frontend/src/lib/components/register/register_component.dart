@@ -14,9 +14,7 @@ class RegisterComponent implements OnInit {
   String email;
 
   @override
-  Future<Null> ngOnInit() async {
-    // TODO: implement ngOnInit
-  }
+  Future<Null> ngOnInit() async {}
 
   // TODO: move to user_service
   void register(dynamic e) {
