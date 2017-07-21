@@ -680,11 +680,11 @@ public class RestApi {
                     community.setAdmin(creator);
                     community.setName(name);
                     this.entityManager.persist(community);
-                    return Response.ok(community).build();
+                    return Response.ok(new CommunityNoRef(community)).build();
                 }
             }
         }
-        return Response.status(Response.Status.BAD_REQUEST).build();
+        return Response.status(Response.Status.UNAUTHORIZED).build();
 
     }
 
