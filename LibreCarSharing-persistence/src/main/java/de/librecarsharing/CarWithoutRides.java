@@ -24,6 +24,7 @@ public class CarWithoutRides {
     public boolean isStatus(){return this.dbCar.isStatus();}
     public String getInfo(){return this.dbCar.getInfo();}
     public String getImageFile() {return dbCar.getImageFile();}
+    public String getLocation(){return dbCar.getLocation();}
     public String getLicencePlate(){return this.dbCar.getLicencePlate();}
 
 }
