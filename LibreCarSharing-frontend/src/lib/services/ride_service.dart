@@ -39,13 +39,14 @@ class RideService {
    * @param: ride data to be added
    * @return: the newly created ride
    */
-  Future<Ride> addRide(int carId, Ride ride) {
+  Future<Ride> addRide(int carId, Ride ride) { //todo fix
     Completer completer = new Completer();
 
-    HttpRequest.postFormData("../api/car/" + carId.toString() + "/ride", {
-      "start": ride.start.toString(),
-      "end": ride.end.toString(),
-      "name": ride.name
+    HttpRequest.request("../api/car/" + carId.toString() + "/ride", method: "POST",
+        requestHeaders: {"Content-Type": "application/json"}, sendData: {
+          '"name"': '"' + ride.name + '"',
+          '"start"': '"' + ride.start.toString() + '"',
+          '"end"': '"' + ride.end.toString() + '"'
     }).then((HttpRequest response) {
       if (response.status == 200) {
         completer.complete(new RideImpl.fromJsonString(response.responseText));

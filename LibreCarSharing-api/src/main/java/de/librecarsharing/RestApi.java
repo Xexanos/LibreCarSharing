@@ -780,9 +780,11 @@ public class RestApi {
     }
     @Path("user/{userid}") //TODO: use flags instead of removing things permanently
     @DELETE
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteUser(@PathParam("userid")final long userid) {
+    public Response deleteUser(@PathParam("userid")final long userid,final Credentials data) {
+        String password =data.password;
+
         final Subject subject = SecurityUtils.getSubject();
         if (subject != null) {
             if (subject.getPrincipal() != null) {
@@ -791,7 +793,7 @@ public class RestApi {
                 if ((subjectId != null) ) {
                     DBUser user = this.entityManager.find(DBUser.class, userid);
                     if (user != null) {
-                        if(user.getId()==subjectId|| subject.hasRole("admin"))
+                        if(user.getId()==subjectId && user.getPassword().equals(password)|| subject.hasRole("admin"))
                         {
 
                             user.setCommunities(Collections.emptySet());

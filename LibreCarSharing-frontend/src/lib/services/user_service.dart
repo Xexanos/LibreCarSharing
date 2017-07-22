@@ -123,13 +123,16 @@ class UserService {
    */
   Future<int> registerUser(String username, String password, String email) {
     Completer completer = new Completer();
-
-    HttpRequest.postFormData("/api/user", {
-      "username": username,
-      "displayName": username,
-      "password": password,
-      "email": email
-    }).then((HttpRequest response) {
+    HttpRequest.request("../api/user",
+        method: "POST",
+        requestHeaders: {
+          "Content-Type": "application/json"
+        },sendData:  {
+          '"username"': '"' +username + '"',
+          '"password"': '"' + password + '"',
+          '"email"': '"' + email + '"',
+          '"displayName"': '"' + username + '"'
+        }).then((HttpRequest response) {
       completer.complete(response.status);
     }).catchError((Event e) {
       print("Error in registerUser.");
@@ -141,7 +144,7 @@ class UserService {
   Future<int> deleteUser(User user, String password) {
     Completer completer = new Completer();
 
-    HttpRequest.request("/api/user/" + user.id.toString(),
+    HttpRequest.request("../api/user/" + user.id.toString(),
         method: "DELETE",
         requestHeaders: {
           "Content-Type": "application/json"
