@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -705,30 +706,62 @@ public class RestApi {
         return Response.ok(types).build();
     }
 
+    @Path("user/{userid}/type")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTypeList(@PathParam("userid")final long userId) {
+        final Subject subject = SecurityUtils.getSubject();
+        if (subject != null && subject.getPrincipal() != null) {
+            Long subjectId;
+            subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
+            if (subjectId != null) {
+                if(userId==subjectId||subject.hasRole("admin")) {
+                    DBUser user = entityManager.find(DBUser.class, userId);
+                    if (user != null) {
+                        List<DBCar> carlists = user.getCommunities().stream().map(DBCommunity::getCars).collect(Collectors.toList()).stream().flatMap(Set::stream).collect(Collectors.toList());
+                        List<DBType> resultlist = new ArrayList<>();
+                        for (DBCar car : carlists) {
+                            if (!resultlist.stream().map(DBType::getName).collect(Collectors.toList()).contains(car.getType().getName()))
+                                resultlist.add(car.getType());
+                        }
+                        return Response.ok(resultlist).build();
+                    }
+                }
+                return Response.status(Response.Status.UNAUTHORIZED).build();
+            }
+        }
+        System.out.println("failed");
+        return Response.status(Response.Status.UNAUTHORIZED).build();
+
+    }
     @Path("currentuser/car/{typeid}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCarsFromUserWithType(@PathParam("typeid") final long typeId) {
 
+        DBType type= this.entityManager.find(DBType.class, typeId);
+        if(type==null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        String typeName=type.getName();
         final Subject subject = SecurityUtils.getSubject();
 
         if (subject != null && subject.getPrincipal() != null) {
-            Long subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
-            if ((subjectId != null) || subject.hasRole("admin")) {
-                final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-                final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
-                final Root<DBCar> from = query.from(DBCar.class);
-                final Join<DBCar, DBUser> join = from.join(DBCar_.owner);
-                Predicate predicate = builder.equal(join.get(DBCommunity_.id), subjectId);
-                Predicate typepred = builder.equal(from.get(DBCar_.type.getName()), typeId);
-                Predicate where = builder.or(predicate, typepred);
-                Order order = builder.asc(from.get(DBCar_.name));
-                query.select(from).where(where).orderBy(order);
-                final List<DBCar> cars = this.entityManager.createQuery(query).getResultList();
-                System.out.println("result " + cars);
-                List<CarWithoutRides> response = cars.stream().map(CarWithoutRides::new).collect(Collectors.toList());
-                return Response.ok(response).build();
+            Long subjectId;
+            subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
+            if (subjectId != null) {
+
+                DBUser user = entityManager.find(DBUser.class,subjectId);
+                List<DBCar> carlists =user.getCommunities().stream().map(DBCommunity::getCars).collect(Collectors.toList()).stream().flatMap(Set::stream).collect(Collectors.toList());
+                List<CarWithoutRides> resultlist= new ArrayList<>();
+                for(DBCar car:carlists)
+                {
+                    if(car.getType().getName().equals(typeName))
+                        resultlist.add(new CarWithoutRides(car));
+                }
+
+                return Response.ok(resultlist).build();
             }
         }
         System.out.println("failed");
@@ -781,7 +814,6 @@ public class RestApi {
                     DBUser user = this.entityManager.find(DBUser.class, userid);
                     if (user != null) {
                         if (user.getId() == subjectId && user.getPassword().equals(password) || subject.hasRole("admin")) {
-
                             user.setCommunities(Collections.emptySet());
                             for (DBCommunity community : user.getAdministartes()) {
                                 community.setAdmin(null);
@@ -835,6 +867,7 @@ public class RestApi {
         Matcher m = letters.matcher(str);
         return (m.matches());
     }
+
 
     private List<DBRide> getIntersects(Timestamp startStamp, Timestamp endStamp, long carId) {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
