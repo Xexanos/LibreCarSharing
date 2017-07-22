@@ -660,7 +660,7 @@ public class RestApi {
                 if (user.getCommunities().stream().map(DBCommunity::getId).collect(Collectors.toList())
                         .contains(comId) || subject.hasRole("admin")) {
 
-                    DBType typetoset = checkType(type);
+                    DBType typeToSet = checkType(type);
                     DBCar car = new DBCar();
                     car.setName(name);
                     car.setColor(color);
@@ -672,7 +672,7 @@ public class RestApi {
                     car.setSeats(seats);
                     this.entityManager.persist(car);
                     user.addCar(car);
-                    car.setType(typetoset);
+                    car.setType(typeToSet);
                     community.addCar(car);
 
                     return Response.ok().build();

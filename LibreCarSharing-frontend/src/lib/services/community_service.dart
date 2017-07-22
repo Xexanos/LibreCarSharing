@@ -36,7 +36,7 @@ class CommunityService {
    * Get all communities a given user is a member of
    * @param: id The ID of a user
    **/
-  Future<List<Community>> getUserCommunity(int userId) {
+  Future<List<Community>> getUserCommunities(int userId) {
     Completer completer = new Completer();
 
     List<Community> returnList = new List<CommunityImpl>();
