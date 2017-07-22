@@ -14,8 +14,6 @@ class UserService {
   Stream userStream;
   StreamController _userStreamController;
 
-  User user = null;
-
   UserService() {
     _userStreamController = new StreamController();
     userStream = _userStreamController.stream;
@@ -70,17 +68,13 @@ class UserService {
   Future<User> getCurrentUser() {
     Completer completer = new Completer();
 
-    if (user == null) {
-      HttpRequest.getString("../api/currentuser").then((String responseText) {
-        user = new UserImpl.fromJsonString(responseText);
-        completer.complete(user);
-      }).catchError((Event e) {
-        print("Error in getCurrentUser.");
-        completer.complete(null);
-      });
-    } else {
-      completer.complete(user);
-    }
+    HttpRequest.getString("../api/currentuser").then((String responseText) {
+      print(responseText);
+      completer.complete(new UserImpl.fromJsonString(responseText));
+    }).catchError((Event e) {
+      print("Error in getCurrentUser.");
+      completer.complete(null);
+    });
     return completer.future;
   }
 
