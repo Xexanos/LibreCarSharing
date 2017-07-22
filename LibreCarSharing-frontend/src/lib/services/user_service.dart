@@ -102,8 +102,7 @@ class UserService {
           '"newPassword"': '"' + newPassword + '"'
         }).then((HttpRequest response) {
       if (response.status == 200) {
-        user = new UserImpl.fromJsonString(response.responseText);
-        completer.complete(user);
+        completer.complete(new UserImpl.fromJsonString(response.responseText));
       } else {
         completer.complete(null);
       }
@@ -123,13 +122,16 @@ class UserService {
    */
   Future<int> registerUser(String username, String password, String email) {
     Completer completer = new Completer();
-
-    HttpRequest.postFormData("/user", {
-      "username": username,
-      "displayName": username,
-      "password": password,
-      "email": email
-    }).then((HttpRequest response) {
+    HttpRequest.request("../api/user",
+        method: "POST",
+        requestHeaders: {
+          "Content-Type": "application/json"
+        },sendData:  {
+          '"username"': '"' +username + '"',
+          '"password"': '"' + password + '"',
+          '"email"': '"' + email + '"',
+          '"displayName"': '"' + username + '"'
+        }).then((HttpRequest response) {
       completer.complete(response.status);
     }).catchError((Event e) {
       print("Error in registerUser.");
@@ -141,7 +143,7 @@ class UserService {
   Future<int> deleteUser(User user, String password) {
     Completer completer = new Completer();
 
-    HttpRequest.request("/user/" + user.id.toString(),
+    HttpRequest.request("../api/user/" + user.id.toString(),
         method: "DELETE",
         requestHeaders: {
           "Content-Type": "application/json"
