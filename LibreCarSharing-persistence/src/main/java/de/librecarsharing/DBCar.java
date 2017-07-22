@@ -18,7 +18,7 @@ public class DBCar extends DBIdentified{
     private String licencePlate;
     private boolean status;
     private String info;
-    private String type;
+    private DBType type;
 
 
 
@@ -26,6 +26,10 @@ public class DBCar extends DBIdentified{
     public DBCar() {
         this.rides = new HashSet<DBRide>();
     }
+
+
+
+
 
     @Basic
     public String getLicencePlate() {
@@ -79,12 +83,12 @@ public class DBCar extends DBIdentified{
         this.info = info;
     }
 
-    @Basic
-    public String getType() {
+    @ManyToOne
+    public DBType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(DBType type) {
         this.type = type;
     }
 

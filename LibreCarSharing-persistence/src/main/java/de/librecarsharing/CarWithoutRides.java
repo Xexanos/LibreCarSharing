@@ -10,7 +10,7 @@ public class CarWithoutRides {
     {
         this.dbCar=dbCar;
     }
-    public String getType() {return this.dbCar.getType();}
+    public String getType() {return this.dbCar.getType().getName();}
     public long getId()
     {
         return this.dbCar.getId();
@@ -25,4 +25,5 @@ public class CarWithoutRides {
     public String getInfo(){return this.dbCar.getInfo();}
     public String getImageFile() {return dbCar.getImageFile();}
     public String getLicencePlate(){return this.dbCar.getLicencePlate();}
+
 }
