@@ -99,7 +99,7 @@ class UserService {
           '"email"': '"' + user.email + '"',
           '"displayName"': '"' + user.displayName + '"',
           '"imageFile"': '"' + user.imageFile + '"',
-          '"newPasswort"': '"' + newPassword + '"'
+          '"newPassword"': '"' + newPassword + '"'
         }).then((HttpRequest response) {
       if (response.status == 200) {
         user = new UserImpl.fromJsonString(response.responseText);
