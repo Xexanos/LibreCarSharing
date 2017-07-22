@@ -69,7 +69,6 @@ class UserService {
     Completer completer = new Completer();
 
     HttpRequest.getString("../api/currentuser").then((String responseText) {
-      print(responseText);
       completer.complete(new UserImpl.fromJsonString(responseText));
     }).catchError((Event e) {
       print("Error in getCurrentUser.");
@@ -84,7 +83,7 @@ class UserService {
    * @param: password to validate user
    * @param: newPassword
    */
-  Future<User> changeUser(User user, String password, String newPassword) {
+  Future<User> editUser(User user, String password, String newPassword) {
     Completer completer = new Completer();
 
     if (user.imageFile == null) user.imageFile = "";
@@ -140,6 +139,12 @@ class UserService {
     return completer.future;
   }
 
+  /**
+   * deletes User from DB
+   * @param: user the user to delete
+   * @param: password the password of the user
+   * @return: the statuscode of the response
+   */
   Future<int> deleteUser(User user, String password) {
     Completer completer = new Completer();
 
