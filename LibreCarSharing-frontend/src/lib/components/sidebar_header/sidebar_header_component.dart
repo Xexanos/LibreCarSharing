@@ -19,7 +19,6 @@ class SidebarHeaderComponent implements OnInit {
   @override
   Future<Null> ngOnInit() async {
     tabTexts = _tabService.tabTexts;
-    // TODO: implement REST API
   }
 
   setActiveTab(int i) {

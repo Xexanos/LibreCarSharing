@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:html';
 
-import 'package:LibreCarSharingFrontend/interfaces/user_impl.dart';
-import 'package:LibreCarSharingFrontend/models/user.dart';
+import 'package:LibreCarSharingFrontend/implementation/user_impl.dart';
+import 'package:LibreCarSharingFrontend/interfaces/user.dart';
 import 'package:angular2/angular2.dart';
 
 // Import user model
@@ -12,97 +12,135 @@ import 'package:angular2/angular2.dart';
 @Injectable()
 class UserService {
   Stream userStream;
-  StreamController userStreamController;
+  StreamController _userStreamController;
 
-  bool debug =false;
+  User user = null;
 
   UserService() {
-    this.userStreamController = new StreamController();
-    this.userStream = this.userStreamController.stream;
+    _userStreamController = new StreamController();
+    userStream = _userStreamController.stream;
   }
 
-  /** Get all users
+  /**
+   * Get all users
    * @param: id The ID of a community
    **/
-  List<User> getCommunityUsers(dynamic e, String communityID) {
-    e.preventDefault();
+  Future<List<User>> getCommunityUsers(int id) {
+    Completer completer = new Completer();
+
     List<User> returnList = new List<User>();
-    var id = Uri.encodeQueryComponent(communityID);
-    HttpRequest.request("../api/community/"+id+"/user", method:"GET").then(
-            (HttpRequest resp) {
-          List response = JSON.decode(resp.responseText);
-          for (int i = 0; i < response.length; i++)
-            returnList.add(UserImpl.fromJsonString(response.take(i)));
-        }).catchError((n) => print(n));
-    return returnList;
+    HttpRequest
+        .getString("../api/community/" + id.toString() + "/user")
+        .then((String responseText) {
+      List response = JSON.decode(responseText);
+      for (int i = 0; i < response.length; i++) {
+        returnList.add(new UserImpl.fromJsonString(response[i]));
+      }
+      completer.complete(returnList);
+    }).catchError((n) {
+      print("Error in getCommunityUsers.");
+      completer.complete(null);
+    });
+    return completer.future;
   }
 
   /** try to login given user
    * @param: user The user to login
    */
-  void login(dynamic e, User user) {
-    e.preventDefault();
-    if (debug) {
-      this.userStreamController.add(this.getCurrentUser(e));
-    } else {
-      HttpRequest.postFormData("../login.jsp",
-          {"username": user.username, "password": user.password}).then((request) {
-        this.userStreamController.add(this.getCurrentUser(e));
-      }).catchError((n) => print(n));
-    }
+  void login(String username, String password) {
+    HttpRequest.postFormData("../login.jsp",
+        {"username": username, "password": password}).then((request) {
+      getCurrentUser().then((User user) => _userStreamController.add(user));
+    }).catchError((n) => print("Error in login."));
   }
 
-  /** logout user
-   *
+  /**
+   * logout user
    */
-  void logout(dynamic e) {
-    e.preventDefault();
-    if (debug) {
-      this.userStreamController.add(null);
-    } else {
-      HttpRequest.request("../logout", method: "GET").then((request) {
-        this.userStreamController.add(null);
-        print(request.getAllResponseHeaders());
-      }).catchError((n) => print(n));
-    }
+  void logout() {
+    HttpRequest.request("../logout", method: "GET").then((request) {
+      print(request.getAllResponseHeaders());
+      _userStreamController.add(null);
+    }).catchError((n) => print("Error in logout."));
   }
 
   /**
    * @return: user currently logged in
    */
-  User getCurrentUser(dynamic e) {
-    e.preventDefault();
-    if (!debug) {
-      User user = new User();
-      user.username = "max";
-      user.displayName = "Max Mustermann";
-      user.email = "max.mustermann@musterdomain.de";
-      return user;
+  Future<User> getCurrentUser() {
+    Completer completer = new Completer();
+
+    if (user == null) {
+      HttpRequest.getString("../api/currentuser").then((String responseText) {
+        user = new UserImpl.fromJsonString(responseText);
+        completer.complete(user);
+      }).catchError((Event e) {
+        print("Error in getCurrentUser.");
+        completer.complete(null);
+      });
+    } else {
+      completer.complete(user);
     }
-    else{
-
-      HttpRequest.request("../api/currentuser", method: "GET").then(
-              (HttpRequest resp) {
-            User userj=new User();
-
-            userj.email = "tim@tim.tim";
-            userj.username="tim";
-            userj=JSON.decode(resp.responseText);
-
-
-            return userj;
-          }).catchError((n) => print(n));
-
-    }
+    return completer.future;
   }
 
-  User getUser(int id) {
-    if (!debug) {
-      User user = new User();
-      user.username = "max";
-      user.displayName = "Max Mustermann";
-      user.email = "max.mustermann@musterdomain.de";
-      return user;
-    }
+  /**
+   * update userdata inside DB
+   * @param: user modified base data
+   * @param: password to validate user
+   * @param: newPassword
+   */
+  Future<User> changeUser(User user, String password, String newPassword) {
+    Completer completer = new Completer();
+
+    if (user.imageFile == null) user.imageFile = "";
+    HttpRequest.request("../api/user/" + user.id.toString(),
+        method: "PUT",
+        requestHeaders: {
+          "Content-Type": "application/json"
+        },
+        sendData: {
+          '"username"': '"' + user.username + '"',
+          '"password"': '"' + password + '"',
+          '"email"': '"' + user.email + '"',
+          '"displayName"': '"' + user.displayName + '"',
+          '"imageFile"': '"' + user.imageFile + '"',
+          '"newPasswort"': '"' + newPassword + '"'
+        }).then((HttpRequest response) {
+      if (response.status == 200) {
+        user = new UserImpl.fromJsonString(response.responseText);
+        completer.complete(user);
+      } else {
+        completer.complete(null);
+      }
+    }).catchError((Event e) {
+      print("Error in changeUser.");
+      completer.complete(null);
+    });
+    return completer.future;
+  }
+
+  /**
+   * register new user
+   * @param: username
+   * @param password
+   * @param: email
+   * @return: HTML status code to handle exceptions
+   */
+  Future<int> registerUser(String username, String password, String email) {
+    Completer completer = new Completer();
+
+    HttpRequest.postFormData("/user", {
+      "username": username,
+      "displayName": username,
+      "password": password,
+      "email": email
+    }).then((HttpRequest response) {
+      completer.complete(response.status);
+    }).catchError((Event e) {
+      print("Error in registerUser.");
+      completer.complete(0);
+    });
+    return completer.future;
   }
 }

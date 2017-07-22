@@ -3,7 +3,7 @@
         <!-- TODO: insert user profile pic display and upload here -->
         <div class="form-group">
             <label>Benutzername: {{user.username}}</label>
-    </div>
+        </div>
         <div class="form-group">
             <label for="inputDisplayname">Anzeigename</label>
             <input type="text" class="form-control" id="inputDisplayname" aria-describedby="DisplaynameHelp"
@@ -25,14 +25,15 @@
             <label for="inputOldPassword">Altes Passwort</label>
             <input required type="password" class="form-control" id="inputOldPassword"
                    aria-describedby="oldPasswordHelp"
-                   placeholder="Passwort">
+                   placeholder="Passwort"
+                   [(ngModel)]="password">
             <small id="oldPasswordHelp" class="form-text text-muted">Gib dein altes Passwort ein, um deine Änderungen zu
                 bestätigen.
             </small>
             <br>
             <label for="inputNewPassword1">Neues Passwort</label>
-            <input type="password" class="form-control" id="inputNewPassword1">
-            <input type="password" class="form-control" id="inputNewPassword2" aria-describedby="newPasswordHelp">
+            <input type="password" class="form-control" id="inputNewPassword1" [(ngModel)]="newPassword" placeholder="neues Passwort">
+            <input type="password" class="form-control" id="inputNewPassword2" aria-describedby="newPasswordHelp" [(ngModel)]="newPassword2" placeholder="Passwort wiederholen">
             <small id="newPasswordHelp" class="form-text text-muted">Dein neues Passwort. Gib es 2-mal ein um sicher zu
                 gehen, dass du dich nicht vertippst.
             </small>
