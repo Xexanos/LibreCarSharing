@@ -13,6 +13,5 @@ public class UserNoRef {
     public long getId() {return dbUser.getId();}
     public String getImageFile() {return dbUser.getImageFile();}
     public String getEmail(){return dbUser.getEmail();}
-    public String getUsername(){return dbUser.getUsername();}
 }
 
