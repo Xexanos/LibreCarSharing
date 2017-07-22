@@ -33,7 +33,7 @@ public class StartupBean {
 
 
         //init();
-        //createData(); //uncomment to generate sample data
+        createData(); //uncomment to generate sample data
         //  queryData();
         shutdown();
     }
@@ -49,13 +49,27 @@ public class StartupBean {
         tim.setDisplayName("Tim");
         mark.setDisplayName("Mark");
         lisa.setDisplayName("Lisa");
+        tim.setEmail("tim@tim.de");
+        lisa.setEmail("lisa@lisa.de");
+        mark.setEmail("mark@mark.de");
+        tim.setImageFile("linktofile");
+        lisa.setImageFile("linktofile");
+        mark.setImageFile("linktofile");
         final DBCar car1 = new DBCar();
         car1.setName("car1");
         car1.setSeats(5);
+        car1.setLocation("A");
+        car1.setInfo("car1");
+        car1.setImageFile("https://upload.wikimedia.org/wikipedia/commons/6/6f/Golf_2_v2.jpg");
+        car1.setColor(3);
         tim.addCar(car1);
         final DBCar car2 = new DBCar();
         car2.setName("car2");
+        car2.setLocation("B");
         car2.setSeats(6);
+        car2.setInfo("car2");
+        car2.setImageFile("https://upload.wikimedia.org/wikipedia/commons/6/6f/Golf_2_v2.jpg");
+        car2.setColor(3);
         final DBType smallcar=new DBType();
         final DBType transporter= new DBType();
         smallcar.setName("Kleinwagen");
