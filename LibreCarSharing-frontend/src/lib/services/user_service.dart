@@ -124,7 +124,7 @@ class UserService {
   Future<int> registerUser(String username, String password, String email) {
     Completer completer = new Completer();
 
-    HttpRequest.postFormData("/user", {
+    HttpRequest.postFormData("/api/user", {
       "username": username,
       "displayName": username,
       "password": password,
@@ -141,7 +141,7 @@ class UserService {
   Future<int> deleteUser(User user, String password) {
     Completer completer = new Completer();
 
-    HttpRequest.request("/user/" + user.id.toString(),
+    HttpRequest.request("/api/user/" + user.id.toString(),
         method: "DELETE",
         requestHeaders: {
           "Content-Type": "application/json"
