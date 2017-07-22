@@ -470,6 +470,7 @@ public class RestApi {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateCar(@PathParam("carid") final long carId, final JsonCar data) {
         int color = data.color;
+        String name = data.name;
         String imageFile = data.imageFile;
         String info = data.info;
         String licencePlate = data.licencePlate;
@@ -485,10 +486,13 @@ public class RestApi {
             if (car != null) {
                 DBType typeToSet = checkType(type);
                 if (car.getOwner().getUsername().equals(principal) || subject.hasRole("admin")) {
+                    if (isValidNotJustSpace(name))
+                        car.setName(name);
+                    if (isValidNotJustSpace(licencePlate))
+                        car.setLicencePlate(licencePlate);
                     car.setColor(color);
                     car.setImageFile(imageFile);
                     car.setInfo(info);
-                    car.setLicencePlate(licencePlate);
                     car.setLocation(location);
                     car.setStatus(status);
                     car.setType(typeToSet);
