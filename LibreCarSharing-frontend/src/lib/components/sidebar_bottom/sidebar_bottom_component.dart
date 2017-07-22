@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 
-import 'package:LibreCarSharingFrontend/models/user.dart';
+import 'package:LibreCarSharingFrontend/interfaces/user.dart';
 
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
 
@@ -23,15 +23,15 @@ class SidebarBottomComponent implements OnInit {
   SidebarBottomComponent(this._router, this._userService);
 
   @override
-  Future<Null> ngOnInit() async {
-    // TODO: implement REST API
-  }
+  Future<Null> ngOnInit() async {}
 
   void logout(dynamic e) {
-    this._userService.logout(e);
+    e.preventDefault();
+    this._userService.logout();
   }
 
   void displayUser(dynamic e) {
-    this._router.navigate(['User', {'id': this.user.id.toString()}]);
+    e.preventDefault();
+    this._router.navigate(['User']);
   }
 }

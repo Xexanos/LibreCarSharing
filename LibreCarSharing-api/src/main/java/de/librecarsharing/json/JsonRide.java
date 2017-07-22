@@ -1,6 +1,7 @@
 package de.librecarsharing.json;
 
-public class Addride {
+public class JsonRide {
     public long start;
     public long end;
+    public String name;
 }

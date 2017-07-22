@@ -56,6 +56,12 @@ public class StartupBean {
         final DBCar car2 = new DBCar();
         car2.setName("car2");
         car2.setSeats(6);
+        final DBType smallcar=new DBType();
+        final DBType transporter= new DBType();
+        smallcar.setName("Kleinwagen");
+        transporter.setName("Transporter");
+        car2.setType(smallcar);
+        car1.setType(transporter);
         lisa.addCar(car2);
         final DBRide ride1= new DBRide();
         ride1.setStart(Timestamp.valueOf("2017-01-01 12:00:00"));
@@ -103,6 +109,8 @@ public class StartupBean {
 
         this.entityManager.persist(community2);
         this.entityManager.persist(community1);
+        this.entityManager.persist(smallcar);
+        this.entityManager.persist(transporter);
         this.entityManager.persist(tim);
         this.entityManager.persist(mark);
         this.entityManager.persist(lisa);

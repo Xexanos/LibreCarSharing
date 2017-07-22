@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:LibreCarSharingFrontend/models/user.dart';
+import 'package:LibreCarSharingFrontend/interfaces/user.dart';
 
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:angular2/angular2.dart';
@@ -13,23 +13,40 @@ import 'package:angular2/router.dart';
   directives: const [COMMON_DIRECTIVES],
 )
 class UserDisplayComponent implements OnInit {
-  User user;
+  User user = null;
+  String password = "";
+  String newPassword = "";
+  String newPassword2 = "";
 
-  final RouteParams _routeParams;
+  final Router _router;
   final UserService _userService;
 
-  UserDisplayComponent(this._routeParams, this._userService);
+  UserDisplayComponent(this._router, this._userService);
 
   @override
   Future<Null> ngOnInit() async {
-    var _id = _routeParams.get('id');
-    var id = int.parse(_id ?? '', onError: (_) => null);
-    if (id != null) user = await (_userService.getUser(id));
-
-    // TODO: implement ngOnInit
+    user = await _userService.getCurrentUser();
   }
 
-  void sendChanges(dynamic e) {
-    //TODO: Send changes to backend
+  sendChanges(dynamic e) async {
+    e.preventDefault();
+
+    if (newPassword == newPassword2) {
+      user = await _userService.changeUser(user, password, newPassword);
+    }
+  }
+
+  deleteUser(dynamic e) async {
+    e.preventDefault();
+
+    //TODO: Sicherheitsabfrage
+    int status = await _userService.deleteUser(user, password);
+    switch (status) {
+      case 200:
+        _router.navigate(['Login']);
+        break;
+      default:
+        print("Error in deleteUser");
+    }
   }
 }

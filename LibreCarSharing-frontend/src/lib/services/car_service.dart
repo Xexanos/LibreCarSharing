@@ -1,50 +1,92 @@
+import 'dart:async';
 import 'package:angular2/angular2.dart';
 import 'dart:convert';
 import 'dart:html';
 
-import 'package:LibreCarSharingFrontend/models/car.dart'; // Import car model
-import 'package:LibreCarSharingFrontend/interfaces/car_impl.dart'; // import car factory
+import 'package:LibreCarSharingFrontend/interfaces/car.dart';
+import 'package:LibreCarSharingFrontend/implementation/car_impl.dart';
+import 'package:json_object/json_object.dart';
 
 @Injectable()
 class CarService {
   /** Get all cars of a certain community
    * @param: id The ID of a community
    **/
-  List<Car> getCommunityCars(dynamic e, String CommunityID) {
-    e.preventDefault();
-    List<Car> returnList = new List<Car>();
-    var id = Uri.encodeQueryComponent(CommunityID);
-    HttpRequest.request("../api/community/"+id+"/car", method: "GET" ).then(
-        (HttpRequest resp) {
-      List response = JSON.decode(resp.responseText);
-      for (int i = 0; i < response.length; i++)
-        returnList.add(CarImpl.fromJsonString(response.take(i)));
-    }).catchError((n) => print(n));
-    return returnList;
+  Future<List<Car>> getCommunityCars(int communityId) {
+    Completer completer = new Completer();
+
+    List<Car> returnList = new List<CarImpl>();
+    HttpRequest
+        .getString("../api/community/" + communityId.toString() + "/car")
+        .then((String responseText) {
+      List<JsonObject> responseList = JSON.decode(responseText);
+      //TODO: Das muss auch einfacher gehen!!!
+      responseList.forEach((JsonObject jsonObject) {
+        returnList.add(new CarImpl.fromJsonString(JSON.encode(jsonObject)));
+      });
+      completer.complete(returnList);
+    }).catchError((n) {
+      print("Error in getCommunityCars.");
+      completer.complete(null);
+    });
+    return completer.future;
   }
 
+  /** Get all cars of a certain type
+   * @param: id The ID of a type
+   **/
+  Future<List<Car>> getTypeCars(int typeId) {
+    Completer completer = new Completer();
+
+    List<Car> returnList = new List<CarImpl>();
+    HttpRequest
+        .getString("../api/type/" + typeId.toString() + "/car")
+        .then((String responseText) {
+      List<JsonObject> responseList = JSON.decode(responseText);
+      //TODO: Das muss auch einfacher gehen!!!
+      responseList.forEach((JsonObject jsonObject) {
+        returnList.add(new CarImpl.fromJsonString(JSON.encode(jsonObject)));
+      });
+      completer.complete(returnList);
+    }).catchError((n) {
+      print("Error in getTypeCars.");
+      completer.complete(null);
+    });
+    return completer.future;
+  }
+
+  /*
   /** Get all cars of a certain user
    * @param: id The ID of a user
    **/
-  List<Car> getUserCars(dynamic e, String UserID) {
+  List<Car> getUserCars(dynamic e, int id) {
     e.preventDefault();
     List<Car> returnList = new List<Car>();
-    var id = Uri.encodeQueryComponent(UserID);
-    HttpRequest.request("../api/user/"+id+"/car",method: "GET").then(
-        (HttpRequest resp) {
-      List response = JSON.decode(resp.responseText);
-      for (int i = 0; i < response.length; i++)
-        returnList.add(CarImpl.fromJsonString(response.take(i)));
+    HttpRequest
+        .getString("../api/user/" + id.toString() + "/car")
+        .then((String responseText) {
+      List response = JSON.decode(responseText);
+      for (int i = 0; i < response.length; i++) {
+        returnList.add(new CarImpl.fromJsonString(response[i]));
+      }
+      return returnList;
     }).catchError((n) => print(n));
-    return returnList;
-  }
+  }*/
 
-  getCar(int id) {
-    return new Car(
-        "Mercedes-Benz Sprinter",
-        "https://upload.wikimedia.org/wikipedia/commons/2/2f/Mercedes_sprinter_1_v_sst.jpg",
-        "Transporter",
-        "Dortmund",
-        "DO-BB:22");
+  /**
+   * Get car by id
+   */
+  Future<Car> getCar(int carId) {
+    Completer completer = new Completer();
+
+    HttpRequest
+        .getString("../api/car/" + carId.toString())
+        .then((String responseText) {
+      completer.complete(new CarImpl.fromJsonString(responseText));
+    }).catchError((n) {
+      print("Error in getCar.");
+      completer.complete(null);
+    });
+    return completer.future;
   }
 }
