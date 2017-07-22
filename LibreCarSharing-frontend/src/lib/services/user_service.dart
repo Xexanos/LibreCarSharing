@@ -143,4 +143,27 @@ class UserService {
     });
     return completer.future;
   }
+
+  Future<int> deleteUser(User user, String password) {
+    Completer completer = new Completer();
+
+    HttpRequest.request("/user/" + user.id.toString(),
+        method: "DELETE",
+        requestHeaders: {
+          "Content-Type": "application/json"
+        },
+        sendData: {
+          '"username"': '"' + user.username + '"',
+          '"password"': '"' + password + '"',
+        }).then((HttpRequest response) {
+      if (response.status == 200) {
+        logout();
+      }
+      completer.complete(response.status);
+    }).catchError((Event e) {
+      print("Error in deleteUser.");
+      completer.complete(0);
+    });
+    return completer.future;
+  }
 }
