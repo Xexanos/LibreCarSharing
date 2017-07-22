@@ -5,15 +5,12 @@ package de.librecarsharing;
 
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
 import java.sql.Timestamp;
-import java.util.List;
 
 //import javax.persistence.criteria.*;
 
@@ -34,8 +31,7 @@ public class StartupBean {
 
         //init();
         //createData(); //uncomment to generate sample data
-        //  queryData();
-        shutdown();
+
     }
 
     private void createData() {
@@ -138,53 +134,6 @@ public class StartupBean {
 
     }
 
-    private void queryData() {
-        final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-
-        // SELECT r.name FROM DBCar AS c, DBRide AS r where c.id= r.car_id AND c.name = 'car1' ORDERBY r.name;
-        final CriteriaQuery<DBRide> rideQuery = builder.createQuery(DBRide.class);
-        final Root<DBRide> fromRide = rideQuery.from(DBRide.class);
-        final Join<DBRide,DBCar> ridejoin = fromRide.join(DBRide_.car);
-        Predicate predicate = builder.equal(ridejoin.get(DBCar_.name),"car1");
-        Order order = builder.asc(fromRide.get(DBRide_.name));
-        rideQuery.select(fromRide).where(predicate).orderBy(order);
-        final List<DBRide> result = this.entityManager.createQuery(rideQuery).getResultList();
-        System.out.println("result "+ result);
 
 
-
-        final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
-        final Root<DBUser> fromUser = query.from(DBUser.class);
-        final Join<DBUser,DBCommunity> communityJoin = fromUser.join(DBUser_.communities);
-        predicate = builder.equal(communityJoin.get(DBCommunity_.name),"community1");
-        order = builder.asc(fromUser.get(DBUser_.displayName));
-        query.select(fromUser).where(predicate).orderBy(order);
-        final List<DBUser> users = this.entityManager.createQuery(query).getResultList();
-        System.out.println("result "+ users);
-
-
-        DBCommunity com =entityManager.find(DBCommunity.class, new Long(1));//get first entry from hashset
-        System.out.println("community1's users :"+ com.getUsers());
-        DBUser use = (DBUser) com.getUsers().toArray()[0];
-        System.out.println("cars from community1's user lisa "+use.getCars());
-
-        final DBCar car3 = new DBCar();
-        car3.setName("car3");
-        entityManager.persist(car3);
-        entityManager.find(DBCommunity.class,(long)1).addCar(car3);
-        System.out.println(use);
-        use.addCar(car3);
-        use = (DBUser) com.getUsers().toArray()[0];
-        System.out.println(use);
-        System.out.println("cars from community1's user lisa "+use.getCars());
-
-
-    }
-    @PreDestroy
-    public void shutdown() {
-
-       // this.entityManager.getTransaction().commit();
-        //this.entityManager.close();
-        //this.entityManagerFactory.close();
-    }
 }

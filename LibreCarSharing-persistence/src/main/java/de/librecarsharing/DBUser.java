@@ -102,7 +102,13 @@ public class DBUser extends DBIdentified{
             community.addUser(this);
         }
     }
-    @OneToMany(mappedBy = "creator")
+    public void removeCommunity(DBCommunity community){
+        if(community.getUsers().contains(this))
+            community.getUsers().remove(this);
+        this.communities.remove(community);
+
+    }
+    @OneToMany(mappedBy = "creator" ,cascade = CascadeType.REMOVE)
     public Set<DBRide> getRides() {
         return rides;
     }
@@ -117,7 +123,7 @@ public class DBUser extends DBIdentified{
         if(ride.getCreator()!=this)
         ride.setCreator(this);
     }
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
     public Set<DBCar> getCars() {
         return cars;
     }

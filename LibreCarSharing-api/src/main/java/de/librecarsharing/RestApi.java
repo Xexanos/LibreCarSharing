@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -399,6 +400,15 @@ public class RestApi {
                     if (!isValidEmailAddress(email) || !isValidPassword(newPassword)) {
                         return Response.status(Response.Status.BAD_REQUEST).build();
                     }
+                    final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+                    final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
+                    final Root<DBUser> from = query.from(DBUser.class);
+                    Predicate predicate = builder.equal(from.get(DBUser_.email), email);
+                    query.select(from).where(predicate);
+                    if (this.entityManager.createQuery(query).getResultList().size() != 0) {
+                        return Response.status(Response.Status.UNAUTHORIZED).build();
+                    }
+
                     user.setEmail(email);
                     user.setDisplayName(displayName);
                     user.setImageFile(imageFile);
@@ -521,6 +531,11 @@ public class RestApi {
             Predicate predicate = builder.equal(from.get(DBUser_.username), username);
             query.select(from).where(predicate);
             if (this.entityManager.createQuery(query).getResultList().size() == 0) {
+                predicate = builder.equal(from.get(DBUser_.email), email);
+                query.select(from).where(predicate);
+                if (this.entityManager.createQuery(query).getResultList().size() != 0) {
+                    return Response.status(Response.Status.BAD_REQUEST).build();
+                }
                 final DBUser user = new DBUser();
                 user.setDisplayName(displayName);
                 user.setUsername(username);
@@ -758,40 +773,38 @@ public class RestApi {
         }
         return Response.ok().build();
     }
-    @Path("user") //register
+    @Path("user/{userid}") //TODO: use flags instead of removing things permanently
     @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteUser(final Credentials data) {
-        String email = data.email;
-        String username = data.username;
-        String password = data.password;
-        String displayName = data.displayName;
-        if (email == null || username == null || password == null || displayName == null)
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        if (isValidNotJustSpace(username)) {
-            username = username.toLowerCase();
-            if (!isValidNotJustSpace(displayName))
-                displayName = username;
-            if (!isValidEmailAddress(email) || !isValidPassword(password))
-                return Response.status(Response.Status.BAD_REQUEST).build();
-            final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-            final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
-            final Root<DBUser> from = query.from(DBUser.class);
-            Predicate predicate = builder.equal(from.get(DBUser_.username), username);
-            query.select(from).where(predicate);
-            if (this.entityManager.createQuery(query).getResultList().size() == 0) {
-                final DBUser user = new DBUser();
-                user.setDisplayName(displayName);
-                user.setUsername(username);
-                user.setPassword(password);
-                user.setEmail(email+"");
+    public Response deleteUser(@PathParam("userid")final long userid) {
+        final Subject subject = SecurityUtils.getSubject();
+        if (subject != null) {
+            if (subject.getPrincipal() != null) {
+                Long subjectId;
+                subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
+                if ((subjectId != null) ) {
+                    DBUser user = this.entityManager.find(DBUser.class, userid);
+                    if (user != null) {
+                        if(user.getId()==subjectId|| subject.hasRole("admin"))
+                        {
 
-                this.entityManager.persist(user);
-                return Response.ok(new UserNoRef(user)).build();
+                            user.setCommunities(Collections.emptySet());
+                            for(DBCommunity community:user.getAdministartes())
+                            {
+                                community.setAdmin(null);
+
+                            }
+
+                            entityManager.remove(user);
+                            return Response.ok().build();
+                        }
+                    }
+                    return Response.status(Response.Status.NOT_FOUND).build();
+                }
             }
         }
-        return Response.status(Response.Status.BAD_REQUEST).build();
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     private Long getIdFromUsername(String username) {
@@ -883,5 +896,5 @@ public class RestApi {
         return typeToSet;
     }
 
-//todo: creatuser email check changeuser
+//todo:
 }
