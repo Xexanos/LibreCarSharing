@@ -4,6 +4,7 @@ import 'package:LibreCarSharingFrontend/interfaces/user.dart';
 
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:angular2/angular2.dart';
+import 'package:angular2/router.dart';
 
 @Component(
   selector: 'userDisplay',
@@ -17,9 +18,10 @@ class UserDisplayComponent implements OnInit {
   String newPassword = "";
   String newPassword2 = "";
 
+  final Router _router;
   final UserService _userService;
 
-  UserDisplayComponent(this._userService);
+  UserDisplayComponent(this._router, this._userService);
 
   @override
   Future<Null> ngOnInit() async {
@@ -28,8 +30,23 @@ class UserDisplayComponent implements OnInit {
 
   sendChanges(dynamic e) async {
     e.preventDefault();
+
     if (newPassword == newPassword2) {
       user = await _userService.changeUser(user, password, newPassword);
+    }
+  }
+
+  deleteUser(dynamic e) async {
+    e.preventDefault();
+
+    //TODO: Sicherheitsabfrage
+    int status = await _userService.deleteUser(user, password);
+    switch (status) {
+      case 200:
+        _router.navigate(['Login']);
+        break;
+      default:
+        print("Error in deleteUser");
     }
   }
 }

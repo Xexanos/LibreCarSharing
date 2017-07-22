@@ -833,25 +833,24 @@ public class RestApi {
     }
 
 
-    private List<DBRide> getIntersects(Timestamp startStamp, Timestamp endStamp, long carid) {
-
+    private List<DBRide> getIntersects(Timestamp startStamp, Timestamp endStamp, long carId) {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<DBRide> query = builder.createQuery(DBRide.class);
         final Root<DBRide> from = query.from(DBRide.class);
-        final Join<DBRide, DBCar> join = from.join(DBRide_.car);
-        Predicate predicate1 = builder.equal(join.get(DBCar_.id), carid);
-        Predicate predicate2 = builder.greaterThanOrEqualTo(from.get(DBRide_.end), startStamp);
-        Predicate predicate3 = builder.lessThanOrEqualTo(from.get(DBRide_.start), startStamp);
+        final Join<DBRide,DBCar> join = from.join(DBRide_.car);
+        Predicate predicate1 = builder.equal(join.get(DBCar_.id),carId);
+        Predicate predicate2 = builder.greaterThanOrEqualTo(from.get(DBRide_.end),startStamp);
+        Predicate predicate3 = builder.lessThanOrEqualTo(from.get(DBRide_.start),startStamp);
 
-        Predicate startPred = builder.and(predicate2, predicate3);
+        Predicate startPredicate = builder.and(predicate2, predicate3);
         Predicate predicate4 = builder.greaterThanOrEqualTo(from.get(DBRide_.end), endStamp);
         Predicate predicate5 = builder.lessThanOrEqualTo(from.get(DBRide_.start), endStamp);
-        Predicate endpred = builder.and(predicate4, predicate5);
+        Predicate endPredicate = builder.and(predicate4, predicate5);
         Predicate predicate6 = builder.greaterThanOrEqualTo(from.get(DBRide_.start), startStamp);
         Predicate predicate7 = builder.lessThanOrEqualTo(from.get(DBRide_.end), endStamp);
-        Predicate enclosepred = builder.and(predicate6, predicate7);
-        Predicate intersect = builder.or(endpred, startPred);
-        intersect = builder.or(intersect, enclosepred);
+        Predicate enclosePredicate = builder.and(predicate6, predicate7);
+        Predicate intersect = builder.or(endPredicate, startPredicate);
+        intersect = builder.or(intersect, enclosePredicate);
         Predicate whole = builder.and(predicate1, intersect);
         Order order = builder.asc(from.get(DBRide_.end));
         query.select(from).where(whole).orderBy(order);
