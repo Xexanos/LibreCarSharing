@@ -130,7 +130,7 @@ class UserService {
   Future<int> registerUser(String username, String password, String email) {
     Completer completer = new Completer();
 
-    HttpRequest.postFormData("/register", {
+    HttpRequest.postFormData("/user", {
       "username": username,
       "displayName": username,
       "password": password,
