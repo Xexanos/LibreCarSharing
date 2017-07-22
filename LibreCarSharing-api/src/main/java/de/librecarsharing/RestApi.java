@@ -758,6 +758,41 @@ public class RestApi {
         }
         return Response.ok().build();
     }
+    @Path("user") //register
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUser(final Credentials data) {
+        String email = data.email;
+        String username = data.username;
+        String password = data.password;
+        String displayName = data.displayName;
+        if (email == null || username == null || password == null || displayName == null)
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        if (isValidNotJustSpace(username)) {
+            username = username.toLowerCase();
+            if (!isValidNotJustSpace(displayName))
+                displayName = username;
+            if (!isValidEmailAddress(email) || !isValidPassword(password))
+                return Response.status(Response.Status.BAD_REQUEST).build();
+            final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
+            final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
+            final Root<DBUser> from = query.from(DBUser.class);
+            Predicate predicate = builder.equal(from.get(DBUser_.username), username);
+            query.select(from).where(predicate);
+            if (this.entityManager.createQuery(query).getResultList().size() == 0) {
+                final DBUser user = new DBUser();
+                user.setDisplayName(displayName);
+                user.setUsername(username);
+                user.setPassword(password);
+                user.setEmail(email+"");
+
+                this.entityManager.persist(user);
+                return Response.ok(new UserNoRef(user)).build();
+            }
+        }
+        return Response.status(Response.Status.BAD_REQUEST).build();
+    }
 
     private Long getIdFromUsername(String username) {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
@@ -849,5 +884,5 @@ public class RestApi {
         return typeToSet;
     }
 
-//todo: ER
+//todo: creatuser email check changeuser
 }

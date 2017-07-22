@@ -7,7 +7,6 @@ public class UserNoRef {
     {
         this.dbUser=dbUser;
     }
-
     public String getUsername() {return dbUser.getUsername();}
     public String getDisplayName() {return dbUser.getDisplayName();}
     public long getId() {return dbUser.getId();}

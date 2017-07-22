@@ -33,7 +33,7 @@ public class StartupBean {
 
 
         //init();
-        createData(); //uncomment to generate sample data
+        //createData(); //uncomment to generate sample data
         //  queryData();
         shutdown();
     }
