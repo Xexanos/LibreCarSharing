@@ -102,8 +102,7 @@ class UserService {
           '"newPassword"': '"' + newPassword + '"'
         }).then((HttpRequest response) {
       if (response.status == 200) {
-        user = new UserImpl.fromJsonString(response.responseText);
-        completer.complete(user);
+        completer.complete(new UserImpl.fromJsonString(response.responseText));
       } else {
         completer.complete(null);
       }

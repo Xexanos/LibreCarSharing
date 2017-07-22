@@ -77,7 +77,7 @@
                     <checkedMode>true</checkedMode>
                     <testFailureIgnore>false</testFailureIgnore>
                     <sourceDirectory>src</sourceDirectory>
-                    <dartSdk>/usr/lib/dart</dartSdk>
+                    <dartSdk>/opt/dart-sdk</dartSdk>
                 </configuration>
                 <executions>
                     <execution>
