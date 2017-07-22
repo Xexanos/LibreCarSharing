@@ -44,9 +44,9 @@ class SidebarCarsComponent implements OnInit {
   setTitles() {
     _userService.getCurrentUser().then((user) async {
       if (this.orderBy == "types") {
-        titles = await _typeService.getUserType(user.id);
+        titles = await _typeService.getUserTypes();
       } else if (this.orderBy == "communities") {
-        titles = await _communityService.getUserCommunity(user.id);
+        titles = await _communityService.getUserCommunities(user.id);
       }
     });
   }
