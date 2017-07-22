@@ -41,7 +41,13 @@ public class DBCommunity extends DBIdentified{
             user.addCommunity(this);
         }
     }
-    @OneToMany(mappedBy ="community")
+    public void removeUser(DBUser user){
+        if(user.getCommunities().contains(this))
+            user.getCommunities().remove(this);
+        this.users.remove(user);
+
+    }
+    @OneToMany(mappedBy ="community",cascade = CascadeType.REMOVE)
     public Set<DBCar> getCars() {
         return cars;
     }

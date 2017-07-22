@@ -14,8 +14,6 @@ class UserService {
   Stream userStream;
   StreamController _userStreamController;
 
-  User user = null;
-
   UserService() {
     _userStreamController = new StreamController();
     userStream = _userStreamController.stream;
@@ -70,17 +68,13 @@ class UserService {
   Future<User> getCurrentUser() {
     Completer completer = new Completer();
 
-    if (user == null) {
-      HttpRequest.getString("../api/currentuser").then((String responseText) {
-        user = new UserImpl.fromJsonString(responseText);
-        completer.complete(user);
-      }).catchError((Event e) {
-        print("Error in getCurrentUser.");
-        completer.complete(null);
-      });
-    } else {
-      completer.complete(user);
-    }
+    HttpRequest.getString("../api/currentuser").then((String responseText) {
+      print(responseText);
+      completer.complete(new UserImpl.fromJsonString(responseText));
+    }).catchError((Event e) {
+      print("Error in getCurrentUser.");
+      completer.complete(null);
+    });
     return completer.future;
   }
 
@@ -105,11 +99,10 @@ class UserService {
           '"email"': '"' + user.email + '"',
           '"displayName"': '"' + user.displayName + '"',
           '"imageFile"': '"' + user.imageFile + '"',
-          '"newPasswort"': '"' + newPassword + '"'
+          '"newPassword"': '"' + newPassword + '"'
         }).then((HttpRequest response) {
       if (response.status == 200) {
-        user = new UserImpl.fromJsonString(response.responseText);
-        completer.complete(user);
+        completer.complete(new UserImpl.fromJsonString(response.responseText));
       } else {
         completer.complete(null);
       }
@@ -129,13 +122,16 @@ class UserService {
    */
   Future<int> registerUser(String username, String password, String email) {
     Completer completer = new Completer();
-
-    HttpRequest.postFormData("/user", {
-      "username": username,
-      "displayName": username,
-      "password": password,
-      "email": email
-    }).then((HttpRequest response) {
+    HttpRequest.request("../api/user",
+        method: "POST",
+        requestHeaders: {
+          "Content-Type": "application/json"
+        },sendData:  {
+          '"username"': '"' +username + '"',
+          '"password"': '"' + password + '"',
+          '"email"': '"' + email + '"',
+          '"displayName"': '"' + username + '"'
+        }).then((HttpRequest response) {
       completer.complete(response.status);
     }).catchError((Event e) {
       print("Error in registerUser.");
@@ -147,7 +143,7 @@ class UserService {
   Future<int> deleteUser(User user, String password) {
     Completer completer = new Completer();
 
-    HttpRequest.request("/user/" + user.id.toString(),
+    HttpRequest.request("../api/user/" + user.id.toString(),
         method: "DELETE",
         requestHeaders: {
           "Content-Type": "application/json"
