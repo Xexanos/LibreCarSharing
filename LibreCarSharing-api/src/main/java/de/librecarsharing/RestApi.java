@@ -938,5 +938,4 @@ public class RestApi {
         return typeToSet;
     }
 
-//todo:
 }

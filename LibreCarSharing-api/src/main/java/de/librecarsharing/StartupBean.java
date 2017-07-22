@@ -66,11 +66,11 @@ public class StartupBean {
         car2.setInfo("car2");
         car2.setImageFile("https://upload.wikimedia.org/wikipedia/commons/6/6f/Golf_2_v2.jpg");
         car2.setColor(3);
-        final DBType smallcar=new DBType();
+        final DBType smallCar=new DBType();
         final DBType transporter= new DBType();
-        smallcar.setName("Kleinwagen");
+        smallCar.setName("Kleinwagen");
         transporter.setName("Transporter");
-        car2.setType(smallcar);
+        car2.setType(smallCar);
         car1.setType(transporter);
         lisa.addCar(car2);
         final DBRide ride1= new DBRide();
@@ -119,7 +119,7 @@ public class StartupBean {
 
         this.entityManager.persist(community2);
         this.entityManager.persist(community1);
-        this.entityManager.persist(smallcar);
+        this.entityManager.persist(smallCar);
         this.entityManager.persist(transporter);
         this.entityManager.persist(tim);
         this.entityManager.persist(mark);
