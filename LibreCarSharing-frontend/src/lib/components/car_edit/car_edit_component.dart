@@ -17,26 +17,31 @@ import 'package:angular2/router.dart';
 class CarEditComponent implements OnInit {
   Car car = null;
   List<MyType> types;
+  String color;
 
   final RouteParams _routeParams;
   final Router _router;
   final CarService _carService;
   final TypeService _typeService;
 
-  CarEditComponent(this._routeParams, this._router, this._carService, this._typeService);
+  CarEditComponent(
+      this._routeParams, this._router, this._carService, this._typeService);
 
   @override
   Future<Null> ngOnInit() async {
     var _id = _routeParams.get('id');
     var id = int.parse(_id ?? '', onError: (_) => null);
-    if (id != null) car = await _carService.getCar(id);
+    if (id != null) {
+      car = await _carService.getCar(id);
+      color = "#" + car.color.toRadixString(16);
+    }
     types = await _typeService.getTypes();
   }
 
   sendChanges(dynamic e) async {
     e.preventDefault();
 
-    print(car.color);
+    car.color = int.parse("0x" + color.substring(1));
     int status = await _carService.editCar(car);
     switch (status) {
       case 200:
