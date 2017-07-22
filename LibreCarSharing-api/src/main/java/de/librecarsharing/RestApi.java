@@ -6,7 +6,6 @@ import org.apache.shiro.subject.Subject;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
@@ -16,7 +15,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -38,12 +38,12 @@ public class RestApi {
         final Subject subject = SecurityUtils.getSubject();
         System.out.println("a" + subject);
         if (subject != null && subject.getPrincipal() != null) {
-            Long subid;
+            Long subjectId;
 
 
-            subid = this.getIdFromUname(subject.getPrincipal().toString());
-            System.out.println("b" + subid);
-            if ((subid != null && subid == userId) || subject.hasRole("admin")) {
+            subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
+            System.out.println("b" + subjectId);
+            if ((subjectId != null && subjectId == userId) || subject.hasRole("admin")) {
                 final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
                 final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
                 final Root<DBCar> from = query.from(DBCar.class);
@@ -106,13 +106,13 @@ public class RestApi {
             return Response.ok(users.stream().map(UserNoRef::new).collect(Collectors.toList())).build();
         else
             return Response.status(Response.Status.UNAUTHORIZED).build();
-
     }*/
+
     @Path("user/{userid}/community")//{userid}
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllcommunitiesFromUser(@PathParam("userid") final long userId) {
+    public Response getAllCommunitiesFromUser(@PathParam("userid") final long userId) {
         final Subject subject = SecurityUtils.getSubject();
         DBUser user = this.entityManager.find(DBUser.class, userId);
         if (user != null) {
@@ -135,7 +135,7 @@ public class RestApi {
     @Path("communities")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<CommunityNoRef> getAllcommunities() {
+    public List<CommunityNoRef> getAllCommunities() {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<DBCommunity> query = builder.createQuery(DBCommunity.class);
         final Root<DBCommunity> from = query.from(DBCommunity.class);
@@ -160,8 +160,8 @@ public class RestApi {
 
                 if (subject.getPrincipal() != null) {
                     principal = subject.getPrincipal().toString();
-                    Long subid = getIdFromUname(principal);
-                    if (subid != null) {
+                    Long subjectId = getIdFromUsername(principal);
+                    if (subjectId != null) {
                         if (community.getUsers().stream().map(DBUser::getUsername)
                                 .collect(Collectors.toList()).contains(subject.getPrincipal().toString()) || subject.hasRole("admin")) {
                             final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
@@ -175,7 +175,7 @@ public class RestApi {
                             System.out.println("result " + rides);
                             List<RideBool> rideBools = new ArrayList<>();
                             for (DBRide ride : rides) {
-                                rideBools.add(new RideBool(ride, ride.getCreator().getId() == subid));
+                                rideBools.add(new RideBool(ride, ride.getCreator().getId() == subjectId));
                             }
                             return Response.ok(rideBools).build();
                         }
@@ -183,11 +183,8 @@ public class RestApi {
                 }
                 return Response.status(Response.Status.UNAUTHORIZED).build();
             }
-
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
-
-
     }
 
     @Path("currentuser")
@@ -197,7 +194,7 @@ public class RestApi {
         final Subject subject = SecurityUtils.getSubject();
         if (subject != null) {
             if (subject.getPrincipal() != null) {
-                Long id = getIdFromUname(subject.getPrincipal().toString());
+                Long id = getIdFromUsername(subject.getPrincipal().toString());
                 if (id != null) {
                     DBUser user = this.entityManager.find(DBUser.class, id);
                     if (user != null)
@@ -208,9 +205,7 @@ public class RestApi {
 
             }
         }
-
         return Response.status(Response.Status.UNAUTHORIZED).build();
-
     }
 
 
@@ -230,11 +225,9 @@ public class RestApi {
                         return Response.ok(new UserNoRef(car.getOwner())).build();
                     else
                         return Response.status(Response.Status.NOT_FOUND).build();
-
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
-
     }
 
     @Path("carwrides/{carid}")//eher für admins
@@ -260,9 +253,9 @@ public class RestApi {
         if (subject == null || subject.getPrincipal() == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
         String principal = subject.getPrincipal().toString();
-        Long subid = getIdFromUname(principal);
-        if (subid != null) {
-            DBUser user = this.entityManager.find(DBUser.class, subid);
+        Long subjectId = getIdFromUsername(principal);
+        if (subjectId != null) {
+            DBUser user = this.entityManager.find(DBUser.class, subjectId);
             DBRide ride = this.entityManager.find(DBRide.class, rideId);
             if (user != null && ride != null) {
                 if (subject.hasRole("admin") || ride.getCar().getCommunity().getUsers().stream().map(DBUser::getId).collect(Collectors.toList()).contains(user.getId()))
@@ -283,9 +276,9 @@ public class RestApi {
         if (subject == null || subject.getPrincipal() == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
         String principal = subject.getPrincipal().toString();
-        Long subid = getIdFromUname(principal);
-        if (subid != null) {
-            DBUser user = this.entityManager.find(DBUser.class, subid);
+        Long subjectId = getIdFromUsername(principal);
+        if (subjectId != null) {
+            DBUser user = this.entityManager.find(DBUser.class, subjectId);
             DBCar car = this.entityManager.find(DBCar.class, carId);
             if (user != null && car != null) {
                 if (subject.hasRole("admin") || car.getCommunity().getUsers().stream().map(DBUser::getId).collect(Collectors.toList()).contains(user.getId()))
@@ -307,9 +300,9 @@ public class RestApi {
         if (subject == null || subject.getPrincipal() == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
         String principal = subject.getPrincipal().toString();
-        Long subid = getIdFromUname(principal);
-        if (subid != null) {
-            DBUser user = this.entityManager.find(DBUser.class, subid);
+        Long subjectId = getIdFromUsername(principal);
+        if (subjectId != null) {
+            DBUser user = this.entityManager.find(DBUser.class, subjectId);
             DBCommunity community = this.entityManager.find(DBCommunity.class, comId);
             if (user != null && community != null) {
                 if (subject.hasRole("admin") || community.getUsers().stream().map(DBUser::getId).collect(Collectors.toList()).contains(user.getId()))
@@ -326,7 +319,7 @@ public class RestApi {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addRide(@PathParam("carid") final long carid, final JsonRide data) {
+    public Response addRide(@PathParam("carid") final long carId, final JsonRide data) {
 
         String name = data.name;
         if (name == null)
@@ -334,7 +327,7 @@ public class RestApi {
 
         final Subject subject = SecurityUtils.getSubject();
         DBCar car;
-        if ((car = this.entityManager.find(DBCar.class, carid)) != null && data.start < data.end) {
+        if ((car = this.entityManager.find(DBCar.class, carId)) != null && data.start < data.end) {
             DBCommunity community;
             if ((community = car.getCommunity()) != null) {
                 if (subject == null)
@@ -343,36 +336,34 @@ public class RestApi {
                         .collect(Collectors.toList()).contains(subject.getPrincipal().toString()) || subject.hasRole("admin")) {
                     Timestamp startStamp = new Timestamp(data.start);
                     Timestamp endStamp = new Timestamp(data.end);
-                    List<DBRide> intersects = getIntersects(startStamp, endStamp, carid);
+                    List<DBRide> intersects = getIntersects(startStamp, endStamp, carId);
                     if (intersects.size() == 0) {
-                        Long cratorid = getIdFromUname(subject.getPrincipal().toString());
-                        if (cratorid == null) {
+                        Long creatorId = getIdFromUsername(subject.getPrincipal().toString());
+                        if (creatorId == null) {
                             return Response.status(Response.Status.BAD_REQUEST).build();
                         }
-                        DBUser creator = this.entityManager.find(DBUser.class, cratorid);
+                        DBUser creator = this.entityManager.find(DBUser.class, creatorId);
                         if (creator != null) {
                             if (!isValidNotJustSpace(name)) {
                                 name = creator.getDisplayName();
                             }
-                            DBRide newride = new DBRide();
-                            newride.setCar(car);
-                            newride.setEnd(endStamp);
-                            newride.setStart(startStamp);
-                            newride.setCreator(creator);
-                            newride.setName(name);
-                            this.entityManager.persist(newride);
-                            car.addRide(newride);
-                            System.out.println("added" + newride);
-                            return Response.ok(new RideNoRef(newride)).build();
+                            DBRide newRide = new DBRide();
+                            newRide.setCar(car);
+                            newRide.setEnd(endStamp);
+                            newRide.setStart(startStamp);
+                            newRide.setCreator(creator);
+                            newRide.setName(name);
+                            this.entityManager.persist(newRide);
+                            car.addRide(newRide);
+                            System.out.println("added" + newRide);
+                            return Response.ok(new RideNoRef(newRide)).build();
                         }
                     } else {
                         return Response.status(Response.Status.BAD_REQUEST).entity(intersects.stream().map(RideNoRef::new).collect(Collectors.toList())).build();
                     }
                 }
-
                 return Response.status(Response.Status.UNAUTHORIZED).build();
             }
-
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
@@ -405,7 +396,7 @@ public class RestApi {
                 DBUser user = this.entityManager.find(DBUser.class, userId);
                 if (user != null && user.getUsername() != null && user.getUsername().equals(username) &&
                         user.getPassword() != null && (password.equals(user.getPassword()) || subject.hasRole("admin"))) {
-                    if (!isValidEmailAddress(email) || !isValidPasword(newPassword)) {
+                    if (!isValidEmailAddress(email) || !isValidPassword(newPassword)) {
                         return Response.status(Response.Status.BAD_REQUEST).build();
                     }
                     user.setEmail(email);
@@ -429,39 +420,36 @@ public class RestApi {
         if (name == null)
             name = "";
 
-        Timestamp newstart = new Timestamp(data.start);
-        Timestamp newend = new Timestamp(data.end);
+        Timestamp newStart = new Timestamp(data.start);
+        Timestamp newEnd = new Timestamp(data.end);
         String principal;
         final Subject subject = SecurityUtils.getSubject();
         if (subject.getPrincipal() != null) {
             principal = subject.getPrincipal().toString();
             if (principal != null) {
-
                 DBRide ride = this.entityManager.find(DBRide.class, rideId);
-                if (ride != null) {
 
+                if (ride != null) {
                     System.out.println("D" + ride.getCreator().getId());
-                    Long subid = this.getIdFromUname(subject.getPrincipal().toString());
-                    if (subid != null && ride.getCreator().getId() == subid) {
-                        DBUser user = entityManager.find(DBUser.class, subid);
+
+                    Long subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
+                    if (subjectId != null && ride.getCreator().getId() == subjectId) {
+                        DBUser user = entityManager.find(DBUser.class, subjectId);
                         if (user != null) {
-                            List<DBRide> intersects = this.getIntersects(newstart, newend, ride.getCar().getId());
+                            List<DBRide> intersects = this.getIntersects(newStart, newEnd, ride.getCar().getId());
                             if (intersects.size() == 0 || (intersects.size() == 1 && intersects.get(0).getId() == rideId)) {
                                 if (!isValidNotJustSpace(name))
                                     name = user.getDisplayName();
-                                ride.setStart(newstart);
-                                ride.setEnd(newend);
+                                ride.setStart(newStart);
+                                ride.setEnd(newEnd);
                                 ride.setName(name);
                                 return Response.ok(new RideNoRef(ride)).build();
 
                             }
-
-
                             return Response.status(Response.Status.NOT_FOUND).build();
                         }
                     }
                     return Response.status(Response.Status.UNAUTHORIZED).build();
-
                 }
             }
         }
@@ -488,7 +476,7 @@ public class RestApi {
             principal = subject.getPrincipal().toString();
             DBCar car = this.entityManager.find(DBCar.class, carId);
             if (car != null) {
-                DBType typetoset = checkType(type);
+                DBType typeToSet = checkType(type);
                 if (car.getOwner().getUsername().equals(principal) || subject.hasRole("admin")) {
                     car.setColor(color);
                     car.setImageFile(imageFile);
@@ -496,7 +484,7 @@ public class RestApi {
                     car.setLicencePlate(licencePlate);
                     car.setLocation(location);
                     car.setStatus(status);
-                    car.setType(typetoset);
+                    car.setType(typeToSet);
                     car.setSeats(seats);
                     return Response.ok().build();
 
@@ -507,7 +495,6 @@ public class RestApi {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
         }
-
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
@@ -526,7 +513,7 @@ public class RestApi {
             username = username.toLowerCase();
             if (!isValidNotJustSpace(displayName))
                 displayName = username;
-            if (!isValidEmailAddress(email) || !isValidPasword(password))
+            if (!isValidEmailAddress(email) || !isValidPassword(password))
                 return Response.status(Response.Status.BAD_REQUEST).build();
             final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
             final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
@@ -550,7 +537,7 @@ public class RestApi {
     @Path("ride/{rideid}")
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
-    public Response deletride(@PathParam("rideid") final long rideId) {
+    public Response deletRide(@PathParam("rideid") final long rideId) {
         String principal;
         final Subject subject = SecurityUtils.getSubject();
         if (subject.getPrincipal() != null) {
@@ -558,7 +545,7 @@ public class RestApi {
             if (principal != null) {
                 DBRide ride = this.entityManager.find(DBRide.class, rideId);
                 if (ride != null) {
-                    DBUser user = this.entityManager.find(DBUser.class, getIdFromUname(principal));
+                    DBUser user = this.entityManager.find(DBUser.class, getIdFromUsername(principal));
                     if (user != null) {
                         if (ride.getCar().getOwner().getId() == user.getId() || subject.hasRole("admin")) {
                             this.entityManager.remove(ride);
@@ -570,41 +557,23 @@ public class RestApi {
                 } else {
                     return Response.status(Response.Status.NOT_FOUND).build();
                 }
-
             }
         }
-
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
-
-//    @Path("test/{carid}")
-//    @DELETE
-//    @Consumes(MediaType.TEXT_PLAIN)
-//    public Response deletetest(@PathParam("carid") final long carid) {
-//
-//        DBCar car = this.entityManager.find(DBCar.class, carid);
-//        if (car != null) {
-//            this.entityManager.remove(car);
-//            car.getCommunity().getCars().remove(car);
-//            return Response.ok().build();
-//        }
-//        return Response.status(Response.Status.NOT_MODIFIED).build();
-//
-//    }
-
 
     @Path("car/{carid}")
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
-    public Response deletcar(@PathParam("carid") final long carid) {
+    public Response deleteCar(@PathParam("carid") final long carId) {
         String principal;
         final Subject subject = SecurityUtils.getSubject();
         if (subject.getPrincipal() != null) {
             principal = subject.getPrincipal().toString();
             if (principal != null) {
-                DBCar car = this.entityManager.find(DBCar.class, carid);
+                DBCar car = this.entityManager.find(DBCar.class, carId);
                 if (car != null) {
-                    DBUser user = this.entityManager.find(DBUser.class, getIdFromUname(principal));
+                    DBUser user = this.entityManager.find(DBUser.class, getIdFromUsername(principal));
                     if (user != null) {
                         if (car.getOwner().getId() == user.getId() || subject.hasRole("admin")) {
                             this.entityManager.remove(car);
@@ -616,10 +585,8 @@ public class RestApi {
                 } else {
                     return Response.status(Response.Status.NOT_FOUND).build();
                 }
-
             }
         }
-
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
@@ -639,7 +606,7 @@ public class RestApi {
         query.select(from).where(predicate);
         if (this.entityManager.createQuery(query).getResultList().size() == 0) {
             if (subject != null && subject.getPrincipal() != null) {
-                DBUser creator = entityManager.find(DBUser.class, getIdFromUname(subject.getPrincipal().toString()));
+                DBUser creator = entityManager.find(DBUser.class, getIdFromUsername(subject.getPrincipal().toString()));
                 if (creator != null) {
                     final DBCommunity community = new DBCommunity();
                     community.setAdmin(creator);
@@ -650,7 +617,6 @@ public class RestApi {
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
-
     }
 
 
@@ -688,9 +654,9 @@ public class RestApi {
 
 
             principal = subject.getPrincipal().toString();
-            Long iduser = getIdFromUname(principal);
-            if (iduser != null) {
-                DBUser user = this.entityManager.find(DBUser.class, iduser);
+            Long userId = getIdFromUsername(principal);
+            if (userId != null) {
+                DBUser user = this.entityManager.find(DBUser.class, userId);
                 if (user.getCommunities().stream().map(DBCommunity::getId).collect(Collectors.toList())
                         .contains(comId) || subject.hasRole("admin")) {
 
@@ -711,14 +677,10 @@ public class RestApi {
 
                     return Response.ok().build();
                 }
-
-
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
-
     }
-
 
     @Path("types")
     @GET
@@ -743,16 +705,16 @@ public class RestApi {
         final Subject subject = SecurityUtils.getSubject();
 
         if (subject != null && subject.getPrincipal() != null) {
-            Long subid;
+            Long subjectId;
 
 
-            subid = this.getIdFromUname(subject.getPrincipal().toString());
-            if ((subid != null) || subject.hasRole("admin")) {
+            subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
+            if ((subjectId != null) || subject.hasRole("admin")) {
                 final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
                 final CriteriaQuery<DBCar> query = builder.createQuery(DBCar.class);
                 final Root<DBCar> from = query.from(DBCar.class);
                 final Join<DBCar, DBUser> join = from.join(DBCar_.owner);
-                Predicate predicate = builder.equal(join.get(DBCommunity_.id), subid);
+                Predicate predicate = builder.equal(join.get(DBCommunity_.id), subjectId);
                 Predicate typepred = builder.equal(from.get(DBCar_.type.getName()), typeId);
                 Predicate where = builder.or(predicate, typepred);
                 Order order = builder.asc(from.get(DBCar_.name));
@@ -770,7 +732,7 @@ public class RestApi {
     @Path("community/{comid}/user/{userid}")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addusertcommunity(@PathParam("comid") long comId, @PathParam("userid") final long userId) {
+    public Response addUserToCommunity(@PathParam("comid") long comId, @PathParam("userid") final long userId) {
 
         DBCommunity community;
         DBUser user;
@@ -793,13 +755,11 @@ public class RestApi {
                     }
                 }
             }
-
         }
-
         return Response.ok().build();
     }
 
-    private Long getIdFromUname(String username) {
+    private Long getIdFromUsername(String username) {
         final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
         final CriteriaQuery<DBUser> query = builder.createQuery(DBUser.class);
         final Root<DBUser> from = query.from(DBUser.class);
@@ -817,15 +777,15 @@ public class RestApi {
     private boolean isValidEmailAddress(String email) {
         boolean result = true;
         try {
-            InternetAddress emailAddr = new InternetAddress(email);
-            emailAddr.validate();
+            InternetAddress emailAddress = new InternetAddress(email);
+            emailAddress.validate();
         } catch (AddressException ex) {
             result = false;
         }
         return result;
     }
 
-    private boolean isValidPasword(String password) {
+    private boolean isValidPassword(String password) {
         Pattern letters = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$");
         Matcher m = letters.matcher(password);
         return (m.matches());
@@ -848,14 +808,14 @@ public class RestApi {
         Predicate predicate2 = builder.greaterThanOrEqualTo(from.get(DBRide_.end), startStamp);
         Predicate predicate3 = builder.lessThanOrEqualTo(from.get(DBRide_.start), startStamp);
 
-        Predicate startpred = builder.and(predicate2, predicate3);
+        Predicate startPred = builder.and(predicate2, predicate3);
         Predicate predicate4 = builder.greaterThanOrEqualTo(from.get(DBRide_.end), endStamp);
         Predicate predicate5 = builder.lessThanOrEqualTo(from.get(DBRide_.start), endStamp);
         Predicate endpred = builder.and(predicate4, predicate5);
         Predicate predicate6 = builder.greaterThanOrEqualTo(from.get(DBRide_.start), startStamp);
         Predicate predicate7 = builder.lessThanOrEqualTo(from.get(DBRide_.end), endStamp);
         Predicate enclosepred = builder.and(predicate6, predicate7);
-        Predicate intersect = builder.or(endpred, startpred);
+        Predicate intersect = builder.or(endpred, startPred);
         intersect = builder.or(intersect, enclosepred);
         Predicate whole = builder.and(predicate1, intersect);
         Order order = builder.asc(from.get(DBRide_.end));
