@@ -53,11 +53,10 @@ class RideService {
    * Add a new ride to a given car
    * @param: carId id of the car the ride is on
    * @param: ride data to be added
-   * @return: the newly created ride
+   * @return: statuscode of response
    */
-  Future<bool> addRide(int carId, Ride ride) {
+  Future<int> addRide(int carId, Ride ride) {
     //todo fix
-    bool status;
     Completer completer = new Completer();
     HttpRequest.request(
         "../api/car/" + carId.toString() + "/ride", method: "POST",
@@ -66,14 +65,10 @@ class RideService {
       '"start"': '"' + ride.start.toString() + '"',
       '"end"': '"' + ride.end.toString() + '"'
     }).then((HttpRequest response) {
-      if (response.status == 200) {
-        completer.complete(true);
-      } else {
-        completer.complete(false);
-      }
+      completer.complete(response.status);
     }).catchError((n) {
       print("Error in addRide.");
-      completer.complete(false);
+      completer.complete(0);
     });
     return completer.future;
   }
@@ -105,19 +100,16 @@ class RideService {
   /**
    * Delete an existing ride
    * @param: rideId id of the ride being deleted
+   * @return: statuscode of response
    */
-  Future<bool> deleteRide(int rideId) {
+  Future<int> deleteRide(int rideId) {
     Completer completer = new Completer();
     HttpRequest.request("../api/ride/" + rideId.toString(),
         method: "DELETE").then((HttpRequest response) {
-      if (response.status == 200) {
-        completer.complete(true);
-      } else {
-        completer.complete(false);
-      }
+      completer.complete(response.status);
     }).catchError((Event e) {
       print("Error in deleteRide.");
-      completer.complete(null);
+      completer.complete(0);
     });
     return completer.future;
   }
