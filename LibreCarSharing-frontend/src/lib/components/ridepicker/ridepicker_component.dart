@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:angular2/angular2.dart';
-import 'package:ng_bootstrap/components/accordion/accordion.dart';
-import 'package:ng_bootstrap/components/datepicker/date_picker.dart';
+import 'package:ng_bootstrap/ng_bootstrap.dart';
 
 // Import Interfaces
 import 'package:LibreCarSharingFrontend/interfaces/ride.dart';
@@ -14,7 +13,7 @@ import 'package:LibreCarSharingFrontend/services/ride_service.dart';
   styleUrls: const ['ridepicker_component.css'],
   templateUrl: 'ridepicker_component.html',
   directives: const [
-    NG_BOOTSTRAP_ACCORDION_DIRECTIVES,
+    NG_BOOTSTRAP_DATEPICKER_DIRECTIVES,
   ],
 )
 class RidepickerComponent implements OnInit {
