@@ -13,7 +13,7 @@ import 'package:LibreCarSharingFrontend/services/ride_service.dart';
   styleUrls: const ['ridepicker_component.css'],
   templateUrl: 'ridepicker_component.html',
   directives: const [
-    NG_BOOTSTRAP_DATEPICKER_DIRECTIVES,
+    BS_TABLE_DIRECTIVES,
   ],
 )
 class RidepickerComponent implements OnInit {
