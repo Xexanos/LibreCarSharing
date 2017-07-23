@@ -20,6 +20,8 @@ class RidepickerComponent implements OnInit {
   @Input("carId")
   int carId;
 
+  int page = 1;
+
   List<Ride> rides = [];
 
   final RideService _rideService;

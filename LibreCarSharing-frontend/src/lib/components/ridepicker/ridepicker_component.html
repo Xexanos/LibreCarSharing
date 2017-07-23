@@ -5,8 +5,8 @@
               [(pageNumber)]="page"
               [itemsPerPage]="5"
               [sortable]="true"
-              [(totalItems)]="length">
-        <bs-column header="Name" fieldName=name></bs-column>
+              [(totalItems)]="rides.length">
+        <bs-column header="Name" fieldName="name"></bs-column>
         <bs-column header="Benutzer" fieldName="user" sort="NONE"></bs-column>
         <bs-column header="Startzeitpunkt" fieldName="start" sort="ASC"></bs-column>
         <bs-column header="Endzeitpunkt" fieldName="end"></bs-column>
