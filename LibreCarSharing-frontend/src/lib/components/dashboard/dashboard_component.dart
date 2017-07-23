@@ -13,24 +13,14 @@ import 'package:LibreCarSharingFrontend/services/community_service.dart';
   directives: const [BS_TABLE_DIRECTIVES,],
 )
 class DashboardComponent implements OnInit {
-  final RouteParams _routeParams;
-
   final CommunityService _communityService;
-  DashboardComponent( this._communityService);
+
   List<Community> communities = [];
-  int page = 1;
+
+  DashboardComponent( this._communityService);
 
   @override
   Future<Null> ngOnInit() async {
-    this.getcommunities();
-  }
-
-
-
-
-  getcommunities() {
-    _communityService.getCommunities().then((communities) async {
-      this.communities = communities;
-    });
+    communities = await _communityService.getCommunities();
   }
 }
