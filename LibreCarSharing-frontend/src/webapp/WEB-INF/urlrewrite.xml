@@ -46,7 +46,7 @@
         <from>/web/newcar/**</from>
         <to>/web/index.html</to>
     </rule>
->
+
 
 
 </urlrewrite>
