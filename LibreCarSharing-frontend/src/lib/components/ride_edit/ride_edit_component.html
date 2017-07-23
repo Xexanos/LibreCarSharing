@@ -34,9 +34,9 @@
 
 
         <!-- TODO: use right methods -->
-        <button *ngIf="car.id == -1" class="btn btn-primary" (click)="createCar($event)">Auto erstellen</button>
-        <button *ngIf="car.id != -1" class="btn btn-primary" (click)="sendChanges($event)">Absenden</button>
-        <button *ngIf="car.id != -1" class="btn btn-danger" (click)="deleteCar($event)">Fahrt löschen</button>
+        <button *ngIf="ride.id == -1" class="btn btn-primary" (click)="createRide($event)">Auto erstellen</button>
+        <button *ngIf="ride.id != -1" class="btn btn-primary" (click)="sendChanges($event)">Absenden</button>
+        <button *ngIf="ride.id != -1" class="btn btn-danger" (click)="deleteRide($event)">Fahrt löschen</button>
     </form>
 </div>
 <div *ngIf="car == null"><span>Kein Auto gewählt</span></div>

@@ -61,7 +61,7 @@ class RideEditComponent implements OnInit {
     }
   }
 
-  deleteCar(dynamic e) async {
+  deleteRide(dynamic e) async {
     e.preventDefault();
 
     //TODO: Sicherheitsabfrage
@@ -74,7 +74,7 @@ class RideEditComponent implements OnInit {
     }
   }
 
-  createCar(dynamic e) async {
+  createRide(dynamic e) async {
     e.preventDefault();
 
     bool status = await _rideService.addRide(carId, ride);
