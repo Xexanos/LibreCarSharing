@@ -34,18 +34,19 @@ class SidebarCarsComponent implements OnInit {
 
   @override
   Future<Null> ngOnInit() async {
-    this.setTitles();
-    this._tabService.tabStream.listen((String orderBy) {
+    setTitles();
+    _tabService.newStream();
+    _tabService.tabStream.listen((String orderBy) {
       this.orderBy = orderBy;
-      this.setTitles();
+      setTitles();
     });
   }
 
   setTitles() {
     _userService.getCurrentUser().then((user) async {
-      if (this.orderBy == "types") {
+      if (orderBy == "types") {
         titles = await _typeService.getUserTypes(user.id);
-      } else if (this.orderBy == "communities") {
+      } else if (orderBy == "communities") {
         titles = await _communityService.getUserCommunities(user.id);
       }
     });
