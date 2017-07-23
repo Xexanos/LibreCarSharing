@@ -1,7 +1,6 @@
 <h3>Dashboard</h3>
 <link href="dashboard_component.css" rel="stylesheet">
 <div *ngIf="communities != null">
-
     <h5>Liste aller Communitys:</h5>
     <bs-table [rows]="communities"
               [selectable]="false"
@@ -10,9 +9,5 @@
               [sortable]="true"
               [(totalItems)]="communities.length">
         <bs-column  header="Name" fieldName="name" sort="ASC" [ngStyle]="{width: '60%'}"></bs-column>
-
     </bs-table>
-    <!--<div class="sidebarCars" *ngFor="let ride of rides">-->
-    <!--<sidebarPartDisplay [title]="ride.title"></sidebarPartDisplay>-->
-    <!--</div>-->
 </div>
