@@ -1,5 +1,6 @@
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
 import 'package:LibreCarSharingFrontend/components/car_edit/car_edit_component.dart';
+import 'package:LibreCarSharingFrontend/components/ride_edit/ride_edit_component.dart';
 import 'package:LibreCarSharingFrontend/components/dashboard/dashboard_component.dart';
 import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
 import 'package:LibreCarSharingFrontend/components/register/register_component.dart';
@@ -40,6 +41,8 @@ import 'package:ng_bootstrap/ng_bootstrap.dart';
   const Route(path: '/dashboard', name: 'Dashboard', component: DashboardComponent),
   const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent),
   const Route(path: '/editcar/:id', name: 'EditCar', component: CarEditComponent),
+  const Route(
+      path: '/editride/:id', name: 'EditRide', component: EditRideComponent),
   const Route(path: '/newcar/', name: 'NewCar', component: CarEditComponent),
   const Route(path: '/user/', name: 'User', component: UserDisplayComponent)
 ])

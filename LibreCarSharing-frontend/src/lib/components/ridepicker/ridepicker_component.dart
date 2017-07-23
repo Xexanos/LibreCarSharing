@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:angular2/angular2.dart';
+import 'package:angular2/router.dart';
 import 'package:ng_bootstrap/ng_bootstrap.dart';
 
 // Import Interfaces
@@ -15,8 +16,12 @@ import 'package:LibreCarSharingFrontend/services/ride_service.dart';
   directives: const [
     BS_TABLE_DIRECTIVES,
   ],
+    providers: const [ROUTER_PROVIDERS]
 )
 class RidepickerComponent implements OnInit {
+  final RouteParams _routeParams;
+  final Router _router;
+
   @Input("carId")
   int carId;
 
@@ -26,7 +31,7 @@ class RidepickerComponent implements OnInit {
 
   final RideService _rideService;
 
-  RidepickerComponent(this._rideService);
+  RidepickerComponent(this._rideService, this._routeParams, this._router);
 
   @override
   Future<Null> ngOnInit() async {
@@ -38,4 +43,10 @@ class RidepickerComponent implements OnInit {
       this.rides = rides;
     });
   }
+
+  Future editRide(dynamic e, rideId) =>
+      _router.navigate([
+        'EditRide',
+        {'id': rideId}
+      ]);
 }

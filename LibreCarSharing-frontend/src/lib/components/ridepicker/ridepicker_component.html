@@ -1,17 +1,13 @@
 <div *ngIf="rides != null">
-    Bisherige Reservierungen:
     <bs-table [rows]="rides"
-              [selectable]="true"
               [(pageNumber)]="page"
               [itemsPerPage]="5"
               [sortable]="true"
-              [(totalItems)]="rides.length">
+              [(totalItems)]="rides.length"
+              (click)="editRide(event$)">
         <bs-column header="Name" fieldName="name"></bs-column>
         <bs-column header="Benutzer" fieldName="creatorId" sort="NONE"></bs-column>
         <bs-column header="Startzeitpunkt" fieldName="start" sort="ASC"></bs-column>
         <bs-column header="Endzeitpunkt" fieldName="end"></bs-column>
     </bs-table>
-    <!--<div class="sidebarCars" *ngFor="let ride of rides">-->
-    <!--<sidebarPartDisplay [title]="ride.title"></sidebarPartDisplay>-->
-    <!--</div>-->
 </div>
