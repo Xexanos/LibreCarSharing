@@ -661,7 +661,7 @@ public class RestApi {
             imageFile = "";
         if (name == null)
             name = "";
-        if (type == null || isValidNotJustSpace(type))
+        if (type == null || !isValidNotJustSpace(type))
             return Response.status(Response.Status.BAD_REQUEST).build();
         DBCommunity community = this.entityManager.find(DBCommunity.class, comId);
         if (community == null)
