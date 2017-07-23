@@ -40,7 +40,9 @@ class CarService {
 
     List<Car> returnList = new List<CarImpl>();
     HttpRequest
-        .getString("../api/type/" + typeId.toString() + "/car")
+    //TODO: make consistent with getCommunityCars
+    //    .getString("../api/type/" + typeId.toString() + "/car")
+        .getString("../api/currentuser/car/" + typeId.toString())
         .then((String responseText) {
       List<JsonObject> responseList = JSON.decode(responseText);
       //TODO: Das muss auch einfacher gehen!!!

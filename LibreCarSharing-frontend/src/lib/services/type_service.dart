@@ -13,12 +13,13 @@ class TypeService {
    * Get all communities a given user is a member of
    * @param: id The ID of a user
    **/
-  Future<List<MyType>> getUserType(int userId) {
+  Future<List<MyType>> getUserTypes() {
     Completer completer = new Completer();
 
     List<MyType> returnList = new List<TypeImpl>();
     HttpRequest
-        .getString("../api/user/" + userId.toString() + "/type")
+    //TODO: make consistent with getUserCommunities
+        .getString("../api/types")
         .then((String responseText) {
       List<JsonObject> responseList = JSON.decode(responseText);
       //TODO: Das muss auch einfacher gehen!!!
