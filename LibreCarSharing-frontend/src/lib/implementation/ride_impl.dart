@@ -11,11 +11,11 @@ class RideImpl extends JsonObject implements Ride {
     return new JsonObject.fromJsonString(jsonString, new RideImpl());
   }
 
-  RideImpl({int id, String name, int start, int end, bool changeable}) {
+  RideImpl({int id, String name, int start, int end, int creatorId}) {
     this.id = id;
     this.name = name;
     this.start = start;
     this.end = end;
-    this.changeable = changeable;
+    this.creatorId = creatorId;
   }
 }

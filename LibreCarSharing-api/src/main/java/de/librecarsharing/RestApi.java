@@ -169,11 +169,11 @@ public class RestApi {
                             query.select(from).where(predicate).orderBy(order);
                             final List<DBRide> rides = this.entityManager.createQuery(query).getResultList();
                             System.out.println("result " + rides);
-                            List<RideBool> rideBools = new ArrayList<>();
+                           /* List<RideBool> rideBools = new ArrayList<>();
                             for (DBRide ride : rides) {
                                 rideBools.add(new RideBool(ride, ride.getCreator().getId() == subjectId));
-                            }
-                            return Response.ok(rideBools).build();
+                            }*/
+                            return Response.ok(rides.stream().map(RideNoRef::new).collect(Collectors.toList())).build();
                         }
                     }
                 }

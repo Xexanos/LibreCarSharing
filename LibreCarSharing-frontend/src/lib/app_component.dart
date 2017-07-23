@@ -1,5 +1,6 @@
 import 'package:LibreCarSharingFrontend/components/car_display/car_display_component.dart';
 import 'package:LibreCarSharingFrontend/components/car_edit/car_edit_component.dart';
+import 'package:LibreCarSharingFrontend/components/ride_edit/ride_edit_component.dart';
 import 'package:LibreCarSharingFrontend/components/dashboard/dashboard_component.dart';
 import 'package:LibreCarSharingFrontend/components/login/login_component.dart';
 import 'package:LibreCarSharingFrontend/components/register/register_component.dart';
@@ -11,6 +12,7 @@ import 'package:LibreCarSharingFrontend/services/community_service.dart';
 import 'package:LibreCarSharingFrontend/services/tab_service.dart';
 import 'package:LibreCarSharingFrontend/services/user_service.dart';
 import 'package:LibreCarSharingFrontend/services/type_service.dart';
+import 'package:LibreCarSharingFrontend/services/ride_service.dart';
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
 import 'package:ng_bootstrap/ng_bootstrap.dart';
@@ -23,7 +25,15 @@ import 'package:ng_bootstrap/ng_bootstrap.dart';
   styleUrls: const ['app_component.css'],
   templateUrl: 'app_component.html',
   directives: const [BS_DIRECTIVES, ROUTER_DIRECTIVES, SidebarComponent],
-  providers: const [ROUTER_PROVIDERS, CarService, UserService, TabService, CommunityService, TypeService],
+  providers: const [
+    ROUTER_PROVIDERS,
+    CarService,
+    UserService,
+    TabService,
+    CommunityService,
+    TypeService,
+    RideService
+  ],
 )
 @RouteConfig(const [
   const Route(path: '/login', name: 'Login', component: LoginComponent),
@@ -31,6 +41,8 @@ import 'package:ng_bootstrap/ng_bootstrap.dart';
   const Route(path: '/dashboard', name: 'Dashboard', component: DashboardComponent),
   const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent),
   const Route(path: '/editcar/:id', name: 'EditCar', component: CarEditComponent),
+  const Route(
+      path: '/editride/:id', name: 'EditRide', component: RideEditComponent),
   const Route(path: '/newcar/', name: 'NewCar', component: CarEditComponent),
   const Route(path: '/user/', name: 'User', component: UserDisplayComponent)
 ])

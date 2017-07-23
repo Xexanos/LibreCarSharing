@@ -1,0 +1,13 @@
+<div *ngIf="rides != null">
+    <bs-table [rows]="rides"
+              [(pageNumber)]="page"
+              [itemsPerPage]="5"
+              [sortable]="true"
+              [(totalItems)]="rides.length"
+              (click)="editRide(event$)">
+        <bs-column header="Name" fieldName="name"></bs-column>
+        <bs-column header="Benutzer" fieldName="creatorId" sort="NONE"></bs-column>
+        <bs-column header="Startzeitpunkt" fieldName="start" sort="ASC"></bs-column>
+        <bs-column header="Endzeitpunkt" fieldName="end"></bs-column>
+    </bs-table>
+</div>

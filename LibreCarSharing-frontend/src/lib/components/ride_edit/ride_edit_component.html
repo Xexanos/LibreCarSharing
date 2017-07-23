@@ -1,0 +1,42 @@
+<div *ngIf="ride != null">
+    <form>
+        <!-- TODO: insert car image display and upload here -->
+        <div class="form-group">
+            <label *ngIf="(car.id != -1)">{{ride.name}} </label>
+            <label *ngIf="(car.id == -1)">Neues Fahrt erstellen</label>
+        </div>
+
+        <div class="form-group">
+            <label for="inputName">Name</label>
+            <input type="text" class="form-control" id="inputName" aria-describedby="NameHelp"
+                   [(ngModel)]="ride.name" ngControl="displayName">
+            <small id="nameHelp" class="form-text text-muted">
+                Ein aussagekräftiger Name des Autos.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="inputStart">Name</label>
+            <input type="text" class="form-control" id="inputStart" aria-describedby="NameHelp"
+                   [(ngModel)]="ride.start" ngControl="displayName">
+            <small id="startHelp" class="form-text text-muted">
+                Ein aussagekräftiger Name des Autos.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="inputEnd">Name</label>
+            <input type="text" class="form-control" id="inputEnd" aria-describedby="NameHelp"
+                   [(ngModel)]="ride.end" ngControl="displayName">
+            <small id="endHelp" class="form-text text-muted">
+                Ein aussagekräftiger Name des Autos.
+            </small>
+        </div>
+
+
+
+        <!-- TODO: use right methods -->
+        <button *ngIf="ride.id == -1" class="btn btn-primary" (click)="createRide($event)">Auto erstellen</button>
+        <button *ngIf="ride.id != -1" class="btn btn-primary" (click)="sendChanges($event)">Absenden</button>
+        <button *ngIf="ride.id != -1" class="btn btn-danger" (click)="deleteRide($event)">Fahrt löschen</button>
+    </form>
+</div>
+<div *ngIf="car == null"><span>Kein Auto gewählt</span></div>

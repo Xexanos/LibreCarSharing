@@ -4,7 +4,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
 
@@ -14,12 +13,9 @@ public class StartupBean {
 
     @PersistenceContext
     private EntityManager entityManager;
-    private EntityManagerFactory entityManagerFactory;
-    private final static String PERSISTENCE_UNIT = "pu";
 
     @PostConstruct
     public void startup() {
-        //init();
         //createData(); //uncomment to generate sample data
     }
 
@@ -42,19 +38,21 @@ public class StartupBean {
         mark.setImageFile("");
         final DBCar car1 = new DBCar();
         car1.setName("Mercedes Vito");
+        car1.setLicencePlate("DO:AA-00");
         car1.setSeats(3);
         car1.setLocation("Dortmund");
         car1.setInfo("car1");
         car1.setImageFile("https://upload.wikimedia.org/wikipedia/commons/3/3a/Mercedes_vito_1_v_sst.jpg");
-        car1.setColor(3);
+        car1.setColor(0xFFFFFF);
         tim.addCar(car1);
         final DBCar car2 = new DBCar();
         car2.setName("VW Golf");
+        car2.setLicencePlate("DO:BB-00");
         car2.setLocation("Lünen");
         car2.setSeats(4);
         car2.setInfo("car2");
         car2.setImageFile("https://upload.wikimedia.org/wikipedia/commons/6/6f/Golf_2_v2.jpg");
-        car2.setColor(3);
+        car2.setColor(0x0000FF);
         final DBType smallCar = new DBType();
         final DBType transporter = new DBType();
         smallCar.setName("Kleinwagen");
