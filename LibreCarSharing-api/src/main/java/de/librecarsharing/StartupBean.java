@@ -4,7 +4,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
 
@@ -14,12 +13,9 @@ public class StartupBean {
 
     @PersistenceContext
     private EntityManager entityManager;
-    private EntityManagerFactory entityManagerFactory;
-    private final static String PERSISTENCE_UNIT = "pu";
 
     @PostConstruct
     public void startup() {
-        //init();
         //createData(); //uncomment to generate sample data
     }
 
