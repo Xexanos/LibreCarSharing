@@ -80,7 +80,17 @@ class CarService {
     Completer completer = new Completer();
 
     if (carId == -1) {
-      completer.complete(new CarImpl(id: -1));
+      Car car = new CarImpl();
+      car.id = -1;
+      car.name = "";
+      car.licencePlate = "";
+      car.type = "";
+      car.location = "";
+      car.status = true;
+      car.info = "";
+      car.seats = 1;
+      car.color = 0;
+      completer.complete(car);
     } else {
       HttpRequest
           .getString("../api/car/" + carId.toString())

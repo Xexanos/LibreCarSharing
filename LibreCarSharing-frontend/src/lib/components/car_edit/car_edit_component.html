@@ -4,6 +4,16 @@
         <div class="form-group">
             <label>{{car.name}} ({{car.licencePlate}})</label>
         </div>
+        <div *ngIf="car.id == -1" class="form-group">
+            <label for="inputCommunity">Community</label>
+            <select class="form-control" id="inputCommunity" aria-describedby="CommunityHelp"
+                   [(ngModel)]="car.name" ngControl="displayCommunity">
+                <option *ngFor="let community of communities" [value]="community.id">{{community.name}}</option>
+            </select>
+            <small id="communityHelp" class="form-text text-muted">
+                Die Community, der das Auto zur Verfügung stehen soll.
+            </small>
+        </div>
         <div class="form-group">
             <label for="inputName">Name</label>
             <input type="text" class="form-control" id="inputName" aria-describedby="NameHelp"

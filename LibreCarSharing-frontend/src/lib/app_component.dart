@@ -30,7 +30,8 @@ import 'package:ng_bootstrap/ng_bootstrap.dart';
   const Route(path: '/register', name: 'Register', component: RegisterComponent),
   const Route(path: '/dashboard', name: 'Dashboard', component: DashboardComponent),
   const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent),
-  const Route(path: '/caredit/:id', name: 'CarEdit', component: CarEditComponent),
+  const Route(path: '/editcar/:id', name: 'EditCar', component: CarEditComponent),
+  const Route(path: '/newcar/', name: 'NewCar', component: CarEditComponent),
   const Route(path: '/user/', name: 'User', component: UserDisplayComponent)
 ])
 class AppComponent {

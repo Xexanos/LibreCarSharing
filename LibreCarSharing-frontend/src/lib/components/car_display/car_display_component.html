@@ -1,5 +1,5 @@
 <div class="carDisplay" *ngIf="car != null">
-    <p class="carTitle">{{car.name}} ({{car.licencePlate}}) <a class="" [routerLink]="['CarEdit', {'id': car.id.toString()}]">Bearbeiten</a></p>
+    <p class="carTitle">{{car.name}} ({{car.licencePlate}}) <a class="" [routerLink]="['EditCar', {'id': car.id.toString()}]">Bearbeiten</a></p>
     <img *ngIf="car.imageFile != ''" class="carImage" [src]="car.imageFile" alt="Image of {{car.name}}">
     <div class="carInformation">
         <div class="carBaseInformation">

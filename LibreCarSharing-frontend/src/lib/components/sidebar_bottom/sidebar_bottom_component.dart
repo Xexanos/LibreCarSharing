@@ -34,4 +34,9 @@ class SidebarBottomComponent implements OnInit {
     e.preventDefault();
     this._router.navigate(['User']);
   }
+
+  void newCar(dynamic e) {
+    e.preventDefault();
+    this._router.navigate(['NewCar']);
+  }
 }
