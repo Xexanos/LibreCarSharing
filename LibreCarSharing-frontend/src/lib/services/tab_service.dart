@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:angular2/angular2.dart';
 
 @Injectable()
-class TabService{
+class TabService {
   Stream tabStream;
   StreamController _tabStreamController;
 
   List<String> tabTexts = ["Communities", "Typ"];
   List<String> tabOrderBy = ["communities", "types"];
 
-  TabService() {
+  void newStream() {
     _tabStreamController = new StreamController();
     tabStream = _tabStreamController.stream;
   }
