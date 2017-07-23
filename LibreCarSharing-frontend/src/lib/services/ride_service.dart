@@ -46,7 +46,8 @@ class RideService {
         requestHeaders: {"Content-Type": "application/json"}, sendData: {
           '"name"': '"' + ride.name + '"',
           '"start"': '"' + ride.start.toString() + '"',
-          '"end"': '"' + ride.end.toString() + '"'
+          '"end"': '"' + ride.end.toString() + '"',
+          '"userId': '"' + ride.userId.toString() + '"'
     }).then((HttpRequest response) {
       if (response.status == 200) {
         completer.complete(new RideImpl.fromJsonString(response.responseText));
@@ -74,7 +75,8 @@ class RideService {
         sendData: {
           '"name"': '"' + ride.name + '"',
           '"start"': '"' + ride.start.toString() + '"',
-          '"end"': '"' + ride.end.toString() + '"'
+          '"end"': '"' + ride.end.toString() + '"',
+          '"userId': '"' + ride.userId.toString() + '"'
         }).then((HttpRequest response) {
       if (response.status == 200) {
         completer.complete(new RideImpl.fromJsonString(response.responseText));

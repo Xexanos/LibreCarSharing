@@ -4,12 +4,13 @@ import 'package:LibreCarSharingFrontend/interfaces/car.dart';
 import 'package:LibreCarSharingFrontend/services/car_service.dart';
 import 'package:angular2/angular2.dart';
 import 'package:angular2/router.dart';
+import 'package:LibreCarSharingFrontend/components/ridepicker/ridepicker_component.dart';
 
 @Component(
   selector: 'carDisplay',
   styleUrls: const ['car_display_component.css'],
   templateUrl: 'car_display_component.html',
-  directives: const [ROUTER_DIRECTIVES]
+  directives: const [ROUTER_DIRECTIVES, RidepickerComponent],
 )
 class CarDisplayComponent implements OnInit {
   final RouteParams _routeParams;

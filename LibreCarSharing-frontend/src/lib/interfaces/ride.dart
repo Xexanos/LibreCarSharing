@@ -3,5 +3,5 @@ abstract class Ride {
   String name;
   int start;
   int end;
-  bool changeable;
+  int userId;
 }
