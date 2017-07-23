@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'package:angular2/angular2.dart';
 import 'dart:convert';
 import 'dart:html';
 
-import 'package:LibreCarSharingFrontend/interfaces/car.dart';
 import 'package:LibreCarSharingFrontend/implementation/car_impl.dart';
+import 'package:LibreCarSharingFrontend/interfaces/car.dart';
+import 'package:angular2/angular2.dart';
 import 'package:json_object/json_object.dart';
 
 @Injectable()
@@ -40,9 +40,7 @@ class CarService {
 
     List<Car> returnList = new List<CarImpl>();
     HttpRequest
-    //TODO: make consistent with getCommunityCars
-    //    .getString("../api/type/" + typeId.toString() + "/car")
-        .getString("../api/currentuser/car/" + typeId.toString())
+        .getString("../api/type/" + typeId.toString() + "/car")
         .then((String responseText) {
       List<JsonObject> responseList = JSON.decode(responseText);
       //TODO: Das muss auch einfacher gehen!!!
@@ -81,13 +79,105 @@ class CarService {
   Future<Car> getCar(int carId) {
     Completer completer = new Completer();
 
-    HttpRequest
-        .getString("../api/car/" + carId.toString())
-        .then((String responseText) {
-      completer.complete(new CarImpl.fromJsonString(responseText));
+    if (carId == -1) {
+      Car car = new CarImpl();
+      car.id = -1;
+      car.name = "";
+      car.licencePlate = "";
+      car.type = "";
+      car.location = "";
+      car.status = true;
+      car.info = "";
+      car.seats = 1;
+      car.color = 0;
+      completer.complete(car);
+    } else {
+      HttpRequest
+          .getString("../api/car/" + carId.toString())
+          .then((String responseText) {
+        completer.complete(new CarImpl.fromJsonString(responseText));
+      }).catchError((n) {
+        print("Error in getCar.");
+        completer.complete(null);
+      });
+    }
+    return completer.future;
+  }
+
+  /**
+   * update data of a car inside DB
+   * @param: car modified base data
+   * @return: statuscode of response
+   */
+  Future<int> editCar(Car car) {
+    Completer completer = new Completer();
+
+    HttpRequest.request("../api/car/" + car.id.toString(),
+        method: "PUT",
+        requestHeaders: {
+          "Content-Type": "application/json"
+        },
+        sendData: {
+          '"name"': '"' + car.name + '"',
+          '"licencePlate"': '"' + car.licencePlate + '"',
+          '"type"': '"' + car.type + '"',
+          '"location"': '"' + car.location + '"',
+          '"imageFile"': '"' + car.imageFile + '"',
+          '"status"': '"' + car.status.toString() + '"',
+          '"info"': '"' + car.info + '"',
+          '"seats"': '"' + car.seats.toString() + '"',
+          '"color"': '"' + car.color.toString() + '"'
+        }).then((HttpRequest response) {
+      completer.complete(response.status);
     }).catchError((n) {
-      print("Error in getCar.");
-      completer.complete(null);
+      print("Error in editCar.");
+      completer.complete(0);
+    });
+    return completer.future;
+  }
+
+  /**
+   * create new car
+   * @param: car data of new car
+   * @return: statuscode of response
+   */
+  Future<int> newCar(Car car, int communityId) {
+    Completer completer = new Completer();
+
+    HttpRequest.request("../api/community/" + communityId.toString() + "/car",
+        method: "POST",
+        requestHeaders: {
+          "Content-Type": "application/json"
+        },
+        sendData: {
+          '"name"': '"' + car.name + '"',
+          '"licencePlate"': '"' + car.licencePlate + '"',
+          '"type"': '"' + car.type + '"',
+          '"location"': '"' + car.location + '"',
+          '"imageFile"': '"' + car.imageFile + '"',
+          '"status"': '"' + car.status.toString() + '"',
+          '"info"': '"' + car.info + '"',
+          '"seats"': '"' + car.seats.toString() + '"',
+          '"color"': '"' + car.color.toString() + '"'
+        }).then((HttpRequest response) {
+      completer.complete(response.status);
+    }).catchError((n) {
+      print("Error in newCar.");
+      completer.complete(0);
+    });
+    return completer.future;
+  }
+
+  Future<int> deleteCar(int carId) {
+    Completer completer = new Completer();
+
+    HttpRequest
+        .request("../api/car/" + carId.toString(), method: "DELETE")
+        .then((HttpRequest response) {
+      completer.complete(response.status);
+    }).catchError((n) {
+      print("Error in newCar.");
+      completer.complete(0);
     });
     return completer.future;
   }

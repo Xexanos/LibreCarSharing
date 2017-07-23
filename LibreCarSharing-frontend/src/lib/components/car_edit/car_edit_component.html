@@ -1,0 +1,89 @@
+<div *ngIf="car != null">
+    <form>
+        <!-- TODO: insert car image display and upload here -->
+        <div class="form-group">
+            <label>{{car.name}} ({{car.licencePlate}})</label>
+        </div>
+        <div *ngIf="car.id == -1" class="form-group">
+            <label for="inputCommunity">Community</label>
+            <select class="form-control" id="inputCommunity" aria-describedby="CommunityHelp"
+                   [(ngModel)]="car.name" ngControl="displayCommunity">
+                <option *ngFor="let community of communities" [value]="community.id">{{community.name}}</option>
+            </select>
+            <small id="communityHelp" class="form-text text-muted">
+                Die Community, der das Auto zur Verfügung stehen soll.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="inputName">Name</label>
+            <input type="text" class="form-control" id="inputName" aria-describedby="NameHelp"
+                   [(ngModel)]="car.name" ngControl="displayName">
+            <small id="nameHelp" class="form-text text-muted">
+                Ein aussagekräftiger Name des Autos.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="inputLicencePlate">Kennzeichen</label>
+            <input type="text" class="form-control" id="inputLicencePlate" aria-describedby="LicencePlateHelp"
+                   [(ngModel)]="car.licencePlate" ngControl="displayLicencePlate">
+            <small id="licencePlateHelp" class="form-text text-muted">
+                Das Kennzeichen des Autos.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="inputType">Typ</label>
+            <input type="text" list="typesList" class="form-control" id="inputType" aria-describedby="TypeHelp"
+                   [(ngModel)]="car.type" ngControl="displayType">
+            <datalist id="typesList">
+                <option *ngFor="let type of types">{{type.name}}</option>
+            </datalist>
+            <small id="typeHelp" class="form-text text-muted">
+                Der Typ des Autos.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="inputLocation">Standort</label>
+            <input type="text" class="form-control" id="inputLocation" aria-describedby="LocationHelp"
+                   [(ngModel)]="car.location" ngControl="displayLocation">
+            <small id="locationHelp" class="form-text text-muted">
+                Der Standort des Autos.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="inputStatus">benutzbar</label>
+            <input type="checkbox" class="form-control" id="inputStatus" aria-describedby="StatusHelp"
+                   [(ngModel)]="car.status" ngControl="displayStatus">
+            <small id="statusHelp" class="form-text text-muted">
+                Ist das Auto momentan nutzbar?
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="inputInfo">Weitere Informationen</label>
+            <textarea class="form-control" id="inputInfo" aria-describedby="InfoHelp"
+                      [(ngModel)]="car.info" ngControl="displayInfo"></textarea>
+            <small id="infoHelp" class="form-text text-muted">
+                Ausführliche Beschreibung des Autos.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="inputSeats">Seats</label>
+            <input type="number" class="form-control" id="inputSeats" aria-describedby="SeatsHelp"
+                   [(ngModel)]="car.seats" ngControl="displaySeats">
+            <small id="seatsHelp" class="form-text text-muted">
+                Anzahl der Sitzplätze des Autos.
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="inputColor">Farbe</label>
+            <input type="color" class="form-control" id="inputColor" aria-describedby="ColorHelp"
+                   [(ngModel)]="color" ngControl="displayColor">
+            <small id="colorHelp" class="form-text text-muted">
+                Die Farbe des Autos.
+            </small>
+        </div>
+        <button *ngIf="car.id == -1" class="btn btn-primary" (click)="createCar($event)">Auto Erstellen</button>
+        <button *ngIf="car.id != -1" class="btn btn-primary" (click)="sendChanges($event)">Absenden</button>
+        <button *ngIf="car.id != -1" class="btn btn-danger" (click)="deleteCar($event)">Auto löschen</button>
+    </form>
+</div>
+<div *ngIf="car == null"><span>Kein Auto gewählt</span></div>
