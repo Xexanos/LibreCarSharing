@@ -84,6 +84,7 @@ class CarService {
       car.id = -1;
       car.name = "";
       car.licencePlate = "";
+      car.imageFile = "";
       car.type = "";
       car.location = "";
       car.status = true;
@@ -139,9 +140,9 @@ class CarService {
   /**
    * create new car
    * @param: car data of new car
-   * @return: statuscode of response
+   * @return: negative Values: statuscode of response; positive values: id of the new car
    */
-  Future<int> newCar(Car car, int communityId) {
+  Future<int> newCar(int communityId, Car car) {
     Completer completer = new Completer();
 
     HttpRequest.request("../api/community/" + communityId.toString() + "/car",
@@ -160,7 +161,11 @@ class CarService {
           '"seats"': '"' + car.seats.toString() + '"',
           '"color"': '"' + car.color.toString() + '"'
         }).then((HttpRequest response) {
-      completer.complete(response.status);
+      if (response.status == 200) {
+        completer.complete((new CarImpl.fromJsonString(response.responseText)).id);
+      } else {
+        completer.complete(-response.status);
+      }
     }).catchError((n) {
       print("Error in newCar.");
       completer.complete(0);
