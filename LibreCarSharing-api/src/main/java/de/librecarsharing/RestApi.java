@@ -391,7 +391,7 @@ public class RestApi {
                 DBUser user = this.entityManager.find(DBUser.class, userId);
                 if (user != null && user.getUsername() != null && user.getUsername().equals(username) &&
                         user.getPassword() != null && (password.equals(user.getPassword()) || subject.hasRole("admin"))) {
-                    if ((!isValidEmailAddress(email) || !isValidPassword(newPassword))&&!newPassword.equals(password)) {
+                    if (!isValidEmailAddress(email) || (!isValidPassword(newPassword)&&!password.equals(newPassword))) {
 
                         return Response.status(Response.Status.BAD_REQUEST).build();
                     }
