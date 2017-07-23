@@ -639,6 +639,7 @@ public class RestApi {
     @Path("community/{comid}/car")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createCarInCommunity(@PathParam("comid") long comId, final JsonCar data) {
         int color = data.color;
         String imageFile = data.imageFile;
@@ -688,7 +689,7 @@ public class RestApi {
                     car.setType(typeToSet);
                     community.addCar(car);
 
-                    return Response.ok().build();
+                    return Response.ok(new CarWithoutRides(car)).build();
                 }
             }
         }
