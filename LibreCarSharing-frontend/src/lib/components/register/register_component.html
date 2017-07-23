@@ -1,4 +1,17 @@
-<input [(ngModel)]="username" type="text" placeholder="Username">
-<input [(ngModel)]="password" type="password" placeholder="Passwort">
-<input [(ngModel)]="email" type="email" placeholder="E-Mail">
-<input type="button" value="Register" (click)="register($event)">
+<link href="register_component.css" rel="stylesheet">
+<div class="container">
+    <form class="form-signin">
+        <h2 class="form-signin-heading">LibreCarSharing</h2>
+        <label for="username" class="sr-only">Benutzername</label>
+        <input id="username" [(ngModel)]="username" type="text" placeholder="Benutzername">
+        <label for="email" class="sr-only">E-Mail</label>
+        <input id="email" [(ngModel)]="email" type="email" placeholder="E-Mail">
+        <label for="inputPassword" class="sr-only">Passwort</label>
+        <input id="inputPassword" [(ngModel)]="password" type="password" placeholder="Passwort">
+        <button class="btn btn-primary btn-block" (click)="register($event)" value="Register">
+            Register
+            <span class="fa fa-sign-in"></span>
+        </button>
+    </form>
+
+</div>
