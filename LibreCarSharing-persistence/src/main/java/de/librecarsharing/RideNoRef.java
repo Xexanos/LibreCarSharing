@@ -17,4 +17,5 @@ public class RideNoRef {
     public Timestamp getEnd() {return this.dbRide.getEnd();}
     public String getName() {return this.dbRide.getName();}
     public long getId(){return this.dbRide.getId();}
+    public long getCreatorId(){return this.dbRide.getCreator().getId();}
 }
