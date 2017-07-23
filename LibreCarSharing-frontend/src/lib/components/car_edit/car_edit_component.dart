@@ -20,6 +20,7 @@ class CarEditComponent implements OnInit {
   Car car = null;
   List<MyType> types;
   List<Community> communities;
+  int communityId;
   String color;
 
   final RouteParams _routeParams;
@@ -76,6 +77,17 @@ class CarEditComponent implements OnInit {
         break;
       default:
         print("Error in deleteCar.");
+    }
+  }
+
+  createCar(dynamic e) async{
+    e.preventDefault();
+
+    int id = await _carService.newCar(communityId, car);
+    if (id > 0) {
+      _router.navigate(['Car', {'id': id.toString()}]);
+    } else {
+      //TODO: Fehler abfangen
     }
   }
 }

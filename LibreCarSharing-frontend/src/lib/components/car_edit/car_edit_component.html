@@ -2,13 +2,14 @@
     <form>
         <!-- TODO: insert car image display and upload here -->
         <div class="form-group">
-            <label>{{car.name}} ({{car.licencePlate}})</label>
+            <label *ngIf="(car.id != -1)">{{car.name}} ({{car.licencePlate}})</label>
+            <label *ngIf="(car.id == -1)">Neues Auto erstellen</label>
         </div>
-        <div *ngIf="car.id == -1" class="form-group">
+        <div *ngIf="(car.id == -1) && communities.isNotEmpty" class="form-group">
             <label for="inputCommunity">Community</label>
             <select class="form-control" id="inputCommunity" aria-describedby="CommunityHelp"
-                   [(ngModel)]="car.name" ngControl="displayCommunity">
-                <option *ngFor="let community of communities" [value]="community.id">{{community.name}}</option>
+                    [(ngModel)]="communityId" ngControl="displayCommunity">
+                <option *ngFor="let community of communities" value="{{community.id}}">{{community.name}}</option>
             </select>
             <small id="communityHelp" class="form-text text-muted">
                 Die Community, der das Auto zur Verfügung stehen soll.
@@ -31,6 +32,14 @@
             </small>
         </div>
         <div class="form-group">
+            <label for="imageFilePlate">Bild</label>
+            <input type="text" class="form-control" id="imageFilePlate" aria-describedby="ImageFileHelp"
+                   [(ngModel)]="car.imageFile" ngControl="imageFilePlate">
+            <small id="imageFileHelp" class="form-text text-muted">
+                Link zu einem Bild des Autos.
+            </small>
+        </div>
+        <div class="form-group">
             <label for="inputType">Typ</label>
             <input type="text" list="typesList" class="form-control" id="inputType" aria-describedby="TypeHelp"
                    [(ngModel)]="car.type" ngControl="displayType">
@@ -50,9 +59,9 @@
             </small>
         </div>
         <div class="form-group">
-            <label for="inputStatus">benutzbar</label>
-            <input type="checkbox" class="form-control" id="inputStatus" aria-describedby="StatusHelp"
-                   [(ngModel)]="car.status" ngControl="displayStatus">
+            <label class="checkbox"><input type="checkbox" class="form-control" id="inputStatus"
+                                            aria-describedby="StatusHelp" [(ngModel)]="car.status"
+                                            ngControl="displayStatus">benutzbar</label>
             <small id="statusHelp" class="form-text text-muted">
                 Ist das Auto momentan nutzbar?
             </small>
@@ -81,7 +90,7 @@
                 Die Farbe des Autos.
             </small>
         </div>
-        <button *ngIf="car.id == -1" class="btn btn-primary" (click)="createCar($event)">Auto Erstellen</button>
+        <button *ngIf="car.id == -1" class="btn btn-primary" (click)="createCar($event)">Auto erstellen</button>
         <button *ngIf="car.id != -1" class="btn btn-primary" (click)="sendChanges($event)">Absenden</button>
         <button *ngIf="car.id != -1" class="btn btn-danger" (click)="deleteCar($event)">Auto löschen</button>
     </form>
