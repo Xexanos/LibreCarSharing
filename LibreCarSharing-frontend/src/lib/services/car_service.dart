@@ -124,10 +124,10 @@ class CarService {
           '"type"': '"' + car.type + '"',
           '"location"': '"' + car.location + '"',
           '"imageFile"': '"' + car.imageFile + '"',
-          '"status"': '"' + car.status.toString() + '"',
+          '"status"': car.status,
           '"info"': '"' + car.info + '"',
-          '"seats"': '"' + car.seats.toString() + '"',
-          '"color"': '"' + car.color.toString() + '"'
+          '"seats"': car.seats,
+          '"color"': car.color
         }).then((HttpRequest response) {
       completer.complete(response.status);
     }).catchError((n) {
@@ -156,10 +156,10 @@ class CarService {
           '"type"': '"' + car.type + '"',
           '"location"': '"' + car.location + '"',
           '"imageFile"': '"' + car.imageFile + '"',
-          '"status"': '"' + car.status.toString() + '"',
+          '"status"': car.status,
           '"info"': '"' + car.info + '"',
-          '"seats"': '"' + car.seats.toString() + '"',
-          '"color"': '"' + car.color.toString() + '"'
+          '"seats"': car.seats,
+          '"color"': car.color
         }).then((HttpRequest response) {
       if (response.status == 200) {
         completer.complete((new CarImpl.fromJsonString(response.responseText)).id);
