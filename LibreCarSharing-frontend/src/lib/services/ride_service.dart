@@ -55,10 +55,10 @@ class RideService {
    * @param: ride data to be added
    * @return: the newly created ride
    */
-  bool addRide(int carId, Ride ride) {
+  Future<bool> addRide(int carId, Ride ride) {
     //todo fix
     bool status;
-
+    Completer completer = new Completer();
     HttpRequest.request(
         "../api/car/" + carId.toString() + "/ride", method: "POST",
         requestHeaders: {"Content-Type": "application/json"}, sendData: {
@@ -67,15 +67,15 @@ class RideService {
       '"end"': '"' + ride.end.toString() + '"'
     }).then((HttpRequest response) {
       if (response.status == 200) {
-        status = true;
+        completer.complete(true);
       } else {
-        status = false;
+        completer.complete(false);
       }
     }).catchError((n) {
       print("Error in addRide.");
-      status = false;
+      completer.complete(false);
     });
-    return status;
+    return completer.future;
   }
 
   /**
@@ -83,7 +83,7 @@ class RideService {
    * @param: modified ride data
    * @return: the modified ride
    */
-  int changeRide(Ride ride) {
+  Future<int> changeRide(Ride ride) {
     Completer completer = new Completer();
 
     HttpRequest.request("../api/ride/" + ride.id.toString(),
@@ -94,11 +94,12 @@ class RideService {
           '"start"': '"' + ride.start.toString() + '"',
           '"end"': '"' + ride.end.toString() + '"'
         }).then((HttpRequest response) {
-      return response.status;
+      completer.complete(response.status);
     }).catchError((Event e) {
       print("Error in changeRide.");
       completer.complete(null);
     });
+    return completer.future;
   }
 
   /**
