@@ -32,6 +32,14 @@
             </small>
         </div>
         <div class="form-group">
+            <label for="imageFilePlate">Bild</label>
+            <input type="text" class="form-control" id="imageFilePlate" aria-describedby="ImageFileHelp"
+                   [(ngModel)]="car.imageFile" ngControl="imageFilePlate">
+            <small id="imageFileHelp" class="form-text text-muted">
+                Link zu einem Bild des Autos.
+            </small>
+        </div>
+        <div class="form-group">
             <label for="inputType">Typ</label>
             <input type="text" list="typesList" class="form-control" id="inputType" aria-describedby="TypeHelp"
                    [(ngModel)]="car.type" ngControl="displayType">
