@@ -39,9 +39,12 @@
         <to>/web/index.html</to>
     </rule>
     <rule match-type="wildcard">
-        <from>/web/dashboard</from>
+        <from>/web/editcar/**</from>
         <to>/web/index.html</to>
     </rule>
-
+    <rule match-type="wildcard">
+        <from>/web/newcar/**</from>
+        <to>/web/index.html</to>
+    </rule>
 
 </urlrewrite>

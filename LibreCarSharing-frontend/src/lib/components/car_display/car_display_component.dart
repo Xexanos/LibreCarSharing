@@ -9,6 +9,7 @@ import 'package:angular2/router.dart';
   selector: 'carDisplay',
   styleUrls: const ['car_display_component.css'],
   templateUrl: 'car_display_component.html',
+  directives: const [ROUTER_DIRECTIVES]
 )
 class CarDisplayComponent implements OnInit {
   final RouteParams _routeParams;

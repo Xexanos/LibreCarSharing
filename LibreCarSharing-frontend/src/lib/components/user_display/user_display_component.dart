@@ -32,7 +32,7 @@ class UserDisplayComponent implements OnInit {
     e.preventDefault();
 
     if (newPassword == newPassword2) {
-      user = await _userService.changeUser(user, password, newPassword);
+      user = await _userService.editUser(user, password, newPassword);
     }
   }
 

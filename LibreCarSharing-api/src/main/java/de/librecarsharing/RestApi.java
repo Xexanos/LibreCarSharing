@@ -151,8 +151,8 @@ public class RestApi {
         final Subject subject = SecurityUtils.getSubject();
         DBCar car;
         if ((car = this.entityManager.find(DBCar.class, carId)) != null) {
-            DBCommunity community;
-            if ((community = car.getCommunity()) != null) {
+            DBCommunity community = car.getCommunity();
+            if (community != null) {
 
                 if (subject.getPrincipal() != null) {
                     principal = subject.getPrincipal().toString();
@@ -198,7 +198,6 @@ public class RestApi {
                     else
                         return Response.status(Response.Status.NOT_FOUND).build();
                 }
-
             }
         }
         return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -323,8 +322,8 @@ public class RestApi {
         final Subject subject = SecurityUtils.getSubject();
         DBCar car;
         if ((car = this.entityManager.find(DBCar.class, carId)) != null && data.start < data.end) {
-            DBCommunity community;
-            if ((community = car.getCommunity()) != null) {
+            DBCommunity community = car.getCommunity();
+            if (community != null) {
                 if (subject == null)
                     return Response.status(Response.Status.UNAUTHORIZED).build();
                 if (subject.getPrincipal() != null && community.getUsers().stream().map(DBUser::getUsername)
@@ -392,8 +391,8 @@ public class RestApi {
                 DBUser user = this.entityManager.find(DBUser.class, userId);
                 if (user != null && user.getUsername() != null && user.getUsername().equals(username) &&
                         user.getPassword() != null && (password.equals(user.getPassword()) || subject.hasRole("admin"))) {
-                    if (!isValidEmailAddress(email) || !isValidPassword(newPassword)) {
-                        System.out.println(isValidEmailAddress(email) + "" + isValidPassword(newPassword));
+                    if (!isValidEmailAddress(email) || (!isValidPassword(newPassword)&&!password.equals(newPassword))) {
+
                         return Response.status(Response.Status.BAD_REQUEST).build();
                     }
                     System.out.println(user.getEmail() + "" + email);
@@ -471,6 +470,7 @@ public class RestApi {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateCar(@PathParam("carid") final long carId, final JsonCar data) {
         int color = data.color;
+        String name = data.name;
         String imageFile = data.imageFile;
         String info = data.info;
         String licencePlate = data.licencePlate;
@@ -486,10 +486,13 @@ public class RestApi {
             if (car != null) {
                 DBType typeToSet = checkType(type);
                 if (car.getOwner().getUsername().equals(principal) || subject.hasRole("admin")) {
+                    if (isValidNotJustSpace(name))
+                        car.setName(name);
+                    if (isValidNotJustSpace(licencePlate))
+                        car.setLicencePlate(licencePlate);
                     car.setColor(color);
                     car.setImageFile(imageFile);
                     car.setInfo(info);
-                    car.setLicencePlate(licencePlate);
                     car.setLocation(location);
                     car.setStatus(status);
                     car.setType(typeToSet);
@@ -636,6 +639,7 @@ public class RestApi {
     @Path("community/{comid}/car")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createCarInCommunity(@PathParam("comid") long comId, final JsonCar data) {
         int color = data.color;
         String imageFile = data.imageFile;
@@ -657,7 +661,7 @@ public class RestApi {
             imageFile = "";
         if (name == null)
             name = "";
-        if (type == null || isValidNotJustSpace(type))
+        if (type == null || !isValidNotJustSpace(type))
             return Response.status(Response.Status.BAD_REQUEST).build();
         DBCommunity community = this.entityManager.find(DBCommunity.class, comId);
         if (community == null)
@@ -685,7 +689,7 @@ public class RestApi {
                     car.setType(typeToSet);
                     community.addCar(car);
 
-                    return Response.ok().build();
+                    return Response.ok(new CarWithoutRides(car)).build();
                 }
             }
         }
@@ -710,22 +714,21 @@ public class RestApi {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTypeList(@PathParam("userid")final long userId) {
+    public Response getTypeList(@PathParam("userid") final long userId) {
         final Subject subject = SecurityUtils.getSubject();
         if (subject != null && subject.getPrincipal() != null) {
-            Long subjectId;
-            subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
+            Long subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
             if (subjectId != null) {
-                if(userId==subjectId||subject.hasRole("admin")) {
+                if (userId == subjectId || subject.hasRole("admin")) {
                     DBUser user = entityManager.find(DBUser.class, userId);
                     if (user != null) {
-                        List<DBCar> carlists = user.getCommunities().stream().map(DBCommunity::getCars).collect(Collectors.toList()).stream().flatMap(Set::stream).collect(Collectors.toList());
-                        List<DBType> resultlist = new ArrayList<>();
-                        for (DBCar car : carlists) {
-                            if (!resultlist.stream().map(DBType::getName).collect(Collectors.toList()).contains(car.getType().getName()))
-                                resultlist.add(car.getType());
+                        List<DBCar> carLists = user.getCommunities().stream().map(DBCommunity::getCars).collect(Collectors.toList()).stream().flatMap(Set::stream).collect(Collectors.toList());
+                        List<DBType> resultList = new ArrayList<>();
+                        for (DBCar car : carLists) {
+                            if (!resultList.stream().map(DBType::getName).collect(Collectors.toList()).contains(car.getType().getName()))
+                                resultList.add(car.getType());
                         }
-                        return Response.ok(resultlist).build();
+                        return Response.ok(resultList).build();
                     }
                 }
                 return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -735,33 +738,32 @@ public class RestApi {
         return Response.status(Response.Status.UNAUTHORIZED).build();
 
     }
-    @Path("currentuser/car/{typeid}")
+
+    @Path("type/{typeid}/car")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getCarsFromUserWithType(@PathParam("typeid") final long typeId) {
 
-        DBType type= this.entityManager.find(DBType.class, typeId);
-        if(type==null)
+        DBType type = this.entityManager.find(DBType.class, typeId);
+        if (type == null)
             return Response.status(Response.Status.NOT_FOUND).build();
-        String typeName=type.getName();
+        String typeName = type.getName();
         final Subject subject = SecurityUtils.getSubject();
 
         if (subject != null && subject.getPrincipal() != null) {
-            Long subjectId;
-            subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
+            Long subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
             if (subjectId != null) {
 
-                DBUser user = entityManager.find(DBUser.class,subjectId);
-                List<DBCar> carlists =user.getCommunities().stream().map(DBCommunity::getCars).collect(Collectors.toList()).stream().flatMap(Set::stream).collect(Collectors.toList());
-                List<CarWithoutRides> resultlist= new ArrayList<>();
-                for(DBCar car:carlists)
-                {
-                    if(car.getType().getName().equals(typeName))
-                        resultlist.add(new CarWithoutRides(car));
+                DBUser user = entityManager.find(DBUser.class, subjectId);
+                List<DBCar> carLists = user.getCommunities().stream().map(DBCommunity::getCars).collect(Collectors.toList()).stream().flatMap(Set::stream).collect(Collectors.toList());
+                List<CarWithoutRides> resultList = new ArrayList<>();
+                for (DBCar car : carLists) {
+                    if (car.getType().getName().equals(typeName))
+                        resultList.add(new CarWithoutRides(car));
                 }
 
-                return Response.ok(resultlist).build();
+                return Response.ok(resultList).build();
             }
         }
         System.out.println("failed");
@@ -808,8 +810,7 @@ public class RestApi {
         final Subject subject = SecurityUtils.getSubject();
         if (subject != null) {
             if (subject.getPrincipal() != null) {
-                Long subjectId;
-                subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
+                Long subjectId = this.getIdFromUsername(subject.getPrincipal().toString());
                 if ((subjectId != null)) {
                     DBUser user = this.entityManager.find(DBUser.class, userid);
                     if (user != null) {
@@ -913,7 +914,6 @@ public class RestApi {
             if ((types = this.entityManager.createQuery(query).getResultList()).size() == 1) {
                 typeToSet = types.get(0);
             }
-
         }
         return typeToSet;
     }
