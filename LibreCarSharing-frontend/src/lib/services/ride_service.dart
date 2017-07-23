@@ -25,7 +25,6 @@ class RideService {
       responseList.forEach((JsonObject jsonObject) {
         returnList.add(new RideImpl.fromJsonString(JSON.encode(jsonObject)));
       });
-      object
       completer.complete(returnList);
     }).catchError((n) {
       print("Error in getAllRidesFromCar.");
@@ -56,7 +55,7 @@ class RideService {
    * @param: ride data to be added
    * @return: the newly created ride
    */
-  Future<bool> addRide(int carId, Ride ride) {
+  bool addRide(int carId, Ride ride) {
     //todo fix
     bool status;
 
@@ -84,7 +83,7 @@ class RideService {
    * @param: modified ride data
    * @return: the modified ride
    */
-  Future<Ride> changeRide(Ride ride) {
+  int changeRide(Ride ride) {
     Completer completer = new Completer();
 
     HttpRequest.request("../api/ride/" + ride.id.toString(),
@@ -95,16 +94,11 @@ class RideService {
           '"start"': '"' + ride.start.toString() + '"',
           '"end"': '"' + ride.end.toString() + '"'
         }).then((HttpRequest response) {
-      if (response.status == 200) {
-        completer.complete(new RideImpl.fromJsonString(response.responseText));
-      } else {
-        completer.complete(null);
-      }
+      return response.status;
     }).catchError((Event e) {
       print("Error in changeRide.");
       completer.complete(null);
     });
-    return completer.future;
   }
 
   /**

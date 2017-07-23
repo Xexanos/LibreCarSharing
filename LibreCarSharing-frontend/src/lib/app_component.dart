@@ -42,7 +42,7 @@ import 'package:ng_bootstrap/ng_bootstrap.dart';
   const Route(path: '/car/:id', name: 'Car', component: CarDisplayComponent),
   const Route(path: '/editcar/:id', name: 'EditCar', component: CarEditComponent),
   const Route(
-      path: '/editride/:id', name: 'EditRide', component: EditRideComponent),
+      path: '/editride/:id', name: 'EditRide', component: RideEditComponent),
   const Route(path: '/newcar/', name: 'NewCar', component: CarEditComponent),
   const Route(path: '/user/', name: 'User', component: UserDisplayComponent)
 ])

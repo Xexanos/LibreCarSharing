@@ -51,7 +51,7 @@ class RideEditComponent implements OnInit {
   sendChanges(dynamic e) async {
     e.preventDefault();
 
-    int status = await _rideService.editRide(ride);
+    int status = await _rideService.changeRide(ride);
     switch (status) {
       case 200:
         _location.back();
